@@ -1,0 +1,230 @@
+{
+  "MOP": [
+    { "Name": "BOOK",
+    "Amount": 1200,
+    "Count": 8, 
+    "Currency": "EUR" 
+    }, 
+  { 
+    "Name": "SWIFT", 
+    "Amount": 3300,
+     "Count": 12, 
+     "Currency": "GBP"
+      }
+  ],
+  "SourceChannel": [
+    {
+      "Name": "BOOK",
+      "Amount": 4000,
+      "Currency": "GBP",
+      "Count": 20
+    },
+    {
+      "Name": "SEPA",
+      "Amount": 2000,
+      "Currency": "USD",
+      "Count": 8
+    },
+    {
+      "Name": "SWIFT",
+      "Amount": 1000,
+      "Currency": "INR",
+      "Count": 4
+    },
+    {
+      "Name": "SWIFT",
+      "Amount": 1000,
+      "Currency": "GBP",
+      "Count": 4
+    },
+    {
+      "Name": "DemoChannel",
+      "Amount": 4000,
+      "Currency": "GBP",
+      "Count": 20
+    }
+  ],
+  "PaymentStatus1": [
+    {
+      "Name": "REPAIR",
+      "Amount": 0,
+      "Currency": "USD",
+      "Count": 0
+    },
+    {
+      "Name": "REPAIR",
+      "Amount": 0,
+      "Currency": "EUR",
+      "Count": 0
+    },
+    {
+      "Name": "REPAIR",
+      "Amount": 0,
+      "Currency": "GBP",
+      "Count": 0
+    },
+    {
+      "Name": "COMPLETED",
+      "Amount": 0,
+      "Currency": "GBP",
+      "Count": 0
+    },
+    {
+      "Name": "COMPLETED",
+      "Amount": 0,
+      "Currency": "USD",
+      "Count": 0
+    },
+    {
+      "Name": "COMPLETED",
+      "Amount": 0,
+      "Currency": "EUR",
+      "Count": 0
+    },
+    {
+      "Name": "WAITFORAPPROVAL",
+      "Amount": 0,
+      "Currency": "GBP",
+      "Count": 0
+    },
+    {
+      "Name": "WAITFORAPPROVAL",
+      "Amount": 0,
+      "Currency": "EUR",
+      "Count": 0
+    },
+    {
+      "Name": "REPAIR",
+      "Amount": 0,
+      "Currency": "INR",
+      "Count": 0
+    },
+    {
+      "Name": "DUPLICATE",
+      "Amount": 0,
+      "Currency": "EUR",
+      "Count": 0
+    }
+  ],
+  "PaymentStatus": [
+    {
+      "Name": "REPAIR",
+      "Amount": 30034,
+      "Currency": "USD",
+      "Count": 11
+    },
+    {
+      "Name": "REPAIR",
+      "Amount": 1358765,
+      "Currency": "EUR",
+      "Count": 1566
+    },
+    {
+      "Name": "REPAIR",
+      "Amount": 136590,
+      "Currency": "GBP",
+      "Count": 7
+    },
+    {
+      "Name": "COMPLETED",
+      "Amount": 521138,
+      "Currency": "GBP",
+      "Count": 583
+    },
+    {
+      "Name": "COMPLETED",
+      "Amount": 252783.5,
+      "Currency": "USD",
+      "Count": 628
+    },
+    {
+      "Name": "COMPLETED",
+      "Amount": 1548177.5,
+      "Currency": "EUR",
+      "Count": 2056
+    },
+    {
+      "Name": "WAITFORAPPROVAL",
+      "Amount": 270451,
+      "Currency": "GBP",
+      "Count": 4
+    },
+    {
+      "Name": "WAITFORAPPROVAL",
+      "Amount": 65550,
+      "Currency": "EUR",
+      "Count": 3
+    },
+    {
+      "Name": "REPAIR",
+      "Amount": 740000,
+      "Currency": "INR",
+      "Count": 2
+    },
+    {
+      "Name": "DUPLICATE",
+      "Amount": 303,
+      "Currency": "EUR",
+      "Count": 2
+    }
+  ],
+  "FileStatus": [
+    {
+      "Status": "ACQUIRED",
+      "PSACode": "DEMOPSA1_DemoCHANNELInput",
+      "Currency": "EUR",
+      "Amount": 10001,
+      "Count": 1
+    },
+    {
+      "Status": "DEBULKED",
+      "PSACode": "DEMOPSA1_DemoCHANNELInput",
+      "Currency": "USD",
+      "Amount": 150,
+      "Count": 1
+    },
+    {
+      "Status": "DEBULKED",
+      "PSACode": "DEMOPSA3_GMPv2CHANNELInput",
+      "Currency": "EUR",
+      "Amount": 100.33,
+      "Count": 1
+    },
+    {
+      "Status": "ACQUIRED",
+      "PSACode": "DEMOPSA5_Pain001_SEPA",
+      "Currency": "EUR",
+      "Amount": 10001,
+      "Count": 1
+    },
+    {
+      "Status": "DEBULKED",
+      "PSACode": "DEMOPSA2_MT103",
+      "Currency": "USD",
+      "Amount": 20000.5,
+      "Count": 1
+    },
+    {
+      "Status": "DEBULKED",
+      "PSACode": "DEMOPSA2_MT103",
+      "Currency": "EUR",
+      "Amount": 20301.5,
+      "Count": 3
+    },
+    {
+      "Status": "DEBULKED",
+      "PSACode": "DEMOPSA2_MT103",
+      "Currency": "GBP",
+      "Amount": 25000.5,
+      "Count": 1
+    },
+    {
+      "Status": "REJECTED",
+      "PSACode": "DEMOPSA1_DemoCHANNELInput",
+      "Currency": "",
+      "Amount": 0,
+      "Count": 3
+    }
+  ]
+}
+

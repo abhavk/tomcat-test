@@ -1,0 +1,540 @@
+<style>
+.actionRow{
+	//display:none;
+}
+
+.dataGroups{
+	padding-bottom: 5px;
+}
+.listViewPanel{
+	background: transparent;
+}
+
+.listViewPanelHeading{
+	padding-bottom: 0px;
+	box-sizing: border-box;
+}
+
+.listViewPanel .listViewPanelHeading,.panel-collapse{
+//	border: 2px solid #44B6AE;
+	//webkit-box-shadow: inset #808080 0 0 0 3px, inset #6FADA8 0 0 0 1px, inset #70D2CB 0 0 0 8px;
+	//-moz-box-shadow: inset #808080 0 0 0 3px, inset #6FADA8 0 0 0 1px, inset #70D2CB 0 0 0 8px;
+	//-ms-box-shadow: inset #808080 0 0 0 3px, inset #6FADA8 0 0 0 1px, inset #70D2CB 0 0 0 8px;
+	//box-shadow: inset #808080 0 0 0 3px, inset #6FADA8 0 0 0 1px, inset #70D2CB 0 0 0 8px;
+}
+
+.outerCrcle{
+	text-align: center;
+    width: 50px;
+    height: 25px;
+    margin: 0 auto;
+    background-color: #44B6AE;
+    border: 5px solid gray;
+    border-bottom: 0;
+    border-radius: 50px 50px 0px 0px !important;
+}
+
+.innerCrcle{
+	background: white;
+    height: 8px;
+    width: 8px;
+    margin: 0 auto;
+    margin-top: 20%;
+    border-radius: 50% !important;
+}
+
+.flip{
+	position:absolute;
+	width:100%;
+	height:auto;
+	margin:0;
+}
+
+.hideMe{
+	display:none;
+}
+
+
+</style>
+<!-- BEGIN PAGE HEADER-->
+<div class="breadCrumb" set-class-when-at-top="fix-to-top" ng-controller="activeController">
+	<div class="col-md-6">
+	<ul class="page-breadcrumb">
+		<!--<li>
+			<i class="fa fa-home"></i>
+			<a href="javascript:void(0)" translate ng-click="goToHome()">Sidebar.Home</a>
+			<i class="fa fa-angle-right"></i>
+		</li>-->
+		<li>
+			<i class="fa fa-television"></i>
+			<a href="javascript:void(0)" translate>Sidebar.SystemData</a>
+			<i class="fa fa-angle-right"></i>
+		</li>
+		<li translate>
+			AppConfig.PageTitle
+		</li>
+	</ul>
+	</div>
+	<div class="col-md-6 headerVals">
+        <div data-ng-include="'templates/header/VPheader.html'" data-ng-controller="headerCtrl"></div>
+
+    </div>
+</div>
+
+
+<div class="contentContainer">
+<div class="pageTitle alertWidthonResize">
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="title__container">
+
+			<h2 translate>AppConfig.PageTitle</h2> 
+			<p translate>AppConfig.SubTitle</p>
+
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<div style="padding: 5px;">
+<div class="row" style="margin: 0;">
+    <div class="countbar-title">
+    <div class="col-md-3 col-sm-3 col-xs-4  ng-binding" style="padding: 0;">
+        <div class="caption">
+            <span class="highlight">{{restVal.length}} out of {{totalForCountbar}}</span> records shown
+            </div>
+    </div>
+<!--<div class="row CountBar" style="margin:0px 0px 20px 0px;padding: 5px;box-sizing: border-box;background-color: #44b6ae;color: white;">
+	<div class="col-md-4 col-sm-4 col-xs-12" style="padding: 5px; font-size: 17px; padding-left: 25px;">
+		{{restVal.length+' records shown'}}
+	</div>
+	<div class="col-md-4 col-sm-4 col-xs-12" style="padding: 5px;">
+		
+	</div>-->
+	
+	<div class="col-md-9 col-sm-9 col-xs-8">
+		<div class="btn-group" style="float:right;">
+			<button ng-init="creatingWindow=true"  style="border: 1px solid #fff;box-sizing: border-box;margin-left:5px" class="btn-trans" ng-click="(permission.C)?newRecordAdd():''" ng-style="(permission.C)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" tooltip="{{(permission.C)?'Add New':'You don&lsquo;t have permission'}}" ><i class="fa fa-plus-square fa-fs14"></i></button>
+
+			<button style="border: 1px solid #fff;box-sizing: border-box;margin-left:5px" class="btn-trans" ng-click="initData()" tooltip="Refresh"><i class="fa fa-refresh fa-fs14"></i></button>
+			<button style="border: 1px solid #fff;box-sizing: border-box;margin-left:5px" ng-click="exportToExcel($event)" class="btn-trans " tooltip="{{'Export to Excel'}}"><i class="fa fa-file-excel-o"></i></button>
+			<button style="border: 1px solid #fff;box-sizing: border-box;margin-left:5px" ng-click="printFn()" class="btn-trans" tooltip="{{'Print'}}"><i class="fa fa-print fa-fs14"></i></button>
+			<!--<button style="border: 1px solid #fff;box-sizing: border-box;border-right:0px;margin-left:5px" class="btn viewbtn" id="btn_1" ng-click="viewType('list',$event)" tooltip="{{listTooltip}}"><i class="fa fa-list"></i></button>
+			<button style="border: 1px solid #fff;box-sizing: border-box;border-left:0px" class="btn viewbtn" id="btn_2" ng-click="viewType('grid',$event)" tooltip="{{gridTooltip}}"><i class="fa fa-table"></i></button>-->
+			        <button style="border: 1px solid #fff;box-sizing: border-box;border-right:0px;margin-left:5px" class="btn-trans" id="btn_1" ng-class="changeViewFlag?'disabledBtnColor':'cmmonBtnColors'" ng-click="changeViewFlag = !changeViewFlag" tooltip="List View"><i class="fa fa-list fa-fs14"></i></button>
+        <button style="border: 1px solid #fff;box-sizing: border-box;border-left:0px" class="btn-trans" id="btn_2" ng-class="!changeViewFlag?'disabledBtnColor':'cmmonBtnColors'" ng-click="changeViewFlag = !changeViewFlag" tooltip="Grid View"><i class="fa fa-table fa-fs14"></i></button>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
+</div>
+<div class="pageTitle alertWidthonResize" style="border-bottom: 0; margin: 0;">
+	<div collapse="creatingWindow" class="row searchContainer" style="margin:0">
+		<form role="form" class="simple-form" name="AppConfigForm"  ng-submit="createData(newData); AppConfigSubmitted=false;creatingWindow=true">
+			<div class = 'row' style='margin:0'>
+				<div class="form-group">
+
+					<div class="control-group" ng-class="{true: 'error'}[AppConfigSubmitted && AppConfigForm.Name.$invalid]">
+						<div class="col-md-4">
+							<label style='font-weight:bold;'>Name
+								<span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+							</label>
+							<input class="form-control" type="text" name="Name" ng-model="newData.Name"  placeholder="Please Enter Name"  ng-blur="multipleEmptySpace($event)" maxlength="100" required>
+							<span class="help-inline" ng-show="AppConfigSubmitted && AppConfigForm.Name.$error.required" style="display:block;margin:0;color:#EF1C1C !important;text-align: right;font-size: 15px;">Required</span>
+						</div>
+					</div>
+					<div class="control-group" ng-class="{true: 'error'}[AppConfigSubmitted && AppConfigForm.Value.$invalid]">
+						<div class="col-md-4">
+							<label style='font-weight:bold;'>Value
+								<span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">* </span>
+							</label>
+							<input class="form-control" type="text" name="Value" ng-model="newData.Value" placeholder="Please Enter Value" ng-blur="multipleEmptySpace($event)" maxlength="100" required>
+							<span class="help-inline" ng-show="AppConfigSubmitted && AppConfigForm.Value.$error.required" style="display:block;margin:0;color:#EF1C1C !important;text-align: right;font-size: 15px;">Required</span>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<label style="font-weight:bold;">Type</label>
+						<input class="form-control" type="text" name="Type" ng-model="newData.Type" maxlength="100" ng-blur="multipleEmptySpace($event)"  placeholder="Please Enter Type" >
+					</div>
+
+				</div>
+
+				<div class="col-xs-12"style="padding:15px;">
+				<span class="pull-right">
+                    <button type="submit" class="btn btnStyle clr" ng-click="AppConfigSubmitted=true" tooltip="Submit"><span translate>BtnGroup.Submit</span></button>
+					<button type="reset" class="btn btnStyle clr" ng-click="creatingWindow=true;AppConfigSubmitted=false;resetAddNewFields()" tooltip="Cancel" ><span translate> BtnGroup.Cancel</span></button>
+                </span>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div id="statusBox" ng-style="{'top':alertStyle+'px','width':alertWidth+'px'}" class ="animated bounce autoAdjustAlert bold" ng-repeat="alert in alerts" ng-class="{'alert alert-success': alert.type == 'success','alert alert-danger':alert.type == 'danger'}">
+	<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	{{alert.msg}}
+</div>
+
+<div class="alert alert-warning" ng-show="dataFound">
+	<strong><h4  style="margin:0;text-align:center;">Nothing found to display</h4></strong>
+</div>
+
+<!-- Delete popup Window Start-->
+<div class="modal fade" tabindex="-1" id="delPopup" role="dialog">
+	<div class="modal-dialog modal-md" style="top: 200px;">
+		<div class="modal-content modalbdy animated tada">
+			<div class="modal-header" style="padding: 0px !important; border: 0px !important">
+				<div class="iconBox"><i class ="exclaLine"></i><i class ="exclaDot"></i></div>
+			</div>
+			<div class="modal-body" style="padding: 0px !important; border: 0px !important">
+				<h1>Are you sure?</h1>
+				<h4>You will not be able to recover this Data!</h4>
+			</div>
+			<div class="modal-footer modalftr">
+				<button tabindex="0" type="button" class="buton cancl" data-dismiss="modal">Cancel</button>
+				<button tabindex="0" type="button" class="buton yess" ng-click="deleteData()">Yes, delete it!</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Delete popup Window End-->
+<!--div ng-show="!dataFound" style="position:relative;margin:0;" class="row" infinite-scroll={{feedMore}} infinite-scroll-disabled='busy' infinite-scroll-distance='0' infinite-scroll-immediate-check="false"-->
+
+
+<div id="DummyExportContent" ng-show="false">
+<table class="table table-bordered smallTable" id="sample_2" >
+		<thead>
+		<tr style="border:none">
+			<th ng-repeat="val in sortMenu">
+				{{val.label}}
+				<span id="{{val.FieldName}}_Icon" class=""></span>
+			</th>
+
+		</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="values in restVal">
+				<td>{{values.Name}}</td><td>{{values.Value}}</td><td>{{values.Type}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+
+
+
+<div style="position:relative;height:auto;overflow:visible;">
+	
+    <div class="listView FixHead dataGroupsScroll"  ng-show="!dataFound">
+
+	<table class="table table-bordered smallTable floatThead stickyheader" id="sample_2" ng-show="!changeViewFlag">
+		<thead>
+		<tr style="border:none">
+			<th nowrap style="width:100px">
+				Action
+			</th>
+			<th ng-repeat="val in sortMenu" class="cursorPointer" ng-click="gotoSorting(val,$index,$event)">
+				{{val.label}}
+				<span id="{{val.FieldName}}_Icon" class=""></span>
+			</th>
+
+		</tr>
+		</thead>
+		<tbody>
+		<tr id = {{'displayingWindow_'+$index}} class="displayWindow collapse in" ng-repeat-start="AppConfig in restVal" ng-class="{oddClas:($index%2)== 1}">
+			<td class="text-center">
+				<a ng-click="takeBackup(AppConfig,$index,true);" tooltip="View"><i class="fa fa-eye Iclr"></i></a> |
+				<a ng-style="(permission.U)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" ng-click="(permission.U)?takeBackup(AppConfig,$index,false):''" tooltip="{{(permission.U)?'Edit':'You don&lsquo;t have permission'}}"><i class="fa fa-pencil-square-o Iclr"></i></a> 
+				<!--<a ng-style="(permission.D)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" data-toggle="modal" data-target="{{(permission.D)?'#delPopup':''}}" tooltip="{{(permission.D)?'Delete':'You don&lsquo;t have permission'}}" ng-click="(permission.D)?takeDeldata(AppConfig,$index):''"><i class="fa fa-trash-o Iclr"></i></a>-->
+
+			</td>
+			<td ng-repeat="val in sortMenu">{{AppConfig[val.FieldName]}}</td>
+
+			<!--<td>
+				<span id={{'Name_'+$index}}> {{AppConfig.Name}}</span>
+			</td>
+			<td>
+				<span id={{'Value_'+$index}}> {{AppConfig.Value}}</span>
+			</td>
+			<td>
+				<span id={{'Type_'+$index}}> {{AppConfig.Type}}</span>
+			</td>-->
+		</tr>
+		<tr ng-repeat-end="">
+			<td id = {{'editHere_'+$index}} class = "editHere" colspan="6" style='padding: 0 !important;'>
+				<form name="updateAppConfigForm" id = {{'editingWindow_'+$index}} class="editWindow collapse" role="form" class="simple-form" style='margin:8px; margin-bottom:0px;' ng-submit="updateData(AppConfig)">
+					<div class = 'row' style='margin:0'>
+						<div class="form-group">
+							<div class="control-group" ng-class="{true: 'error'}[updatesubmitted && updateAppConfigForm.Name.$invalid]">
+								<div class="col-md-4">
+									<label style='font-weight:bold;'>Name
+										<span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">* </span>
+									</label>
+									<input class="form-control" type="text"  name="Name" ng-model="AppConfig.Name" ng-blur="multipleEmptySpace($event)" placeholder="Please Enter Name"  maxlength="100" ng-disabled = "true" required>
+									<span class="help-inline" ng-show="updatesubmitted && updateAppConfigForm.Name.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+								</div>
+							</div>
+
+							<div class="control-group" ng-class="{true: 'error'}[updatesubmitted && updateAppConfigForm.Value.$invalid]">
+								<div class="col-md-4">
+									<label style='font-weight:bold;'>Value
+										<span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">* </span>
+									</label>
+									<input class="form-control" type="text"  name="Value" ng-model="AppConfig.Value" placeholder="Please Enter Value" ng-blur="multipleEmptySpace($event)" maxlength="100" ng-disabled = "viewMe" required>
+									<span class="help-inline" ng-show="updatesubmitted && updateAppConfigForm.Value.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<label style="font-weight:bold;">Type</label>
+								<input class="form-control" type="text" name="Type" ng-model="AppConfig.Type" maxlength="100" placeholder="Please Enter Type" ng-blur="multipleEmptySpace($event)" ng-disabled = "viewMe">
+							</div>
+						</div>
+
+						<div class="col-xs-12"style="padding:15px;" ng-hide="viewMe">
+						<span class="pull-right">
+							<button type="submit" class="btn btnStyle clr" ng-click="updatesubmitted=true" tooltip="Save">Save</button>
+							<button type="button" class="btn btnStyle clr" ng-click="slideUp($index);" tooltip="Cancel">Cancel</button>
+						</span>
+						</div>
+						<div class="col-xs-12"style="padding:15px;" ng-show="viewMe">
+						<span class="pull-right">
+							<button type="button" class="btn btnStyle clr" ng-style="(permission.U)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" ng-click="(permission.U)?changeviewMe(false):''" tooltip="{{(permission.U)?'Edit':'You don&lsquo;t have permission'}}">Edit</button>
+							<!--<button type="button" class="btn btnStyle clr" ng-style="(permission.D)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}"  data-toggle="modal" data-target="{{(permission.D)?'#delPopup':''}}" tooltip="{{(permission.D)?'Delete':'You don&lsquo;t have permission'}}" ng-click="(permission.D)?takeDeldata(AppConfig,$index):''">Delete</button>-->
+							<button type="button" class="btn btnStyle clr" ng-click="slideUp($index);" tooltip="Cancel">Cancel</button>
+						</span>
+						</div>
+					</div>
+				</form>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+    </div>
+
+	<div ng-show="changeViewFlag" class="listView">
+	<div class="panel-group" id="accordion">
+		
+		<div class="col-md-4" style="margin-top:10px;margin-bottom: 15px;padding-left: 0;">
+			<div class="panel listViewPanel" ng-repeat="AppConfig in restVal" ng-if="($index|mod3) == 0" style="position:relative">
+				<div class="outerCrcle"> <div class="innerCrcle"></div> </div>
+					<div class="panel-heading listViewPanelHeading" id="listViewPanelHeading_{{$index}}" ng-init="backuup = AppConfig">
+						<div class="row dataGroups" id="dataGroup_{{$index}}">
+
+							<div class="row" style="margin:0" ng-repeat="val in sortMenu">
+								<div class="col-md-12 col-sm-12 col-xs-12">
+									<span style="padding:5px;" class="col-md-12 col-sm-12 col-xs-12">
+										<span class="listViewLabel bold col-md-3 col-sm-2 col-xs-3" style="padding:0;">{{val.label}} : </span>
+										<p class="listViewValue col-md-9 col-sm-10 col-xs-9">{{AppConfig[val.FieldName]}}</p>
+									</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="row actionRow">
+							<a class="actionIcons separateicon" ng-style="(permission.R)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" tooltip="{{(permission.R)?'View':'You don&lsquo;t have permission'}}" ng-click="(permission.R)?takeBackup(AppConfig,$index,true):''"> <i class="fa fa-eye Iclr1"></i></a><a class="actionIcons separateicon" ng-style="(permission.U)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" tooltip="{{(permission.U)?'Edit':'You don&lsquo;t have permission'}}" ng-click="(permission.U)?takeBackup(AppConfig,$index,false):''"><i class="fa fa-pencil-square-o Iclr1"></i></a>
+							<!--<a class="actionIcons separateicon" data-toggle="modal" data-target="{{(permission.D)?'#delPopup':''}}" ng-style="(permission.D)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}"  tooltip="{{(permission.D)?'Delete':'You don&lsquo;t have permission'}}" ng-click="(permission.D)?takeDeldata(AppConfig,$index):''"><i class="fa fa-trash-o Iclr1"></i></a>-->
+						</div>
+						<div style="clear:both"></div>
+					</div>
+					<div id="collapse{{$index}}" class="panel-collapse hideMe row">
+					<div class="panel-body">
+					<div  id = {{'editHere_'+$index}} class = "editHere" >
+						<form name="updateAppConfigForm"  id = {{'editingWindow_'+$index}} class="editWindow" role="form" class="simple-form" ng-submit="updateData(AppConfig)">
+						<div class = 'row' style='margin:0'>
+						<div class="form-group">
+							<div class="col-md-6 control-group" ng-class="{true: 'error'}[updatesubmitted && updateAppConfigForm.Name.$invalid]">
+								<label style='font-weight:bold;'>Name
+									<span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">* </span>
+								</label>
+								<input class="form-control" type="text"  name="Name" ng-model="AppConfig.Name"  placeholder="Please Enter Name"  ng-blur="multipleEmptySpace($event)" maxlength="100" ng-disabled = "true" required>
+								<span class="help-inline" ng-show="updatesubmitted && updateAppConfigForm.Name.$error.required" style="display:block;margin:0;color:#EF1C1C !important;text-align: right;font-size: 15px;">Required</span>
+							</div>
+
+							<div class="col-md-6 control-group" ng-class="{true: 'error'}[updatesubmitted && updateAppConfigForm.Value.$invalid]">
+								<label style='font-weight:bold;'>Value
+									<span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">* </span>
+								</label>
+								<input class="form-control" type="text"  name="Value" ng-model="AppConfig.Value" placeholder="Please Enter Value" ng-blur="multipleEmptySpace($event)" maxlength="100" ng-disabled = "viewMe" required>
+								<span class="help-inline" ng-show="updatesubmitted && updateAppConfigForm.Value.$error.required" style="display:block;margin:0;color:#EF1C1C !important;text-align: right;font-size: 15px;">Required</span>
+							</div>
+
+							<div class="col-md-6">
+								<label style="font-weight:bold;">Type</label>
+								<input class="form-control" type="text" name="Type" ng-model="AppConfig.Type" placeholder="Please Enter Type" ng-blur="multipleEmptySpace($event)" maxlength="100" ng-disabled = "viewMe">
+							</div>
+						</div>
+						<div class="col-xs-12" ng-hide="viewMe">
+							<span class="pull-right">
+								<button type="submit" class="btn btnStyle clr" ng-click="updatesubmitted=true" tooltip="Save"><i class="fa fa-floppy-o"></i></button>
+								<button type="button" class="btn btnStyle clr" ng-click="flipReverse($index);" tooltip="Cancel"><i class="fa fa-times"></i></button>
+							</span>
+						</div>
+						<div class="col-xs-12" ng-show="viewMe">
+						<span class="pull-right">
+							<button type="button" class="btn btnStyle clr"  ng-style="(permission.U)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" tooltip="{{(permission.U)?'Edit':'You don&lsquo;t have permission'}}" ng-click="(permission.U)?changeviewMe(false):''" ><i class="fa fa-pencil-square-o"></i></button>
+							<!--<button type="button" class="btn btnStyle clr" data-toggle="modal" data-target="{{(permission.D)?'#delPopup':''}}" tooltip="{{(permission.D)?'Delete':'You don&lsquo;t have permission'}}" ng-click="(permission.D)?takeDeldata(AppConfig,$index):''" ng-style="(permission.D)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}"><i class="fa fa-trash-o"></i></button>-->
+							<button type="button" class="btn btnStyle clr" ng-click="flipReverse($index)" tooltip="Cancel"><i class="fa fa-times"></i></button>
+						</span>
+						</div>
+						<div class="clearfix"></div>
+						</div>
+						</form>
+						</div>
+					</div>
+					</div>
+			</div>
+		</div>
+		<div class="col-md-4" style="margin-top:10px;margin-bottom: 15px;padding-left: 0;">
+			<div class="panel listViewPanel" ng-repeat="AppConfig in restVal" ng-if="($index|mod3) == 3" style="position:relative">
+				<div class="outerCrcle"> <div class="innerCrcle"></div> </div>
+				<div class="panel-heading listViewPanelHeading" id="listViewPanelHeading_{{$index}}" ng-init="backuup = AppConfig">
+					<div class="row dataGroups" id="dataGroup_{{$index}}">
+						<div class="row" style="margin:0" ng-repeat="val in sortMenu">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+									<span style="padding:5px;" class="col-md-12 col-sm-12 col-xs-12">
+										<span class="listViewLabel bold col-md-3 col-sm-2 col-xs-3" style="padding:0;">{{val.label}} : </span>
+										<p class="listViewValue col-md-9 col-sm-10 col-xs-9">{{AppConfig[val.FieldName]}}</p>
+									</span>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+
+					<div class="row actionRow">
+						<a class="actionIcons separateicon" ng-style="(permission.R)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" tooltip="{{(permission.R)?'View':'You don&lsquo;t have permission'}}" ng-click="(permission.R)?takeBackup(AppConfig,$index,true):''"> <i class="fa fa-eye Iclr1"></i></a><a class="actionIcons separateicon" ng-style="(permission.U)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" tooltip="{{(permission.U)?'Edit':'You don&lsquo;t have permission'}}" ng-click="(permission.U)?takeBackup(AppConfig,$index,false):''"><i class="fa fa-pencil-square-o Iclr1"></i></a>
+						<!--<a class="actionIcons separateicon" data-toggle="modal" data-target="{{(permission.D)?'#delPopup':''}}" ng-style="(permission.D)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}"  tooltip="{{(permission.D)?'Delete':'You don&lsquo;t have permission'}}" ng-click="(permission.D)?takeDeldata(AppConfig,$index):''"><i class="fa fa-trash-o Iclr1"></i></a>-->
+					</div>
+					<div style="clear:both"></div>
+				</div>
+				<div id="collapse{{$index}}" class="panel-collapse hideMe row">
+					<div class="panel-body">
+						<div  id = {{'editHere_'+$index}} class = "editHere" >
+							<form name="updateAppConfigForm"  id = {{'editingWindow_'+$index}} class="editWindow" role="form" class="simple-form" ng-submit="updateData(AppConfig)">
+								<div class = 'row' style='margin:0'>
+									<div class="form-group">
+										<div class="col-md-6 control-group" ng-class="{true: 'error'}[updatesubmitted && updateAppConfigForm.Name.$invalid]">
+											<label style='font-weight:bold;'>Name
+												<span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">* </span>
+											</label>
+											<input class="form-control" type="text"  name="Name" ng-model="AppConfig.Name"  placeholder="Please Enter Name"  ng-blur="multipleEmptySpace($event)" maxlength="100" ng-disabled = "true" required>
+											<span class="help-inline" ng-show="updatesubmitted && updateAppConfigForm.Name.$error.required" style="display:block;margin:0;color:#EF1C1C !important;text-align: right;font-size: 15px;">Required</span>
+										</div>
+
+										<div class="col-md-6 control-group" ng-class="{true: 'error'}[updatesubmitted && updateAppConfigForm.Value.$invalid]">
+											<label style='font-weight:bold;'>Value
+												<span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">* </span>
+											</label>
+											<input class="form-control" type="text"  name="Value" ng-model="AppConfig.Value" placeholder="Please Enter Value" maxlength="100" ng-blur="multipleEmptySpace($event)" ng-disabled = "viewMe" required>
+											<span class="help-inline" ng-show="updatesubmitted && updateAppConfigForm.Value.$error.required" style="display:block;margin:0;color:#EF1C1C !important;text-align: right;font-size: 15px;">Required</span>
+										</div>
+
+										<div class="col-md-6">
+											<label style="font-weight:bold;">Type</label>
+											<input class="form-control" type="text" name="Type" ng-model="AppConfig.Type" maxlength="100" placeholder="Please Enter Type" ng-blur="multipleEmptySpace($event)" ng-disabled = "viewMe">
+										</div>
+									</div>
+									<div class="col-xs-12" ng-hide="viewMe">
+							<span class="pull-right">
+								<button type="submit" class="btn btnStyle clr" ng-click="updatesubmitted=true" tooltip="Save"><i class="fa fa-floppy-o"></i></button>
+								<button type="button" class="btn btnStyle clr" ng-click="flipReverse($index);" tooltip="Cancel"><i class="fa fa-times"></i></button>
+							</span>
+									</div>
+									<div class="col-xs-12" ng-show="viewMe">
+						<span class="pull-right">
+							<button type="button" class="btn btnStyle clr"  ng-style="(permission.U)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" tooltip="{{(permission.U)?'Edit':'You don&lsquo;t have permission'}}" ng-click="(permission.U)?changeviewMe(false):''" ><i class="fa fa-pencil-square-o"></i></button>
+							<!--<button type="button" class="btn btnStyle clr" data-toggle="modal" data-target="{{(permission.D)?'#delPopup':''}}" tooltip="{{(permission.D)?'Delete':'You don&lsquo;t have permission'}}" ng-click="(permission.D)?takeDeldata(AppConfig,$index):''" ng-style="(permission.D)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}"><i class="fa fa-trash-o"></i></button>-->
+							<button type="button" class="btn btnStyle clr" ng-click="flipReverse($index)" tooltip="Cancel"><i class="fa fa-times"></i></button>
+						</span>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4" style="margin-top:10px;margin-bottom: 15px;padding-left: 0;">
+			<div class="panel listViewPanel" ng-repeat="AppConfig in restVal" ng-if="($index|mod3) == 7" style="position:relative">
+				<div class="outerCrcle"> <div class="innerCrcle"></div> </div>
+				<div class="panel-heading listViewPanelHeading" id="listViewPanelHeading_{{$index}}" ng-init="backuup = AppConfig">
+					<div class="row dataGroups" id="dataGroup_{{$index}}">
+						<div class="row" style="margin:0" ng-repeat="val in sortMenu">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+									<span style="padding:5px;" class="col-md-12 col-sm-12 col-xs-12">
+										<span class="listViewLabel bold col-md-3 col-sm-2 col-xs-3" style="padding:0;">{{val.label}} : </span>
+										<p class="listViewValue col-md-9 col-sm-10 col-xs-9">{{AppConfig[val.FieldName]}}</p>
+									</span>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+
+					<div class="row actionRow">
+						<a class="actionIcons separateicon" ng-style="(permission.R)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" tooltip="{{(permission.R)?'View':'You don&lsquo;t have permission'}}" ng-click="(permission.R)?takeBackup(AppConfig,$index,true):''"> <i class="fa fa-eye Iclr1"></i></a><a class="actionIcons separateicon" ng-style="(permission.U)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" tooltip="{{(permission.U)?'Edit':'You don&lsquo;t have permission'}}" ng-click="(permission.U)?takeBackup(AppConfig,$index,false):''"><i class="fa fa-pencil-square-o Iclr1"></i></a>
+						<!--<a class="actionIcons separateicon" data-toggle="modal" data-target="{{(permission.D)?'#delPopup':''}}" ng-style="(permission.D)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}"  tooltip="{{(permission.D)?'Delete':'You don&lsquo;t have permission'}}" ng-click="(permission.D)?takeDeldata(AppConfig,$index):''"><i class="fa fa-trash-o Iclr1"></i></a>-->
+					</div>
+					<div style="clear:both"></div>
+				</div>
+				<div id="collapse{{$index}}" class="panel-collapse hideMe row">
+					<div class="panel-body">
+						<div  id = {{'editHere_'+$index}} class = "editHere" >
+							<form name="updateAppConfigForm"  id = {{'editingWindow_'+$index}} class="editWindow" role="form" class="simple-form" ng-submit="updateData(AppConfig)">
+								<div class = 'row' style='margin:0'>
+									<div class="form-group">
+										<div class="col-md-6 control-group" ng-class="{true: 'error'}[updatesubmitted && updateAppConfigForm.Name.$invalid]">
+											<label style='font-weight:bold;'>Name
+												<span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">* </span>
+											</label>
+											<input class="form-control" type="text"  name="Name" ng-model="AppConfig.Name"  placeholder="Please Enter Name"  maxlength="100" ng-blur="multipleEmptySpace($event)" ng-disabled = "true" required>
+											<span class="help-inline" ng-show="updatesubmitted && updateAppConfigForm.Name.$error.required" style="display:block;margin:0;color:#EF1C1C !important;text-align: right;font-size: 15px;">Required</span>
+										</div>
+
+										<div class="col-md-6 control-group" ng-class="{true: 'error'}[updatesubmitted && updateAppConfigForm.Value.$invalid]">
+											<label style='font-weight:bold;'>Value
+												<span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">* </span>
+											</label>
+											<input class="form-control" type="text"  name="Value" maxlength="100" ng-model="AppConfig.Value" placeholder="Please Enter Value" ng-blur="multipleEmptySpace($event)" ng-disabled = "viewMe" required>
+											<span class="help-inline" ng-show="updatesubmitted && updateAppConfigForm.Value.$error.required" style="display:block;margin:0;color:#EF1C1C !important;text-align: right;font-size: 15px;">Required</span>
+										</div>
+
+										<div class="col-md-6">
+											<label style="font-weight:bold;">Type</label>
+											<input class="form-control" type="text" name="Type" maxlength="100" ng-model="AppConfig.Type" placeholder="Please Enter Type" ng-blur="multipleEmptySpace($event)" ng-disabled = "viewMe">
+										</div>
+									</div>
+									<div class="col-xs-12" ng-hide="viewMe">
+							<span class="pull-right">
+								<button type="submit" class="btn btnStyle clr" ng-click="updatesubmitted=true" tooltip="Save"><i class="fa fa-floppy-o"></i></button>
+								<button type="button" class="btn btnStyle clr" ng-click="flipReverse($index);" tooltip="Cancel"><i class="fa fa-times"></i></button>
+							</span>
+									</div>
+									<div class="col-xs-12" ng-show="viewMe">
+						<span class="pull-right">
+							<button type="button" class="btn btnStyle clr"  ng-style="(permission.U)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" tooltip="{{(permission.U)?'Edit':'You don&lsquo;t have permission'}}" ng-click="(permission.U)?changeviewMe(false):''" ><i class="fa fa-pencil-square-o"></i></button>
+							<!--<button type="button" class="btn btnStyle clr" data-toggle="modal" data-target="{{(permission.D)?'#delPopup':''}}" tooltip="{{(permission.D)?'Delete':'You don&lsquo;t have permission'}}" ng-click="(permission.D)?takeDeldata(AppConfig,$index):''" ng-style="(permission.D)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}"><i class="fa fa-trash-o"></i></button>-->
+							<button type="button" class="btn btnStyle clr" ng-click="flipReverse($index)" tooltip="Cancel"><i class="fa fa-times"></i></button>
+						</span>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+		<!--<div style="clear:both;"></div>-->
+	</div>
+
+</div>
+</div>
+	</div>
+</div>
+
+<script>
+	$('[data-toggle="tooltip"]').tooltip();
+</script>

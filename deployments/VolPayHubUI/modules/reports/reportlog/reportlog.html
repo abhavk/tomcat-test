@@ -1,0 +1,150 @@
+<!-- BEGIN PAGE HEADER-->
+<div class="breadCrumb" ng-controller="activeController">
+   <ul class="page-breadcrumb">
+      <li>
+         <i class="fa fa-home"></i>
+         <a href="javascript:void(0)" translate ng-click="goToHome()">Sidebar.Home</a>
+         <i class="fa fa-angle-right"></i>
+      </li>
+        <li>
+            <a href="javascript:void(0);" translate>Sidebar.Reports</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            Report Log
+        </li>
+    </ul>    
+</div>
+
+<div class="pageTitle alertWidthonResize">
+    <div class="row">
+        <div class="col-sm-5" >
+            <span translate>Report - Log</span> <span style="font-size:14px;"><small translate></small></span><br>
+        </div>
+        <div class="col-sm-7">
+            <div>
+                <div>
+                  
+                    <div class="modal fade" id="myModal" role="dialog" tabindex="-1"  ng-keydown="dummy($event)" ng-click="modelhide($event)">
+                        <div class="modal-dialog">
+
+
+                            <div class="modal-content">
+                                <div class="modal-header modalHeaderColor">
+                                    <button type="button" class="close" data-dismiss="modal" ng-click="filterCancel()">&times;</button>
+                                    <h4 class="modal-title">Select the Dates</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="row">
+
+
+                                        <div class="col-md-12">
+                                            <div class="input-group date" data-date-format="yyyy-mm-dd" data-date-viewmode="years" data-date-minviewmode="months">
+                                                <input type="text" class="form-control" ng-model="startDate" id="startDate" style="width:100%" placeholder="From" ng-blur="removeFn()" onkeypress="return tabOrder(event)">
+                                                <span class="input-group-addon" ng-click="focusInfn('startDate')"><span class="glyphicon glyphicon-calendar"></span></span>
+
+                                                <span class="input-group-addon" style="border:none;background-color:transparent;">To</span>
+                                                <input type="text" class="form-control" ng-model="endDate" id="endDate" style="width:100%" placeholder="To" ng-blur="removeFn()" onkeypress="return tabOrder(event)">
+                                                <span class="input-group-addon" ng-click="focusInfn('endDate')"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer" style="text-align:center;">
+                                    <button type="button" id="okBtn" class="btn btnStyle" data-dismiss="modal" ng-click="FilterByDate1('custom')">OK</button>
+                                    <button type="button" class="btn btnStyle" data-dismiss="modal" ng-click="filterCancel()">Cancel</button>
+                                    <button type="button" class="btn btnStyle" ng-click="CustomDatesReset()">Reset</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="alert alert-warning" ng-if="!items.length">
+    <strong><h4 style="margin:0;text-align:center;">Nothing found to display</h4></strong>
+</div>
+
+<div class="row" style="margin:0;" ng-if="items.length">
+		<table class="table table-bordered table-striped">
+
+                <thead>
+                <tr>
+                    <th nowrap class="cursorPointer" ng-click="Sorting('REPORTID');">
+                        REPORT ID
+						<span ng-show="orderByField == 'REPORTID' && !SortReverse" class="fa fa-caret-down"></span>
+						<span ng-show="orderByField == 'REPORTID' && SortReverse" class="fa fa-caret-up"></span>
+                    </th>
+                    <th nowrap class="cursorPointer" ng-click="Sorting('REPORTNAME');">
+                        REPORT NAME
+						<span ng-show="orderByField == 'REPORTNAME' && !SortReverse" class="fa fa-caret-down"></span>
+						<span ng-show="orderByField == 'REPORTNAME' && SortReverse" class="fa fa-caret-up"></span>
+                    </th>
+                    <th nowrap class="cursorPointer" ng-click="Sorting('DETAIL');">
+                        DETAIL
+						<span ng-show="orderByField == 'DETAIL' && !SortReverse" class="fa fa-caret-down"></span>
+						<span ng-show="orderByField == 'DETAIL' && SortReverse" class="fa fa-caret-up"></span>
+                    </th>
+                    <th nowrap class="cursorPointer" ng-click="Sorting('USERNAME');">
+                        USER NAME
+						<span ng-show="orderByField == 'USERNAME' && !SortReverse" class="fa fa-caret-down"></span>
+						<span ng-show="orderByField == 'USERNAME' && SortReverse" class="fa fa-caret-up"></span>
+                    </th>
+                    <th nowrap class="cursorPointer" ng-click="Sorting('INTERNAL_STATUS');">
+                        INTERNAL STATUS
+						<span ng-show="orderByField == 'INTERNAL_STATUS' && !SortReverse" class="fa fa-caret-down"></span>
+						<span ng-show="orderByField == 'INTERNAL_STATUS' && SortReverse" class="fa fa-caret-up"></span>
+                    </th>
+                    <th nowrap class="cursorPointer" ng-click="Sorting('SEND_DATE');">
+                        SEND DATE
+						<span ng-show="orderByField == 'SEND_DATE' && !SortReverse" class="fa fa-caret-down"></span>
+						<span ng-show="orderByField == 'SEND_DATE' && SortReverse" class="fa fa-caret-up"></span>
+                    </th>
+                    <th nowrap>
+                        ACTION
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+				
+                <tr ng-repeat="reports in items">
+                    <td>
+                        <span>{{reports.ReportID}}</span>
+                    </td>
+                    <td>
+                        <span>{{reports.ReportName}}</span>
+                    </td>
+                    <td>
+                        <span>{{reports.Detail}}</span>
+                    </td>
+                    <td>
+                        <span>{{reports.UserName}}</span>
+                    </td>
+                    <td>
+                        <span>{{reports.InternalStatus}}</span>
+                    </td>
+                    <td nowrap>
+                        <span>{{reports.SendDate|dateFormat}}</span>
+                    </td>
+                    <td>
+						<a id='dwnldLnk' style="display:none;" /> 
+                        <span style="height: 24px !important; width:70px; text-align:center;line-height:17px;" ng-if="reports.InternalStatus=='SUCCESFULL'" ng-click="Download(reports)" class="badge badge-danger hsbc cursorPointer"><b>Download</b></span>
+
+                    </td>
+
+                </tr>
+                </tbody>
+
+            </table>
+
+</div>	

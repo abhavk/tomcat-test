@@ -1,0 +1,387 @@
+<!-- BEGIN PAGE HEADER-->
+<!--<div class="breadCrumb" ng-controller="activeController">
+	<ul class="page-breadcrumb">
+		<li>
+			<i class="fa fa-home"></i>
+			<a href="javascript:void(0);" translate ng-click="goToHome()">Sidebar.Home</a>
+			<i class="fa fa-angle-right"></i>
+		</li>
+		<li>
+			<span translate>Sidebar.AlertsNotifications</span>
+		</li>
+	</ul>
+</div>-->
+
+    <div class="page-bar breadCrumb" ng-controller="activeController">
+    <div class="row">
+    <div class="col-md-6 ">
+    <ul class="page-breadcrumb">
+        
+        <li>
+             <i class="fa fa-home"></i>
+            <a href="javascript:void(0);" translate ng-click="goToHome()">Sidebar.Home</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <span translate>Sidebar.AlertsNotifications</span>
+        </li>
+    </ul>
+    </div>
+    <!--<div style="clear:both">    </div>-->
+   <div class="col-md-6 headerVals">
+        <div data-ng-include="'templates/header/VPheader.html'" data-ng-controller="headerCtrl"></div>
+
+    </div>
+    </div>
+   
+</div>
+<div class="contentContainer">
+<div class="pageTitle alertWidthonResize">
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="title__container">
+			<h2 translate>AlertNotification.PageTitle</h2>
+			 <p translate>AlertNotification.SubTitle</p>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--<div class="row CountBar" style="margin:0px 0px 20px 0px;padding: 5px;box-sizing: border-box;background-color: #44b6ae;color: white;">
+	<div class="col-md-6 col-sm-4 col-xs-12 ng-binding" style="padding: 5px; font-size: 17px; padding-left: 25px;">
+		{{restVal.length+' records shown'}}
+	</div>-->
+<div style="padding: 5px;">
+<div class="row" style="margin: 0;">
+    <div class="countbar-title">
+    <div class="col-md-3 col-sm-3 col-xs-5  ng-binding" style="padding: 0;">
+        <div class="caption">
+            <span class="highlight">{{restVal.length}} out of {{totalCount}}</span> records shown
+            </div>
+    </div>
+
+
+	<div class="col-md-9 col-sm-9 col-xs-7">
+		<div class="btn-group" style="float:right;">
+			<!-- <button ng-init="creatingWindow=true"  style="border: 1px solid #fff;box-sizing: border-box;margin-left:5px" class="btn viewbtn" tooltip="{{'Add New'}}" ng-click="creatingWindow=!creatingWindow;submitted=false"><i class="fa fa-plus-square"></i></button>	 -->	
+			<button style="border: 1px solid #fff;box-sizing: border-box;margin-left:5px" ng-click="RefereshCalled()" class="btn-trans viewbtn" tooltip="{{'Refresh'}}"><i class="fa fa-refresh fa-fs14"></i></button>
+			<button style="border: 1px solid #fff;box-sizing: border-box;margin-left:5px" ng-click="exportToExcel($event)" class="btn-trans viewbtn" tooltip="{{'Export to Excel'}}"><i class="fa fa-file-excel-o fa-fs14"></i></button>
+			<button style="border: 1px solid #fff;box-sizing: border-box;margin-left:5px" ng-click="printFn()" class="btn-trans viewbtn" tooltip="{{'Print'}}"><i class="fa fa-print fa-fs14"></i></button>
+			
+			<!--<button style="border: 1px solid #fff;box-sizing: border-box;border-right:0px;margin-left:5px" class="btn viewbtn" id="btn_1" ng-click="viewType('list',$event)" tooltip="{{listTooltip}}"><i class="fa fa-list"></i></button>
+			<button style="border: 1px solid #fff;box-sizing: border-box;border-left:0px" class="btn viewbtn" id="btn_2" ng-click="viewType('grid',$event)" tooltip="{{gridTooltip}}"><i class="fa fa-table"></i></button>-->
+			<button style="border: 1px solid #fff;box-sizing: border-box;border-right:0px;margin-left:5px" class="btn-trans" id="btn_1" ng-class="changeViewFlag?'disabledBtnColor':'cmmonBtnColors'"
+                    ng-click="changeViewFlag = !changeViewFlag" tooltip="List View"><i class="fa fa-list fa-fs14"></i></button>
+                <button style="border: 1px solid #fff;box-sizing: border-box;border-left:0px" class="btn-trans" id="btn_2" ng-class="!changeViewFlag?'disabledBtnColor':'cmmonBtnColors'"
+                    ng-click="changeViewFlag = !changeViewFlag" tooltip="Grid View"><i class="fa fa-table fa-fs14"></i></button>
+
+
+
+			<!--<button style="border: 1px solid #fff;box-sizing: border-box;border-right:0px;margin-left:5px" class="btn-trans" id="btn_1" ng-class="changeViewFlag?'disabledBtnColor':'cmmonBtnColors'" ng-click="changeViewFlag = !changeViewFlag" tooltip="List View"><i class="fa fa-list fa-fs14"></i></button>
+			<button style="border: 1px solid #fff;box-sizing: border-box;border-left:0px" class="btn-trans" id="btn_2" ng-class="!changeViewFlag?'disabledBtnColor':'cmmonBtnColors'" ng-click="changeViewFlag = !changeViewFlag" tooltip="Grid View"><i class="fa fa-table fa-fs14"></i></button>-->
+
+
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
+</div>
+<div id="statusBox" ng-style="{'top':alertStyle+'px','width':alertWidth+'px'}" class ="animated bounce autoAdjustAlert bold" ng-repeat="alert in alerts" ng-class="{'alert alert-success': alert.type == 'success','alert alert-danger':alert.type == 'danger'}">
+	<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	{{alert.msg}}
+</div>
+
+<div class="alert alert-warning" ng-show="dataFound">
+	<strong><h4  style="margin:0;text-align:center;">Nothing found to display</h4></strong>
+</div>
+
+<!-- Delete popup Window Start-->
+<div class="modal fade" tabindex="-1" id="delPopup" role="dialog">
+	<div class="modal-dialog modal-md" style="top: 200px;">
+		<div class="modal-content modalbdy animated tada">
+			<div class="modal-header" style="padding: 0px !important; border: 0px !important">
+				<div class="iconBox"><i class ="exclaLine"></i><i class ="exclaDot"></i></div>
+			</div>
+			<div class="modal-body" style="padding: 0px !important; border: 0px !important">
+				<h1>Are you sure?</h1>
+				<h4>You will not be able to recover this Data!</h4>
+			</div>
+			<div class="modal-footer modalftr">
+				<button tabindex="0" type="button" class="buton cancl" data-dismiss="modal">Cancel</button>
+				<button tabindex="0" type="button" class="buton yess" ng-click="deleteData()">Yes, delete it!</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Delete popup Window End-->
+<div>
+
+
+<!--<div ng-show="!Restloaded" class="loaderStyle" style="visibility:hidden">
+	<center> <img src="assets/global/img/preloader.gif"></center>
+	<p class="bold">Fetching data...</p>
+</div>-->
+
+<div ng-show="!dataFound" style="position:relative;margin:0;" class="row">
+
+	<div class="listView FixHead dataGroupsScroll" style="max-height: 600px; padding:0px 10px 0px 0px; overflow-x: auto !important;" ng-show="!dataFound">
+  <!--<div class="AlertandScroll" id="exportTable">-->
+	<table class="table table-bordered smallTable floatThead stickyheader" id="sample_2">
+		<thead>
+		<tr style="border:none">
+			<th nowrap style="width:100px">
+				Action
+			</th>	
+			 <th ng-class="{'cursorPointer':((val.FieldName !='CONTENT') && (val.FieldName !='NOTIFICATION'))}" ng-repeat="val in sortMenu" ng-if="val.visible" ng-click="((val.FieldName !='CONTENT') && (val.FieldName !='NOTIFICATION'))?gotoSorting(val,$index,$event):''">
+                {{val.label}}
+                <span id="{{val.FieldName}}_Icon" class=""></span>
+            </th>
+			
+		</tr>
+		</thead>
+		<tbody ng-show="!changeViewFlag">
+        <tr ng-repeat="AandN in restVal" id = {{'Row_'+AandN['ALERT_ID']}} class="RowId">
+			<td class="text-center">
+				<a data-toggle="modal" data-target="{{(permission.D)?'#delPopup':''}}" tooltip="{{(permission.D)?'Delete':'You don&lsquo;t have permission'}}" ng-style="(permission.D)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" ng-click="(permission.D)?takeDeldata(AandN,$index):''"><i class="fa fa-trash-o Iclr"></i></a>
+			</td>			
+            <td>
+                <span id = {{'COUNTRY_NAME_'+$index}}>{{AandN["REFERENCE_ID"]}}</span>
+            </td> 
+            <td>
+                <span id = {{'COUNTRY_NAME_'+$index}}>{{AandN["OFFICE_ID"]}}</span>
+            </td>          
+            <td>
+                <span id = {{'COUNTRY_CODE_'+$index}}>{{AandN["BRANCH_ID"]}}</span>
+            </td>
+            <td>
+                <span id = {{'CURRENCY_CODE_'+$index}}> {{AandN["ALERT_DATE"] | dateFormat}}</span>
+            </td> 
+			<td>
+				<span style="cursor:pointer;" class="colorBlueHover ng-scope" data-keyboard="true" data-toggle="modal" data-target="#REFDATA_CONTENT_{{$index}}"><i class="fa fa-eye"></i> View</span>
+
+				<!-- Modal -->
+				<div class="modal fade" id="REFDATA_CONTENT_{{$index}}" role="dialog">
+					<div class="modal-dialog">
+					<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header modalHeaderColor">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">CONTENT</h4>
+							</div>
+							<div class="modal-body">
+								<pre>{{AandN["REFDATA_CONTENT"] | hex2a}}</pre>
+							</div>
+						</div>
+					</div>
+				</div>				
+            </td>
+			<td>
+				<span style="cursor:pointer;" class="colorBlueHover ng-scope" data-keyboard="true" data-toggle="modal" data-target="#ATTACH_LIST_{{$index}}"><i class="fa fa-eye"></i> View</span>
+
+				<!-- Modal -->
+				<div class="modal fade" id="ATTACH_LIST_{{$index}}" role="dialog">
+					<div class="modal-dialog">
+					<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header modalHeaderColor">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">NOTIFICATION</h4>
+							</div>
+							<div class="modal-body">
+								<pre>{{AandN["ATTACH_LIST"] | hex2a}}</pre>
+							</div>
+						</div>
+					</div>
+				</div>				
+            </td>
+            <td>
+                <span id = {{'COUNTRY_NAME_'+$index}}>{{AandN["NOTIF_CLASS"]}}</span>
+            </td>
+        </tr>
+        </tbody>
+	</table>
+  <!--</div>-->
+	<div ng-show="changeViewFlag" style="overflow:hidden">
+		<div class="row">
+        <div class="panel-group AlertandScroll" id="accordion">
+            <div class="col-md-6" style="margin-top:10px;margin-bottom: 15px;">
+                <div class="panel" ng-repeat="AandN in restVal" ng-if="$index%2 == 0">
+                    <div class="panel-heading listViewPanelHeading" id="{{AandN['ALERT_ID']}}">
+						<div class="row" id={{'star_'+AandN['ALERT_ID']}} style="text-align: right;position: relative;">
+							<span style="border-top: 36px solid #aea9a9;border-left: 40px solid transparent;width:0;height:0;display: inline-block;position: absolute;top: -10px;right: 0px;z-index: 1;"></span>  
+							<a tooltip-placement="left" style="display: inline-block; position: absolute; z-index: 2; top: -9px; right: 4px;"><i class="fa Iclr" style="color:#2b3643 !important"></i></a>
+						</div>
+                        <div id="dataGroup_{{$index}}" class="{{(permission.D)?'post':''}}">
+							<span class="folded-corner">
+								<span class="cursorPointer"><i style="font-size: 20px; line-height: 20px; color: #b22b21; cursor:pointer"class="fa fa-trash-o" aria-hidden="true" ng-click="takeDeldata(AandN,$index);" data-toggle="modal" data-target="#delPopup" tooltip="Delete" ></i></span>
+							</span>
+                            <div class="row" style="margin:0">
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold">OFFICE ID :</span><p class="listViewValue">{{AandN["OFFICE_ID"]}}</p> </span>
+								</div>
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold">BRANCH ID :</span><p class="listViewValue">{{AandN["BRANCH_ID"]}}</p> </span>
+								</div>
+                            </div>
+                            <div class="row" style="margin:0">
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold">REFERENCE ID :</span><p class="listViewValue">{{AandN["REFERENCE_ID"]}}</p> </span>
+								</div>
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold"> ALERT DATE :</span><p class="listViewValue">{{AandN["ALERT_DATE"] | dateFormat}}</p> </span>
+								</div>
+                            </div>
+                            <div class="row" style="margin:0">
+								
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold">NOTIF CLASS :</span><p class="listViewValue">{{AandN["NOTIF_CLASS"]}}</p> </span>
+								</div>
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold">CONTENT : </span> <span style="cursor:pointer;" class="colorBlueHover ng-scope" data-keyboard="true" data-toggle="modal" data-target="#LV_REFDATA_CONTENT_{{$index}}"><i class="fa fa-eye"></i> View</span>
+										<!-- Modal -->
+										<div class="modal fade" id="LV_REFDATA_CONTENT_{{$index}}" role="dialog">
+											<div class="modal-dialog">
+											<!-- Modal content-->
+												<div class="modal-content">
+													<div class="modal-header modalHeaderColor">
+														<button type="button" class="close" data-dismiss="modal">&times;</button>
+														<h4 class="modal-title">CONTENT</h4>
+													</div>
+													<div class="modal-body">
+														<pre>{{AandN["REFDATA_CONTENT"] | hex2a}}</pre>
+													</div>
+												</div>
+											</div>
+										</div>
+									</span>
+								</div>
+                             </div>
+                          
+                            <div class="row" style="margin:0">
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold">NOTIFICATION :</span> 
+									<span style="cursor:pointer;" class="colorBlueHover ng-scope" data-keyboard="true" data-toggle="modal" data-target="#LV_ATTACH_LIST_{{$index}}"><i class="fa fa-eye"></i> View</span>
+										<!-- Modal -->
+										<div class="modal fade" id="LV_ATTACH_LIST_{{$index}}" role="dialog">
+											<div class="modal-dialog">
+											<!-- Modal content-->
+												<div class="modal-content">
+													<div class="modal-header modalHeaderColor">
+														<button type="button" class="close" data-dismiss="modal">&times;</button>
+														<h4 class="modal-title">NOTIFICATION</h4>
+													</div>
+													<div class="modal-body">
+														<pre>{{AandN["ATTACH_LIST"] | hex2a}}</pre>
+													</div>
+												</div>
+											</div>
+										</div>
+									
+									</span>
+								</div>
+                            </div>
+                           <!--  <div style="margin-top: 10px;" class="row actionRow"></div> -->
+							
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+			
+			<div class="col-md-6" style="margin-top:10px;margin-bottom: 15px;">
+                <div class="panel" ng-repeat="AandN in restVal" ng-if="$index%2 == 1">
+                    <div class="panel-heading listViewPanelHeading" id="{{AandN['ALERT_ID']}}">
+						<div class="row" id={{'star_'+AandN['ALERT_ID']}} style="text-align: right;position: relative;">
+							<span style="border-top: 36px solid #aea9a9;border-left: 40px solid transparent;width:0;height:0;display: inline-block;position: absolute;top: -10px;right: 0px;z-index: 1;"></span>  
+							<a tooltip-placement="left" style="display: inline-block; position: absolute; z-index: 2; top: -9px; right: 4px;"><i class="fa Iclr" style="color:#2b3643 !important"></i></a>
+						</div>
+                        <div id="dataGroup_{{$index}}" class="{{(permission.D)?'post':''}}">
+							<span class="folded-corner">
+								<span class="cursorPointer"><i style="font-size: 20px; line-height: 20px; color: #b22b21; cursor:pointer"class="fa fa-trash-o" aria-hidden="true" ng-click="takeDeldata(AandN,$index);" data-toggle="modal" data-target="#delPopup" tooltip="Delete" ></i></span>
+							</span>
+                            <div class="row" style="margin:0">
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold">OFFICE ID :</span><p class="listViewValue">{{AandN["OFFICE_ID"]}}</p> </span>
+								</div>
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold">BRANCH ID :</span><p class="listViewValue">{{AandN["BRANCH_ID"]}}</p> </span>
+								</div>
+                            </div>
+                            <div class="row" style="margin:0">
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold">REFERENCE ID :</span><p class="listViewValue">{{AandN["REFERENCE_ID"]}}</p> </span>
+								</div>
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold"> ALERT DATE :</span><p class="listViewValue">{{AandN["ALERT_DATE"] | dateFormat}}</p> </span>
+								</div>
+                            </div>
+                            <div class="row" style="margin:0">
+								
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold">NOTIF CLASS :</span><p class="listViewValue">{{AandN["NOTIF_CLASS"]}}</p> </span>
+								</div>
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold">CONTENT :</span> <span style="cursor:pointer;" class="colorBlueHover ng-scope" data-keyboard="true" data-toggle="modal" data-target="#LV_REFDATA_CONTENT_{{$index}}"><i class="fa fa-eye"></i> View</span>
+										<!-- Modal -->
+										<div class="modal fade" id="LV_REFDATA_CONTENT_{{$index}}" role="dialog">
+											<div class="modal-dialog">
+											<!-- Modal content-->
+												<div class="modal-content">
+													<div class="modal-header modalHeaderColor">
+														<button type="button" class="close" data-dismiss="modal">&times;</button>
+														<h4 class="modal-title">CONTENT</h4>
+													</div>
+													<div class="modal-body">
+														<pre>{{AandN["REFDATA_CONTENT"] | hex2a}}</pre>
+													</div>
+												</div>
+											</div>
+										</div>
+									</span>
+								</div>
+                             </div>
+                          
+                            <div class="row" style="margin:0">
+								<div class="col-md-6">
+									<span style="margin-right:20px;"> <span class="listViewLabel bold">NOTIFICATION :</span> 
+									<span style="cursor:pointer;" class="colorBlueHover ng-scope" data-keyboard="true" data-toggle="modal" data-target="#LV_ATTACH_LIST_{{$index}}"><i class="fa fa-eye"></i> View</span>
+										<!-- Modal -->
+										<div class="modal fade" id="LV_ATTACH_LIST_{{$index}}" role="dialog">
+											<div class="modal-dialog">
+											<!-- Modal content-->
+												<div class="modal-content">
+													<div class="modal-header modalHeaderColor">
+														<button type="button" class="close" data-dismiss="modal">&times;</button>
+														<h4 class="modal-title">NOTIFICATION</h4>
+													</div>
+													<div class="modal-body">
+														<pre>{{AandN["ATTACH_LIST"] | hex2a}}</pre>
+													</div>
+												</div>
+											</div>
+										</div>
+									
+									</span>
+								</div>
+                            </div>
+                           <!--  <div style="margin-top: 10px;" class="row actionRow"></div> -->
+							
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+			<div class="clearfix"></div>
+        </div>
+        </div>
+
+        <div style="clear:both"></div>
+
+        </div></div>
+</div>
+</div>
+</div>
+<script>
+	$('[data-toggle="tooltip"]').tooltip();
+</script>

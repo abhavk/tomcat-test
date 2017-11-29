@@ -1,0 +1,135 @@
+<!DOCTYPE html> 
+<html lang="en" ng-app="VolpayApp" ng-controller="volpayAppController">
+<head>
+  <title ng-if="!configData">VolPay</title>
+  <title ng-if="configData">{{configData.Application_Title}}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <link rel="shortcut icon" href="themes/{{configData.ThemeName}}/favicon.png">
+  <link rel="stylesheet" href="lib/angular-ui-switch/angular-ui-switch.min.css">
+
+  <link rel="stylesheet" href="lib/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="lib/bootstrap/bootstrap-combined.min.css">
+  <link rel="stylesheet" href="lib/bootstrap-toggle-master/css/bootstrap-toggle.min.css">
+
+  <link rel="stylesheet" href="lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
+  <link rel="stylesheet" href="lib/bootstrap-daterangepicker/daterangepicker-bs3.css">
+  <link rel="stylesheet" href="lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css">
+
+  <link rel="stylesheet" href="lib/uniform/css/uniform.default.css">
+
+
+  <link rel="stylesheet" href="lib/jquery-ui/jquery-ui.css">
+  <link rel="stylesheet" href="lib/d3charts/nv.d3.css">
+
+  <link rel="stylesheet" href="templates/volpay/css/VPlayoutcss.css">
+  <link rel="stylesheet" href="templates/volpay/css/custom.css">
+  <link rel="stylesheet" href="" id="themeColor">
+  <link rel="stylesheet" href="" id="footerCss">
+
+  <link rel="stylesheet" href="templates/volpay/css/animateClass.css">
+  <link rel="stylesheet" href="templates/volpay/css/printStyles.css">
+  <link rel="stylesheet" href="templates/volpay/css/dashboardStyles.css">
+
+  <link rel="stylesheet" href="lib/js-beautify/web/third-party/codemirror/lib/codemirror.css">
+
+  <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="lib/ionicons-2.0.1/css/ionicons.min.css">
+
+  <link rel="stylesheet" href="lib/select2_angular/select2.min.css">
+
+<!--<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">-->
+
+  <script src="lib/jquery/jquery.min.js"></script>
+  <script src="lib/jquery-ui/jquery-ui.min.js"></script>
+  
+  <script src="lib/bootstrap/bootstrap.min.js"></script>
+  <script src="lib/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+
+<script src="lib/bootstrap-datetimepicker/js/moment.js"></script>
+  <script src="lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+  <script src="lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+  <script src="lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+  
+  <script src="lib/angular/angular.min.js"></script>
+  <script src="lib/angular/angular-idle.min.js"></script>
+  <script src="lib/angular/angular-sanitize.min.js"></script>
+  <script src="lib/angular/angular-touch.min.js"></script>
+  <script src="lib/angular/angular-ui-router-min.js"></script>
+
+  <script src="lib/angular/ui-bootstrap-tpls.min.js"></script>
+
+  <script src="lib/angular/ocLazyLoad.min.js"></script>
+  <script src="lib/angular/ui-bootstrap-tpls.min.js"></script>
+
+  <script src="lib/d3charts/d3.min.js"></script>
+  <script src="lib/d3charts/nv.d3.js"></script>
+  <script src="lib/d3charts/stream_layers.js"></script>
+
+  <script src="lib/iso-currency/dist/isoCurrency.js"></script>
+
+  <script src="lib/angulartranslate/angular-cookies.js"></script>
+  <script src="lib/angulartranslate/angular-translate.js"></script>
+  <script src="lib/angulartranslate/angular-translate-storage-cookie.js"></script>
+  <script src="lib/angulartranslate/angular-translate-loader-static-files.min.js"></script>
+
+  <script src="lib/export-files/angular-file-saver.bundle.js"></script>
+
+
+  <script src="lib/CryptoJS_v3_1_2/pbkdf2.js" type="text/javascript"></script>
+  <script src="lib/CryptoJS_v3_1_2/sha256.js" type="text/javascript"></script>
+  <script src="lib/CryptoJS_v3_1_2/aes.js" type="text/javascript"></script>
+  <script src="lib/CryptoJS_v3_1_2/hmac-sha256.js" type="text/javascript"></script>
+
+  <script src="lib/js-beautify/web/third-party/codemirror/lib/codemirror.js"></script>
+  <script src="lib/js-beautify/web/third-party/codemirror/mode/javascript/javascript.js"></script>
+  <script src="lib/js-beautify/js/lib/beautify-css.js"></script>
+
+  <script src="lib/js-beautify/js/lib/beautify.js"></script>
+  <script src="lib/js-beautify/js/lib/beautify-css.js"></script>
+  <script src="lib/js-beautify/js/lib/beautify-html.js"></script>
+  <script src="lib/js-beautify/js/test/sanitytest.js"></script>
+
+  <script src="lib/volante-sankey.js"></script>
+   <script src="lib/underscore-min.js"></script>
+  
+  <script src="lib/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+
+   <script src="lib/floatThead/jquery.floatThead.min.js"></script>
+   
+   <script src="lib/select2_angular/select2.min.js"></script>
+
+
+  <script src="templates/volpay/VPapp.js"></script>
+  <script src="templates/volpay/services/VPservice.js"></script>
+  <script src="templates/volpay/services/dashboardService.js"></script>
+  <script src="templates/volpay/services/customDirectories.js"></script>
+  <script src="templates/volpay/js/VPstatejs.js"></script>
+  <script src="templates/volpay/js/VPlayoutjs.js"></script>
+  <script src="templates/footer/VPfooterCtrl.js"></script>
+
+  
+</head>
+<body class="hold-transition sidebar-mini">
+  <div pre-loader-circle class="pre-loader-circle">
+    <div class="circle1"></div>
+    <div class="circle2"></div>
+    <div class="circle3"></div>
+  </div>
+<div ui-view></div>
+
+<div ng-include="footerPath"  ng-if="((configData.HomePagefooter==true)&&(configData.Authorization=='Internal'))||(searchParam=='All')" class="page-footer ManualFooter fadeUp"  ng-controller="footerCtrl"  style="display:block !important;height:auto;position:fixed;bottom:0;width:100%;z-index: 999;">
+</div>
+
+<div ng-controller="RefreshController" style="display:block !important;height:auto;position:fixed;bottom:0;width:100%;">
+
+</div>
+
+</div>
+
+</body>
+</html>

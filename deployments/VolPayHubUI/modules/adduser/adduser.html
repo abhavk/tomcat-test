@@ -1,0 +1,355 @@
+
+
+<!-- BEGIN PAGE HEADER-->
+<div class="breadCrumb" set-class-when-at-top="fix-to-top" ng-controller="activeController" ng-show="showBreadcrumb">
+    <div class="row">
+    <div class="col-md-6 ">
+    <ul class="page-breadcrumb">
+        <!--<li>
+            <i class="fa fa-home"></i>
+           <a href="javascript:void(0)" translate ng-click="goToHome()">Sidebar.Home</a>
+            <i class="fa fa-angle-right"></i>
+        </li>-->
+        <li>
+            <i class="fa fa-user"></i>
+            <a href="javascript:void(0)" translate>Admin Panel</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li translate>
+            Sidebar.AddUser
+        </li>
+
+
+    </ul>
+    </div>
+    <!--<div style="clear:both">    </div>-->
+   <div class="col-md-6 headerVals">
+        <div data-ng-include="'templates/header/VPheader.html'" data-ng-controller="headerCtrl"></div>
+
+    </div>
+    </div>
+
+</div>
+
+
+<div class="contentContainer">
+
+<div class="tab-content">
+
+    <div ng-hide="continueClicked" ng-style="{'top':alertStyle+'px','width':alertWidth+'px'}" class="autoAdjustAlert bold animated bounce" ng-class="{'alert alert-success': alert.type == 'success','alert alert-danger':alert.type == 'danger'}" ng-repeat="alert in alerts" style="font-size:14px;">
+        <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        {{alert.msg}}
+    </div>
+
+
+
+
+<div class="portlet box green-haze" id="form_wizard_1" style="margin-top:23px;">
+
+     <div class="portlet-title" ng-init="page = 1">
+        <div class="caption">
+            <i class="fa fa-pencil"></i> Registration - <span class="step-title">
+								Step {{page}} of 2 </span>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <div class="form-wizard">
+            <div class="form-body">
+                <ul class="nav nav-pills nav-justified steps" style="margin-bottom:0px;">
+                    <li id="li_1" class="tab_li active">
+                        <a class="step" style="padding:0px !important">
+												<span class="number">
+												1 </span>
+												<span class="desc">
+												<i class="fa fa-check"></i> Create User</span>
+                        </a>
+                    </li>
+                    <li id="li_2" class="tab_li">
+                        <a class="step" style="padding:0px !important">
+												<span class="number">
+												2 </span>
+												<span class="desc">
+												<i class="fa fa-check"></i> Verify User</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <br/><br/>
+
+
+              <div id="bar" class="progress progress-striped active" role="progressbar" style="margin-bottom:0px;">
+                    <div class="progress-bar progress-bar-success" ng-style="{width:hello+'%'}">
+                    </div>
+                </div>
+
+                <div class="tab-content" style="overflow: hidden;">
+
+                    <div class="tab-pane active animated" id="tab1">
+                        <form name="form1" class="form-horizontal" id="submit_form1" ng-submit="continue1(createData)">
+                            <h3 class="block" style="padding-top:0px !important">Create User</h3>
+
+
+                            <div class="row" style="margin:0">
+                                <div class="form-group col-md-6 col-sm-6" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-4 col-sm-4">User ID <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+
+                                    <div class="col-md-8 col-sm-8">
+                                        <input type="text" placeholder="Please Enter User ID" name="UserID" ng-model="createData.UserID" class="form-control NotAllowSpecialCharacters" ng-blur="multipleEmptySpace($event)"  required/>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row" style="margin:0">
+                                <div class="form-group col-md-6 col-sm-6" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-4 col-sm-4">First Name <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+
+                                    <div class="col-md-8 col-sm-8">
+                                        <input type="text"  class="form-control" placeholder="Please Enter First Name"name="FirstName" ng-model="createData.FirstName" ng-blur="multipleEmptySpace($event)" required/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-6" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-4 col-sm-4">Last Name <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+                                    <div class="col-md-8 col-sm-8">
+                                        <input type="text" class="form-control" placeholder="Please Enter Last Name"  name="LastName" ng-model="createData.LastName" ng-blur="multipleEmptySpace($event)" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin:0">
+                                <div class="form-group col-md-6 col-sm-6" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-4 col-sm-4">Email ID <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+
+                                    <div class="col-md-8 col-sm-8">
+                                    <input type="email" placeholder="Please Enter Email ID" class="form-control" name="EmailAddress" required ng-blur="multipleEmptySpace($event);emailValidate()"  ng-model="createData.EmailAddress" id="AddUserMail"/>
+                                    </div>
+                                </div>
+                               
+                            </div>
+
+                            <div class="row" style="margin:0">
+                                <div class="form-group col-md-6 col-sm-6" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-4 col-sm-4 col-xs-12">Password <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+
+                                    <div class="col-md-7 col-sm-7 col-xs-8">
+										<input type="password" placeholder="Please Enter Password" class="form-control" name="Password" ng-model="createData.Password" onkeydown="return spaceNotAllowed(event)" ng-blur="validatePassWord(createData.Password, $event)"  required/>
+									</div>
+									<div class="col-md-1 col-sm-1 col-xs-4">	
+									 <button type="button" tabindex="-1" style="border-radius:20px !important;" class="btn" data-container="body" data-toggle="popover" data-placement="right" data-content="Please ensure the password entered is between 8 and 14 characters long, and include 3 out of 4 of the following: lower case, uppercase, numbers or special characters ! &#34; # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~  " data-original-title="" title=""><span class="questionMark">?</span></button>
+									</div>
+									
+									
+                                </div>
+								
+								<div class="form-group col-md-6 col-sm-4" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-4 col-sm-4">Confirm Password <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+
+                                    <div class="col-md-8 col-sm-8">
+                                        <input type="password" placeholder="Please Enter Confirm Password" class="form-control" name="ConfirmPW" ng-model="ConfirmPW" onkeydown="return spaceNotAllowed(event);" required/>
+                                    </div>
+                                </div>
+                             </div>
+
+
+                            <div class="row" style="margin:0" ng-if="showMoreFieldOnCreateUser" ng-show="showMoreFieldOnCreateUser">
+                                 <div class="form-group col-md-6 col-sm-6" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-4 col-sm-4">Role ID <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+
+                                    <div class="col-md-8 col-sm-8">
+                                        <select class="form-control" required="true" name="RoleID" id="RoleId">
+                                            <option value="">--Select--</option>
+                                            <option ng-repeat="option in selectOptions" value="{{option.value}}">{{option.label}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-6" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-4 col-sm-4">Reset Password <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+
+                                    <div class="col-md-8 col-sm-8">
+                                        <select class="form-control" ng-init="createData.IsForceReset='true'" name="IsForceReset" ng-model="createData.IsForceReset" disabled>
+                                            <option value="true">true</option>
+                                            <option value="false">false</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin:0">
+
+                                <div class="form-group col-md-6 col-sm-6" style="margin-top:10px;margin-bottom:34px;" ng-if="showMoreFieldOnCreateUser">
+                                    <label class="control-label bold col-md-4 col-sm-4">Status <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+
+                                    <div class="col-md-8 col-sm-8">
+                                        <select class="form-control" required name="Status" id="enableFlag">
+                                            <option value="">--Select--</option>
+                                            <option value="ACTIVE">ACTIVE</option>
+                                            <option value="INACTIVE">INACTIVE</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6 col-sm-6" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-4 col-sm-4">Time Zone <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+
+                                    <div class="col-md-8 col-sm-8">
+                                        <select class="form-control" required name="TimeZone" id="timeZone">
+                                            <option value="">--Select--</option>
+                                            <option ng-repeat="option in timezoneOptions" value="{{option.value}}">{{option.value}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+                         <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="col-md-8">
+
+
+                                            <span ng-if="!showMoreFieldOnCreateUser"><b style="color:#000;">Note:</b> <span>The first user will be a <b style="color:red;">super admin</b>. Please reset your password on first login.</span></span>
+                                    </div>
+
+                                    <div class="col-md-offset-11 ">
+                                        <button type="submit" class="btn btnStyle green" ng-show="current1" id="Continue1">Continue <i class="fa fa-arrow-circle-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="tab-pane animated" id="tab2" ng-class="{'slideInRight':current2 == true, 'slideInLeft':current2==false }">
+                        <form name="form2" class="form-horizontal">
+                            <h3 class="block">Verify User</h3>
+
+                            <div class="row" style="margin:0">
+                                <div class="form-group col-md-5 col-sm-5" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-6 col-sm-6">User ID : </label>
+
+                                    <div class="control-label col-md-6 col-sm-6" style="text-align:left;word-wrap: break-word;">
+                                       {{userData.UserID}}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row" style="margin:0">
+                                <div class="form-group col-md-5 col-sm-5" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-6 col-sm-6">First Name : </label>
+
+                                    <div class="control-label col-md-6 col-sm-6" style="text-align:left; word-wrap: break-word;">
+                                       {{userData.FirstName}}
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-5 col-sm-5" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-6 col-sm-6">Last Name : </label>
+
+                                    <div class="control-label col-md-6 col-sm-6" style="text-align:left; word-wrap: break-word;">
+                                        {{userData.LastName}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin:0">
+                                <div class="form-group col-md-5 col-sm-5" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-6 col-sm-6">Email ID : </label>
+
+                                    <div class="control-label col-md-6 col-sm-6" style="text-align:left;  word-wrap: break-word;">
+                                        {{userData.EmailAddress}}
+                                    </div>
+                                </div>
+                               
+                             </div>
+
+                            <div class="row" style="margin:0">
+                                <div class="form-group col-md-5 col-sm-5" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-6 col-sm-6">Password : </label>
+
+                                    <div class="control-label col-md-6 col-sm-6" style="text-align:left; word-wrap: break-word;">
+                                        {{userData.Password | pwFormat}}
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-5 col-sm-5" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-6 col-sm-6">Confirm Password : </label>
+
+                                    <div class="control-label col-md-6 col-sm-6" style="text-align:left;word-wrap: break-word;">
+                                        {{userData.Password | pwFormat}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin:0" ng-if="showMoreFieldOnCreateUser">
+                                <div class="form-group col-md-5 col-sm-5" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-6 col-sm-6">Role Name : </label>
+
+                                    <div class="control-label col-md-6 col-sm-6" style="text-align:left;word-wrap: break-word;">
+                                        {{RoleID}}
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-5 col-sm-5" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-6 col-sm-6">Reset Password : </label>
+
+                                    <div class="control-label col-md-6 col-sm-6" style="text-align:left;">
+                                        {{userData.IsForceReset}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin:0">
+                                <div class="form-group col-md-5 col-sm-5" style="margin-top:10px;margin-bottom:34px;" ng-if="showMoreFieldOnCreateUser">
+                                    <label class="control-label bold col-md-6 col-sm-6">Status : </label>
+
+                                    <div class="control-label col-md-6 col-sm-6" style="text-align:left;">
+                                        {{userData.Status}}
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-5 col-sm-5" style="margin-top:10px;margin-bottom:34px;">
+                                    <label class="control-label bold col-md-6 col-sm-6">Time Zone: </label>
+
+                                    <div class="control-label col-md-6 col-sm-6" style="text-align:left;">
+                                        {{userData.TimeZone}}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="col-md-9" style="text-align:center;">
+
+                                        <button type="button" class="btn btnStyle  green" ng-click="back2to1()" ng-show="current2"><i class="fa fa-arrow-circle-left"></i> Back </button>
+                                        <button type="button" class="btn btnStyle  green" ng-if="current2 && !showMoreFieldOnCreateUser"  ng-click="ConfirmCreateUser()">Submit <i class="m-icon-swapright m-icon-white"></i></button>
+                                        <button type="button" class="btn btnStyle  green"   ng-if="current2 && showMoreFieldOnCreateUser" ng-click="ConfirmCreateUserbySuperAdmin()">Submit <i class="m-icon-swapright m-icon-white"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+<script>
+
+ $('[data-toggle="popover"]').popover();
+	$('body').on('click', function (e) {
+    $('[data-toggle="popover"]').each(function () {
+        //the 'is' for buttons that trigger popups
+        //the 'has' for icons within a button that triggers a popup
+        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+            $(this).popover('hide');
+        }
+    });
+});
+</script>	

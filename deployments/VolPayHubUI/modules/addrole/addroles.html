@@ -1,0 +1,108 @@
+<div class="breadCrumb" ng-controller="activeController">
+      <div class="row">
+    <div class="col-md-6 ">
+    <ul class="page-breadcrumb">
+        <!--<li>
+            <i class="fa fa-home"></i>
+            <a id="homeBreadCrumb" href="#/app/dashboard">Home</a>
+            <i class="fa fa-angle-right"></i>
+        </li>-->
+        <li>
+            <i class="fa fa-user"></i>
+            <a href="javascript:void(0)" translate>Sidebar.AdminPanel</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="#/app/roles" translate> RolesPermissions.PageTitle</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li translate>
+            Roles.PageTitle
+        </li>
+    </ul>
+     </div>
+    <!--<div style="clear:both">    </div>-->
+   <div class="col-md-6 headerVals">
+        <div data-ng-include="'templates/header/VPheader.html'" data-ng-controller="headerCtrl"></div>
+
+    </div>
+    </div>
+
+</div>
+ 
+<div class="contentContainer">
+
+<div class="pageTitle">
+    <div class="col-sm-12" style='padding:0'>
+        <div class="title__container">
+		<h2 translate> Roles.PageTitle</h2> 
+         <p translate>Roles.SubTitle</p>
+         </div>
+	</div>
+    <div style="clear:both"></div>
+</div>
+<div class="tab-content" style="padding-top:30px;padding-bottom:20px;background-color:#fff;">
+
+    <div ng-style="{'top':alertStyle+'px','width':alertWidth+'px'}" class="autoAdjustAlert bold animated bounce" ng-class="{'alert alert-success': alert.type == 'success','alert alert-danger':alert.type == 'danger'}" ng-repeat="alert in alerts">
+        <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        {{alert.msg}}
+    </div>
+
+
+    <form class="form-horizontal" role="form" ng-submit="addroles(role)">
+        <div class="form-group col-md-6" style="margin-top:10px;margin-bottom:34px;">
+            <label class="control-label bold col-md-3">Role ID <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+            <div class="col-md-9">
+                <input type="text" class="form-control"  placeholder="Enter Role ID" name="RoleID" ng-model="role.RoleID" ng-blur="multipleEmptySpace($event)" required>
+            </div>
+        </div>
+        <div class="form-group col-md-6" style="margin-top:10px;margin-bottom:34px;">
+            <label class="control-label bold col-md-3">Role Name <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+            <div class="col-md-9">
+                <input type="text" class="form-control"  placeholder="Enter Role Name" name="RoleName" ng-model="role.RoleName" ng-blur="multipleEmptySpace($event)" required>
+            </div>
+        </div>
+
+      
+        <div class="form-group col-md-6" style="margin-top:10px;margin-bottom:34px;">
+            <label class="control-label bold col-md-3">Role Type <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+            <div class="col-md-9">
+                <select class="form-control" name="RoleType" ng-required="true" ng-model="role.RoleType">
+                    <option value="">--Select--</option>
+                    <option value="Approver">Approver</option>
+                    <option value="Operator">Operator</option>
+
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-md-6" style="margin-top:10px;margin-bottom:34px;">
+            <label class="control-label bold col-md-3">Status <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+            <div class="col-md-9">
+                <select class="form-control" name="Status" id="enableFlag" ng-required="true" ng-model="role.Status">
+                    <option value="">--Select--</option>
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="INACTIVE">INACTIVE</option>
+
+                </select>
+            </div>
+        </div>
+
+        
+
+        <div style="clear:both"></div>
+
+
+        <div class="form-group" style="margin-top:25px;margin-right:12px;">
+            <div class="row">
+            <div class="col-md-6"></div>
+
+            <div class="col-md-6" style="width:46%;float:right;">
+                <div class="col-md-offset-8">
+                <button type="submit" class="btn btnStyle">Add Role</button>
+                <button type="reset" class="btn btnStyle" ng-click="GoBackFromRole()" style="margin-left:10px;">Cancel</button></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>

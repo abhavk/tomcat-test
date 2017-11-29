@@ -1,0 +1,518 @@
+<!-- BEGIN PAGE HEADER-->
+<div class="breadCrumb" ng-controller="activeController">
+	  <div class="row">
+    <div class="col-md-8 ">
+	<ul class="page-breadcrumb">
+			<li>
+				<i class="fa fa fa-cog"></i>
+				<a href="javascript:void(0);" translate>Sidebar.PaymentModule</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+		<span ng-if="((!fromOutputSummary) || (fromOutputSummary.input.from == 'filedetail') || (fromOutputSummary.input.from == 'allpayments'))">
+			<li>
+				<a href="#/app/instructions" translate>Sidebar.ReceivedInstructions</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+			
+			<li>
+				{{refId}}
+			</li>
+
+		</span>
+		<span ng-if="fromOutputSummary.input.from == 'distributedinstructions'">
+			<li>
+				
+				<a ui-sref="app.distributedinstructions" translate>Distribution Instructions</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li>
+				
+				<a ng-click="gotoOutputPaymentSummary()" translate>{{fromOutputSummary.input.uor}}</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li>
+				
+				<a ng-click="navToPaymentFrmOutput()" translate>{{fromOutputSummary.input.nav.PID}}</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li>
+				
+				<a href="javascript:void(0);" translate>{{fromOutputSummary.input.nav.UIR}}</a>
+				
+			</li>
+		</span>
+
+
+	</ul>
+  </div>
+    <!--<div style="clear:both">    </div>-->
+   <div class="col-md-4 headerVals">
+        <div data-ng-include="'templates/header/VPheader.html'" data-ng-controller="headerCtrl"></div>
+
+    </div>
+    </div>
+</div>
+<br><br>
+
+<div class="contentContainer">
+
+	<div class ="animated bounce autoAdjustAlert bold" ng-style="{'top':alertStyle+'px','width':alertWidth+'px'}" ng-repeat="alert in alerts" ng-class="{'alert alert-success': alert.type == 'success','alert alert-danger':alert.type == 'danger'}" >
+		<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		{{alert.msg}}
+	</div>
+
+
+	<div class="alertWidthonResize" ng-class="{'panel panel-primary': filedetail.FileStatus == 'DUPLICATE','panel panel-success': ((filedetail.FileStatus == 'COMPLETED') || (filedetail.FileStatus == 'DEBULKED')),'panel panel-danger':filedetail.FileStatus == 'REJECTED','panel panel-warning':filedetail.FileStatus != 'COMPLETED' && filedetail.FileStatus != 'REJECTED' && filedetail.FileStatus != 'DEBULKED' && filedetail.FileStatus != 'DUPLICATE','panel panel-default':filedetail.FileStatus == 'Warehoused'}">
+		<div class="panel-heading fileListStyle" style="padding:10px 15px;" ng-click="isCollapsed = !isCollapsed">
+			<div>
+				<span class="bold" data-ng-click="clickRefId(filedetail.InstructionID)" tooltip="Instruction ID" style="cursor:pointer;display:inline-block;padding-right: 5px;">{{filedetail.InstructionID}}</span>
+
+				  <span style="cursor:pointer;display:inline-block;font-weight:700;border-left:1px solid;padding-left:10px;padding-right: 5px;" tooltip="Transport Name" ng-if="filedetail.TransportName">{{filedetail.TransportName}} <!--({{detail.clientid}}) | {{detail.filename}} --></span>
+
+				  <!--<span style="cursor:pointer;display:inline-block;font-weight:700;border-left:1px solid;padding-left:10px;padding-right: 5px;" tooltip="Input Reference Code" ng-if="filedetail.InputReferenceCode">{{filedetail.InputReferenceCode}} </span>-->
+
+				  
+
+				<div class="pull-right">
+					&nbsp;&nbsp;&nbsp;<i style="padding-top:2px;" class="pull-right bold fa fa-angle-right" ng-class="{'fa-angle-down': !isCollapsed, 'fa-angle-right': isCollapsed}"></i>
+				</div>
+
+
+				<div class="pull-right bold" >
+					<span ng-repeat="FCW in currencyWiseSum">
+                        <span tooltip="Amount">{{FCW.TotalAmount|isoCurrency:FCW.Currency:'Symboltrue'}}</span>
+					    <span ng-if="FCW.Currency&&FCW.TotalAmount">|</span> 
+					</span>	
+				<span class="caption-subject bold" tooltip="Instruction Status"><i ng-class="{'fa fa-copy': filedetail.FileStatus == 'DUPLICATE','fa fa-check-circle-o': filedetail.FileStatus == 'DEBULKED','fa fa-times-circle':filedetail.FileStatus == 'REJECTED','fa fa-hand-paper-o':filedetail.FileStatus == 'HOLD','fa fa-exclamation-circle':filedetail.FileStatus != 'DEBULKED' && filedetail.FileStatus != 'REJECTED' && filedetail.FileStatus != 'DUPLICATE' && filedetail.FileStatus != 'HOLD','fa fa-question-circle':filedetail.FileStatus == 'WAREHOUSED'}"></i> {{filedetail.FileStatus}}</span>
+				</div>
+
+				<div style="clear:both"></div>
+			</div>
+		</div>
+		<div class="panel-body" collapse="isCollapsed" ng-init="isCollapsed_TransInfo = false">
+
+			<i ng-show="filedetail.TransportInfo" class="fa fa-plus-circle cursorPointer" ng-class="{'fa fa-minus-circle': isCollapsed_TransInfo, 'fa fa-plus-circle': !isCollapsed_TransInfo}" ng-click="isCollapsed_TransInfo = !isCollapsed_TransInfo"></i>
+
+			Entry Date &amp; Time:
+			<!--{{ d = (filedetail.EntryDate | date:'yyyy-MM-dd | HH:mm:ss (Z)').split(''); d.splice(-3, 0, ':'); d.join('') }}-->
+			{{filedetail.EntryDate | dateFormat}}
+
+			<div class="pull-right" ng-if="filedetail['Total Number of Payments']">Payment Status <span class="bold" tooltip="Total Number of Payments">({{filedetail["Total Number of Payments"]}})</span> :
+
+
+				<span class="badge badge-success badge-roundless minwidth40" tooltip="Payments Completed">{{filedetail.PaymentsCompleted}}</span>
+				<span class="badge badge-danger badge-roundless minwidth40" tooltip="Payments Rejected" >{{filedetail.PaymentsRejected}}</span>
+				<span class="badge badge-warning badge-roundless minwidth40" tooltip="Payments Pending" >{{filedetail.PaymentsPending}}</span>
+				<span class="badge badge-total-payment badge-roundless minwidth40" tooltip="Payments Hold">{{0}}</span>
+
+			</div>
+
+			<div style="margin-right:0px;" class="pull-right" ng-if="!filedetail['Total Number of Payments']">Payment Status <span class="bold" tooltip="Total Number of Payments">(0)</span>  :
+
+				<span class="badge badge-success badge-roundless minwidth40" tooltip="Payments Completed">0</span>
+				<span class="badge badge-danger badge-roundless minwidth40" tooltip="Payments Rejected"  >0</span>
+				<span class="badge badge-warning badge-roundless minwidth40" tooltip="Payments Pending" >0</span>
+				<span class="badge badge-total-payment badge-roundless minwidth40" tooltip="Payments Hold">0</span>
+
+			</div>
+
+			<div collapse="!isCollapsed_TransInfo">
+				<div class="col-md-12" style="padding: 10px 0px !important;">
+					<pre ng-class="{'pre_primary_color': filedetail.FileStatus == 'DUPLICATE','pre_success_color': filedetail.FileStatus == 'DEBULKED','pre_dancer_color':filedetail.FileStatus == 'REJECTED','pre_waring_color':filedetail.FileStatus != 'DEBULKED' && filedetail.FileStatus != 'REJECT' && filedetail.FileStatus != 'DUPLICATE','panel panel-default':filedetail.FileStatus == 'Warehoused'}">{{filedetail.TransportInfo}}</pre>
+				</div>
+			</div>
+			<br>
+			<hr style="margin: 10px !important;">
+
+			<div class="row">
+
+
+				<div class="row-height">
+					<div class="col-sm-4 col-sm-height" ng-repeat="fa in filedetailaudit" ng-show='fa.Event=="RECEIVE_FILE"' id="Heeeeee" style="margin-top:5px;">
+						<div class="inside inside-full-height dashboard-stat green-haze">
+							<div class="content">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-4">
+									<center><i class="fa fa-gear gearfont"></i></center>
+								</div>
+								<div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
+									<h4>Instruction Received</h4>
+									{{fa.Description}}<br>
+									Received at
+									<!--{{ d = (fa.AuditTimestamp | date:'yyyy-MM-dd | HH:mm:ss (Z)').split(''); d.splice(-3, 0, ':'); d.join('') }}-->
+
+									{{fa.AuditTimestamp | dateFormat}}
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4 col-sm-height" ng-repeat="fa in filedetailaudit" ng-show='fa.Event=="RECEIVE_PAYMENT"'>
+						<div class="inside inside-full-height dashboard-stat green-haze" style="margin-top:5px;">
+							<div class="content">
+								<div class="col-lg-3 col-md-3 col-sm-3 col-xs-4">
+									<center><i class="fa fa-check-circle-o gearfont"></i></center>
+								</div>
+								<div class="col-lg-9 col-md-9 col-sm-9 col-xs-8">
+
+									<h4>Payment Received</h4>
+									<span class="dupDatas" id="dupData"> </span><br/>
+									<!--<span>{{fa.Description}}</span><br>-->
+									Received at
+									<!--{{ d = (fa.AuditTimestamp | date:'yyyy-MM-dd | HH:mm:ss (Z)').split(''); d.splice(-3, 0, ':'); d.join('') }}-->
+									{{fa.AuditTimestamp | dateFormat}}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-8 col-sm-height" ng-if="total2==0 && total==1">
+						<div class="inside inside-full-height">&nbsp;</div>
+					</div>
+					<div class="col-sm-8 col-sm-height" ng-if="total2==0 && total>=2">
+						<div class="inside inside-full-height">&nbsp;</div>
+					</div>
+					<div class="col-sm-4 col-sm-height" ng-if="total2==1 && total==1">
+						<div class="inside inside-full-height">&nbsp;</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+	<div id="addnotes" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header modalHeaderColor">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Notes </h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" ng-submit="addNotes(data,refId)">
+
+						<div class="form-group">
+							<label class="control-label col-sm-3">Notes  <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+							<div class="col-sm-9">
+								<textarea class="form-control" placeholder="Please enter notes" ng-model="data.notes" style="height:100px;" required maxlength="200" ng-trim="true" ng-blur="multipleEmptySpace($event)"></textarea><span>{{200 - data.notes.length}} Characters left</span>
+							</div>
+						</div>
+						<div style="text-align:center;">
+							<button type="submit" class="btn btnStyle">Submit</button>
+							<button type="button" class="btn btnStyle" data-dismiss="modal">Close</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div ng-class="{'panel panel-primary': filedetail.FileStatus == 'DUPLICATE','panel panel-success': ((filedetail.FileStatus == 'COMPLETED')|| filedetail.FileStatus == 'DEBULKED'),'panel panel-danger':filedetail.FileStatus == 'REJECTED','panel panel-warning':filedetail.FileStatus != 'COMPLETED' && filedetail.FileStatus != 'REJECTED' && filedetail.FileStatus != 'DEBULKED' && filedetail.FileStatus != 'DUPLICATE','panel panel-default':filedetail.FileStatus == 'Warehoused'}">
+		<div class="panel-heading fileListStyle" style="padding:10px 15px;" ng-click="isPaymentCollapsed = !isPaymentCollapsed">
+			<span ng-if="isPaymentCollapsed" class="bold"> Instruction Details</span>
+			<span ng-if="!isPaymentCollapsed" class="bold"> Instruction Details</span>
+			<div class="pull-right">
+				&nbsp;&nbsp;&nbsp;<i style="padding-top:2px;" class="pull-right bold fa fa-angle-right" ng-class="{'fa-angle-down': !isPaymentCollapsed, 'fa-angle-right': isPaymentCollapsed}"></i>
+			</div>
+		</div>
+		<div class="" collapse="isPaymentCollapsed">
+
+			<div class="tabbable-custom" style="margin: 15px !important;">
+
+				<ul class="nav nav-tabs" style="border-right:1px solid #ccc;border-top:1px solid #ccc;">
+					<li class="active" id="activeId">
+						<a href="javascript:void(0);" _index={{$index}}  data-target="#tab_{{$index}}_1" data-toggle="tab" aria-expanded="true">
+						<b> <i class="fa fa-money" aria-hidden="true"></i> Payments Summary</b></a>
+					</li>
+					<li class="">
+						<a href="javascript:void(0);" data-target="#tab_{{$index}}_2" data-toggle="tab" aria-expanded="false">
+							<b><i class="fa fa-file-text-o" aria-hidden="true"></i> Instruction Log</b></a>
+					</li>
+					<li class="">
+						<a href="javascript:void(0);" data-target="#tab_{{$index}}_3" data-toggle="tab" aria-expanded="false">
+							<i class="fa fa-asterisk"></i> <b>System Interaction</b></a>
+					</li>
+					<li class="">
+						<a href="javascript:void(0);" data-target="#tab_{{$index}}_4" data-toggle="tab" aria-expanded="false">
+							<i class="fa fa-send-o"></i> <b>External Communications</b></a>
+					</li>
+					<div class="pull-right"  tooltip="Print" style="margin-right: 0.5%;margin-top:5px;"><button class="btn btn-sm disabled"><i class="fa fa-print"></i></button></div>
+					<div class="pull-right"  tooltip="Export to Excel" style="margin-right: 0.5%;margin-top:5px;"><button class="btn btn-sm" ng-click="tablesToExcel(['tab1','tab2','tab3'], ['Payments Summary','File Log','Transaction Details'], 'TestBook.xls', 'Excel');ExportForIE()"><i class="fa fa-file-excel-o"></i></button></div>
+					<div class="pull-right"  tooltip="Refresh" style="margin-right: 0.5%;margin-top:5px;"><button class="btn btn-sm" id="restoreFileData" ng-click="selfCalling()"><i class="fa fa-refresh"></i></button></div>
+
+					<!-- <button class="btn btn-sm" data-toggle="modal" data-target="#addnotes" ng-click="getExistingNotes(refId)" style="float:right;margin-top:5px;margin-right:0.5%;">
+						{{(ExistingNodes)?'View Notes':'Add Notes'}}
+					</button> -->
+					<button class="btn btn-sm" data-toggle="modal" data-target="#addnotes" style="float:right;margin-top:5px;margin-right:0.5%;">Add Notes</button>
+
+					<!-- <div ng-if="((filedetail.FileStatus == 'DUPLICATE')||(filedetail.FileStatus == 'Duplicate')|| (filedetail.FileStatus == 'HOLD')|| (filedetail.FileStatus == 'Hold'))" class="pull-right" style="margin-top:5px;margin-right: 0.5%">
+						<button class="btn btn-sm" ng-click="fileStatus('ACCEPTED')">Accept</button>
+						<button class="btn btn-sm" ng-click="fileStatus('REJECTED')">Reject</button>
+					</div> -->
+					<div class="pull-right" style="width:125px;">
+                    <button class="btn btn-sm" ng-repeat="newbuttons in enableActionbuttons"  ng-click="forceAction(filedetail,newbuttons)" style="margin-top:2px;display:inline-block;margin-right:5.3%;"> 
+						<span ng-if="(newbuttons.AliasName!=''||newbuttons.AliasName!=null||newbuttons.AliasName!=undefined)">{{newbuttons.AliasName}}</span>
+						<span ng-if="(newbuttons.AliasName==''||newbuttons.AliasName==null||newbuttons.AliasName==undefined)">{{newbuttons.ActionName}}</span>
+					</button>
+                </div>
+				</ul>
+				<div class="tab-content" id="tableExport">
+					<div class="tab-pane active table-responsive fileDetailOverflow FixHead dataGroupsScroll" id="tab_{{$index}}_1">
+						<span class="tableHeading bold" style="display:none"><table><th>Payment Summary</th></table></span>
+						<table class="table table-striped table-bordered table-hover" id="tab1">
+							<thead>
+							<tr>
+								<th>
+									Payment ID
+								</th>
+								<th>
+									Original Payment Reference
+								</th>
+								<th>
+									MOP
+								</th>
+								<th>
+									Value Date
+								</th>
+								<th>
+									Exec Date
+								</th>
+								<th>
+									Currency
+								</th>
+								<th>
+									Payment Amount
+								</th>
+								<th>
+									Payment Status
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr ng-repeat="payments in filedetailpcd" ng-click="clickReferenceID({'data':payments,'fromPage':'filedetail'})" style="cursor:pointer">
+								<td>
+									<span class="caption-subject bold uppercase">{{payments.PaymentID}}</span>
+								</td>
+								<td>
+									{{payments.OriginalPaymentReference}}
+								</td>
+								<td>
+									{{payments.MethodOfPayment}}
+								</td>
+								<td>
+
+										{{payments.ValueDate}}
+								</td>
+								<td>
+									{{payments.ExecutionDateTime | dateFormat}}
+
+								</td>
+								<td>
+									{{payments.Currency}}
+								</td>
+								<td>
+									{{payments.Amount|isoCurrency:payments.Currency:'Symbolfalse'}}
+								</td>
+								<td ng-class="{'success_color':payments.Status == 'DEBULKED','not_process_color':payments.Status == 'NOT PROCESSED','needs_approval_color':payments.Status == 'NEEDS APPROVAL','pending_color':payments.Status == 'WAREHOUSED'}">
+									<i class="fa fa-check-circle-o" ng-show='payments.Status=="DEBULKED"'></i>
+									<i class="fa fa-times-circle" ng-show='payments.Status=="NOT PROCESSED"'></i>
+									<i class="fa fa-exclamation-circle" ng-show='payments.Status=="NEEDS APPROVAL"'></i>
+									<i class="fa fa-question-circle" ng-show='payments.Status=="WAREHOUSED"'></i>
+									{{payments.Status|underscoreRemove}}
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="tab-pane table-responsive fileDetailOverflow FixHead dataGroupsScroll" id="tab_{{$index}}_2">
+						<span class="tableHeading bold" style="display:none"><table><th>Instruction Log</th></table></span>
+						<table class="table table-striped table-bordered table-hover" id="tab2">
+							<thead>
+							<tr>
+								<th>
+									Timestamp
+								</th>
+								<th>
+									Event
+								</th>
+								<th>
+									Actor
+								</th>
+								<th>
+									Description
+								</th>
+								<th>
+									External Reference
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr ng-repeat="fa in filedetailaudit">
+								<td>
+									{{fa.AuditTimestamp | dateFormat}}
+								</td>
+								<td>
+									<span ng-bind="underScoreReplace(fa.Event)"></span>
+								</td>
+								<td>
+									{{fa.Actor}}
+								</td>
+								<td>
+									{{fa.Description}}
+								</td>
+								<td style="text-align:center;">
+								</td>
+
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="tab-pane table-responsive fileDetailOverflow FixHead dataGroupsScroll" id="tab_{{$index}}_3">
+						<span class="tableHeading bold" style="display:none"><table><th>System Interaction</th></table></span>
+						<table class="table table-striped table-bordered table-hover" id="tab3" >
+							<thead>
+							<tr>
+								<th>Instruction ID</th>
+								<th>Group Reference ID</th>
+								<th>Correlation ID</th>
+								<th>Relationship</th>
+								<th>Invocation Point</th>
+								<th>Is Synchronous</th>
+								<th>BID TimeStamp</th>
+								<th>Attempt Number</th>
+								<th>Status</th>
+								<th>Action</th>
+
+							</tr>
+							</thead>
+							<tbody>
+							<tr ng-repeat="data in newdata">
+								<td>
+									{{data.InstructionID}}
+								</td>
+								<td>
+									{{data.GrpReferenceId}}
+								</td>
+								<td>
+									{{data.CorrelationId}}
+								</td>
+								<td>
+									{{data.Relationship}}
+								</td>
+								<td>
+									{{data.InvocationPoint}}
+								</td>
+								<td>
+									{{data.IsSynchronous}}
+								</td>
+								<td>
+									{{data.BIDTimeStamp | dateFormat}}
+								</td>
+								<td>
+									{{data.AttemptNumber}}
+								</td>
+								<td>
+									{{data.Status}}
+								</td>
+								<td>
+
+									<span style="cursor:pointer;" class="colorBlueHover" data-keyboard="true"  data-toggle="modal" data-target="#transData{{$index}}" ng-if="data.Object"><i class="fa fa-eye"></i> View</span>
+									<!-- Modal -->
+									<div id="transData{{$index}}" class="modal fade" role="dialog" tabindex="-1">
+										<div class="modal-dialog">
+											<!-- Modal content-->
+											<div class="modal-content">
+												<div class="modal-header modalHeaderColor">
+													<button type="button" class="close" data-dismiss="modal">&times;</button>
+													<h4 class="modal-title">Notification</h4>
+												</div>
+												<div class="modal-body">
+													<pre style="margin:0px !important;max-height: 580px;min-height: 50px;overflow: auto;">{{data.Object  | hex2a}}</pre>
+												</div>
+												<div style="clear:both"></div>
+											</div>
+
+										</div>
+									</div>
+								</td>
+								
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="tab-pane table-responsive fileDetailOverflow FixHead dataGroupsScroll" id="tab_{{$index}}_4">
+						<span class="tableHeading bold" style="display:none"><table><th>External Communications</th></table></span>
+						<table class="table table-striped table-bordered table-hover" id="tab4" >
+							<thead>
+							<tr>
+								<th>Action</th>
+								<!--<th>Source/Deatination</th>-->
+								<th>Transmission Method</th>
+								<th>Message Type</th>
+								<th>Group Interaction Unique ID</th>
+								<!--<th>Message Interaction Unique ID</th>-->
+								<th>Direction</th>
+								<th>TimeStamp</th>
+								<!--<th>Transmission Method</th>-->
+							
+							</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="data in externaldata">
+									<td>
+								     <span>
+                                    <!--<span style="cursor:pointer;"  class="colorBlueHover" data-keyboard="true" data-toggle="modal" data-target="#rawData_{{$index}}" ng-if="msg.MessageType == 'Payment Pseudo Instruction'"><i class="fa fa-eye"></i> View</span>-->
+                                    <span style="cursor:pointer;"  class="colorBlueHover" ng-click="exportToDoc(data)"><i class="fa fa-download"></i> Download</span>
+
+                                     </span>
+
+                                     <div id="rawData_{{$index}}" class="modal fade" role="dialog" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header modalHeaderColor" style="background-color:#1CAF9A;color:#fff">
+
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title" style="line-height:0.5 !important;">{{data.GroupInteractionUniqueID}}-{{data.MessageInteractionUniqueID}}</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <pre style="margin:0px !important;">{{data.MessageContents | hex2a}}</pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </div>
+                                </td>
+								<!--<td>
+								</td>-->
+								<td>
+									{{data.TransmissionMethod}}
+								</td>
+								<td>
+									{{data.MessageType}}
+								</td>
+								<td>
+									{{data.GroupInteractionUniqueID}}
+								</td>
+								<!--<td>
+								</td>-->
+								<td>{{data.Direction}}</td>
+								<td>{{data.TimeStamp | dateFormat}}</td>
+								
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+
+
+
+				<iframe id="txtArea1" style="display:none"></iframe>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

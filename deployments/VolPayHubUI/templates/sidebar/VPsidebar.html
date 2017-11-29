@@ -1,0 +1,106 @@
+<aside class="" id="sidebarMenu">
+		
+			<div class="row showOnDesktop">
+                 <div class="col-md-12" ng-show="showSmallLogo">
+                    <div class="smallLogo" style="margin-bottom:15px;">
+                        <img src="themes/{{configData.ThemeName}}/favicon.png" alt="logo" class="logo-default" style="width:30px;margin-left:10px;">
+                    </div>
+                </div>
+
+				<div class="col-md-8" ng-if="configData.ThemeName=='volante'">
+					<div class="appLogo" style="margin-left:7px;">
+						<img src="themes/{{configData.ThemeName}}/logo.png" alt="logo" class="logo-default" style="width:145px;">
+					</div>					
+				</div>
+				<div class="col-md-8" ng-if="configData.ThemeName=='bnym'">
+					<div class="appLogo" style="margin-left:7px;margin-top:0px !important; padding: 10px; background-color: #fff;">
+						<img src="themes/{{configData.ThemeName}}/logo.png" alt="logo" class="logo-default" style="width:145px;">
+					</div>					
+				</div>
+				<div class="col-md-4">
+				<li style="text-align: right;padding: 10px 11px;" class="sidebarSideToggle">
+					<a class="sidebar-toggle" data-toggle="offcanvas" role="button" data-ng-click="sideBar(1);" >
+					<i class="fa fa-bars" aria-hidden="true" title={{sidebarToggleTooltip}} style="border: 5px solid #5e6b7b;display:inline;margin-right:2px;"></i>
+					</a>
+				</li>
+				</div>
+                <div class="clearfix"></div>
+		
+			</div>
+            <!--<div class="row showOnDesktop" ng-show="showSmallLogo" style="margin-top:10px;">
+                <div class="col-md-12">
+                    <div class="smallLogo">
+                        <img src="themes/{{configData.ThemeName}}/favicon.png" alt="logo" class="logo-default" style="width:30px;margin-left:10px;">
+                    </div>
+                </div>
+            </div>-->
+			
+			<div class="row">
+		<div class="col-md-12">		
+    <!-- sidebar -->
+    <section class="sidebar">
+       
+       <!-- <li class="sidebar-search-wrapper">
+            <form class="sidebar-search ng-pristine ng-valid" ng-enter="return false" style="margin: 22px 5px 22px 5px;">
+                <div class="input-group">
+                    <input type="text" class="form-control sidebarSearch" placeholder="Search..." style="pointer-events:none">
+                        <span class="input-group-btn">
+							<i class="fa fa-search" title="Search"></i>
+						</span>
+                </div>
+            </form>
+        </li> -->
+
+        <ul class="sidebar-menu" style="margin-top:10px;">
+            <li class="treeview menuli" id="{{val.ParentName|removeSpace|specialCharactersRemove}}" data-ng-repeat="val in sidebarVal">
+                <a ng-click="parentMenu($event)" title="{{val.ParentName}}" class="ParentMenu">
+                    <i class="fa {{val.IconName}}"></i>
+                    <!--<span class="mName" translate>{{'Sidebar.'+val.ParentName|removeSpace}}</span>-->
+                    <span class="mName">{{ translateFn(val.ParentName) }}</span>
+                    <i ng-if="val.subMenu.length" style="position:relative;top:3px;right:0;text-align: center;margin: 0;font-size:10px;" class="fa fa-plus"></i>
+                </a>
+
+                <ul class="sidebarSubMenu" ng-if="val.subMenu.length">
+                    <li class="treeview subMenuli" id="{{subVal.Name|removeSpace|specialCharactersRemove}}"  data-ng-repeat="subVal in val.subMenu">
+
+                        <span class="triangleLeft"></span>
+                        <a ng-click="gotoPage($event,val,subVal)" title="{{subVal.Name}}">
+                           <i class="fa {{subVal.IconName}}" ng-if="showSmallLogo"></i>
+                            
+                            <!--<span translate>{{'Sidebar.'+(subVal.Name|specialCharactersRemove|removeSpace)}}</span>-->
+                            <span>{{ translateFn(subVal.Name) }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+	</div>
+	</div>
+</aside>
+<script>
+
+var mediaQuery = window.matchMedia( "(max-width: 991px)" );
+
+if(mediaQuery.matches)
+{
+$('.sidebar-menu').slimScroll({
+            color: '#ddd',
+            size: '7px',
+            height: '350px',
+            alwaysVisible: true
+        });
+}
+else
+{
+
+	$('.sidebar-menu').slimScroll({
+            color: '#ddd',
+            size: '7px',
+            height: (configData.ThemeName=='volante')?($(window).outerHeight()-130+'px'):($(window).outerHeight()-330+'px'),
+            alwaysVisible: true
+        });
+}
+
+
+</script>

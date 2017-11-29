@@ -1,0 +1,512 @@
+<!-- BEGIN PAGE HEADER-->
+<style>
+input:required {
+    box-shadow:none;
+}
+/*input:invalid {
+    box-shadow:0 0 3px red;
+}*/
+.bootstrap-datetimepicker-widget{
+	display: block;
+}
+.bootstrap-datetimepicker-widget .datepicker-days{
+	display: block;
+}
+</style>
+<div class="breadCrumb" ng-controller="activeController">
+    <div class="col-md-6">
+    <ul class="page-breadcrumb">
+        <!--<li>
+            <i class="fa fa-home"></i>
+            <a href="javascript:void(0);" translate ng-click="goToHome()">Sidebar.Home</a>
+            <i class="fa fa-angle-right"></i>
+        </li>-->
+        <li>
+            <i class="fa fa-building-o"></i>
+            <a href="#/app/fxrate" translate>Sidebar.BankData</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="#/app/fxrate" translate>Sidebar.FXRates</a>
+            <i class="fa fa-angle-right"></i>
+
+        </li>
+        <li>
+            {{fromAddNew ? 'Add New' : ViewClicked ? 'View' : 'Edit'}}
+        </li>
+    </ul>
+    </div>
+     <div class="col-md-6 headerVals">
+        <div data-ng-include="'templates/header/VPheader.html'" data-ng-controller="headerCtrl"></div>
+    </div>
+</div>
+
+<div class="contentContainer" style="padding: 0px 35px 35px;">
+
+<div class ="animated bounce autoAdjustAlert bold" ng-repeat="alert in alerts" ng-style="{'top':alertStyle+'px','width':alertWidth+'px'}" ng-class="{'alert alert-success': alert.type == 'success','alert alert-danger':alert.type == 'danger'}" >
+    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    {{alert.msg}}
+</div>
+
+<div ng-if="ViewClicked && !fromAddNew">
+    
+    
+    <div class="panel panel-default" style="margin-top:40px;">
+
+        <div class="panel-heading" style="background-color:transparent;">
+
+            <div class="col-md-10 serviceHeading" ng-style="{'color':(FXRate.Status | chooseStatus)}"> {{FXRate.OfficeCode}}<br>
+		    </div>
+
+            <div class="col-md-2 serviceHeading" ng-style="{'color':(FXRate.Status | chooseStatus)}" ng-if="FXRate.Status">
+                <div class="col-md-2" style="padding: 0;text-align: center;">
+                   <i style="font-size: 20px;line-height:20px;" class="fa fa-circle ng-scope" tooltip="{{FXRate.Status}}" tooltip-placement="bottom"></i>
+                </div>
+                <div class="col-md-8 ng-binding" style="padding: 0;">{{FXRate.Status}}</div>
+            </div>
+
+            <div class="clearfix"></div>
+           
+
+        </div>
+
+        <div class="panel-body" style="padding:9px 15px;background-color:#f9f9f9">
+            <div class="col-md-10" style="padding-left:0px;">
+                Effective Date : 
+                <span class="ng-binding">{{FXRate.EffectiveFromDate}}</span>
+            </div>
+            <div class="col-md-2">
+                <a style="display:inline-block" class="actionIcons" ng-style="(permission.U)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" ng-click="(permission.U)?gotoEdit():''" tooltip="{{(permission.U)?'Edit':'You don&lsquo;t have permission'}}"><i class="fa fa-pencil-square-o Iclr1"></i></a>
+
+                <a style="display:inline-block" class="actionIcons" data-toggle="modal" data-target="{{(permission.D)?'#delPopup':''}}" ng-style="(permission.D)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" ng-click="(permission.D)?takeDeldata(FXRate):''" tooltip="{{(permission.D)?'Delete':'You don&lsquo;t have permission'}}"><i class="fa fa-trash-o Iclr1"></i></a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="panel-group" style="border:1px solid #ccc;"  ng-if="ViewClicked && !fromAddNew">
+
+        <div class="row" style="margin:0;line-height:30px;">
+            <div class="row" style="margin:0;margin-top:10px;margin-bottom:34px;padding-left:0px;">
+                <div class="row" ng-repeat="field in strData" style="margin:0;" ng-style="($index%2 == 0)?{'background-color': 'rgb(245, 245, 245)'}:{'background-color': '#fff'}">
+                    <label class="control-label bold col-md-3 col-sm-3"><span class="col-md-11 ng-binding">{{field.label}}</span> <span class="col-md-1">:</span> </label>
+                    <div class="control-label col-md-9 col-sm-9 ng-binding subserviceInfo">
+                        <span class="ng-binding">{{field.value}}</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+ <div class="row" style="margin:0;margin-top:65px;" ng-if="editedLog.length">
+                <div class="col-md-12 bold control-label" style="margin:0;font-size:16px;">EDIT LOG</div>
+                <ul style="line-height:35px;margin-top:30px">
+                    <li ng-repeat="log in editedLog" style="padding: 0px 15px;">
+                        <div style="display:block;word-break: break-all;">
+                            <span style="float: left; width: 100%; padding: 0px 15px;"> <i class="fa fa-circle" aria-hidden="true" style="margin-right: 12px; font-size: 12px;line-height: 12px;"></i>  {{log.action}} on {{log.userAuditTimeStamp | dateFormat}} by {{log.UserId}}
+                        </span></div>
+                        <!--<span style="float: left; width: 100%; padding: 0px 15px;"> <i class="fa fa-circle" aria-hidden="true" style="margin-right: 12px; font-size: 12px;line-height: 12px;"></i> Created on {{log.userAuditTimeStamp | dateFormat}} by {{log.UserId}}.</span>-->
+                    </li>
+                </ul>
+ </div>
+
+
+
+
+    </div>
+    
+
+
+</div>
+
+
+<!-- Delete popup Window Start-->
+<div class="modal fade" tabindex="-1" id="delPopup" role="dialog">
+    <div class="modal-dialog modal-md" style="top: 200px;">
+        <div class="modal-content modalbdy animated tada">
+            <div class="modal-header" style="padding: 0px !important; border: 0px !important">
+                <div class="iconBox"><i class ="exclaLine"></i><i class ="exclaDot"></i></div>
+            </div>
+            <div class="modal-body" style="padding: 0px !important; border: 0px !important">
+                <h1>Are you sure?</h1>
+                <h4>You will not be able to recover this Data!</h4>
+            </div>
+            <div class="modal-footer modalftr">
+                <button tabindex="0" type="button" class="buton cancl" data-dismiss="modal">Cancel</button>
+                <button tabindex="0" type="button" class="buton yess" ng-click="deleteData();">Yes, delete it!</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Delete popup Window End-->
+
+<div ng-if="!ViewClicked && !fromAddNew">
+
+    <div class="pageTitle alertWidthonResize">
+        <div class="row">
+            <div class="col-sm-12 ng-binding" ng-style="{'color':(parentInput.fieldData | chooseColor)}" style="color: rgb(65, 85, 195);">
+                <div class="title__container">
+                <h2 translate>FXRates.Edit</h2>
+                 <p translate> Branch.ForMandatory</p>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <form role="form" class="simple-form form-horizontal" name="updateFXRateform" ng-submit="updateData(FXRate); updatesubmitted=false;">
+            <div class="ForAddNewScroll" style="margin:0; max-height:600px; min-height:600px;">
+
+                <div class="control-group" style="margin-top: 5px;">
+                    <div class="form-group ">
+                        <label for="OfficeCode" class="control-label col-md-2" style='font-weight:bold;'>Office Code
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.OfficeCode.$invalid]">
+                            <!--<input class="form-control" type="text" name="OfficeCode" ng-model="FXRate.OfficeCode" placeholder="Please Enter Office ID" required ng-blur="multipleEmptySpace($event)" ng-disabled="true">-->
+
+                            <select class="form-control" name="OfficeCode" ng-model="FXRate.OfficeCode" ng-disabled="true" ng-required="true" ng-init="setIntiVal()">
+                                 <option value=''>Select</option>   
+                                <option ng-repeat="val in officeCodeVal" value="{{val.actualvalue}}">{{val.displayvalue}}</option>
+                            </select>
+
+
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.OfficeCode.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+
+                    </div>
+
+                    <div class=" form-group" >
+
+                        <label for="ApplicableDate" class="col-md-2 control-label" style="font-weight:bold;">Applicable Date
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <!--<div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.ApplicableDate.$invalid]">
+                            <div class="input-group date date-picker" data-date-format="yyyy-mm-dd" data-date-viewmode="years" data-date-minviewmode="months">
+                                <input type="text" class="form-control" name="ApplicableDate" ng-model="FXRate.ApplicableDate" onkeypress='return tabOrder(event)' placeholder="Please Select Applicable Date" required ng-blur="multipleEmptySpace($event)" ng-disabled="true">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+
+                            </div>
+                        </div>-->
+
+
+                        <div class="input-group col-md-3 input-append" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.ApplicableDate.$invalid]" style="padding-right:15px;padding-left:12px;float:left;" >
+                            <input class="form-control DatePicker" type="text" name="ApplicableDate" ng-model="FXRate.ApplicableDate" placeholder="Please Select Applicable Date" ng-required="true"  onkeypress='return tabOrder(event)' ng-blur="multipleEmptySpace($event)" ng-focus="activatePicker($event)" ng-disabled="true">
+                            <span class="input-group-addon" style="pointer-events:none"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.ApplicableDate.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+                    </div>
+
+                    <div class=" form-group">
+
+                        <label for="Source Currency" class="control-label col-md-2" style='font-weight:bold;'>Source Currency
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.SourceCurrency.$invalid]">
+                            <input class="form-control" type="text" name="SourceCurrency" ng-model="FXRate.SourceCurrency" placeholder="Please Enter Source Currency" ng-required="true" ng-blur="multipleEmptySpace($event)" ng-disabled="true">
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.SourceCurrency.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+
+                    </div>
+
+                    <div class=" form-group" >
+
+                        <label for="Target Currency" class="control-label col-md-2" style='font-weight:bold;'>Target Currency
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.TargetCurrency.$invalid]">
+                            <input class="form-control" type="text" name="TargetCurrency" ng-model="FXRate.TargetCurrency" placeholder="Please Enter Target Currency" ng-required="true" ng-blur="multipleEmptySpace($event)" ng-disabled="true">
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.TargetCurrency.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+
+                    </div>
+
+                    <div class=" form-group" >
+
+                        <label for="Source Currency" class="control-label col-md-2" style='font-weight:bold;'>Rate
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.Rate.$invalid]">
+                            <input class="form-control" type="text" name="Rate" ng-model="FXRate.Rate" placeholder="Please Enter Rate" ng-required="true" ng-blur="multipleEmptySpace($event)">
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.Rate.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+
+                    </div>
+
+                    <div class=" form-group" >
+
+                        <label for="Threshold" class="control-label col-md-2" style='font-weight:bold;'>Threshold
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.Threshold.$invalid]">
+                            <input class="form-control" type="text" name="Threshold" ng-model="FXRate.Threshold" placeholder="Please Enter Threshold" ng-required="true" ng-blur="multipleEmptySpace($event)">
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.Threshold.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+
+                    </div>
+                    <div class="form-group" >
+                        <label for="Status" class="control-label col-md-2" style='font-weight:bold;'>Status
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.Status.$invalid]">
+                            <select class="form-control" type="text" name="Status" value = "{{TaskDetails.Status}}" ng-model="FXRate.Status" ng-required="true">
+                                <option value="">--Select--</option>
+                                <option ng-repeat="val in ['ACTIVE','SUSPENDED','CREATED','WAITINGFORAPPROVAL','APPROVED','FORREVISON','REJECTED','DELETED']" value="{{val}}">{{val}}</option>
+
+                            </select>
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.Status.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+                    </div>
+                    <div class=" form-group" >
+                        <label for="Effective From Date" class="control-label col-md-2" style='font-weight:bold;'>Effective From Date
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <!--  <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.EffectiveFromDate.$invalid]">
+                              <div class="input-group date date-picker" data-date-format="yyyy-mm-dd" data-date-viewmode="years" data-date-minviewmode="months">
+                              <input type="text" class="form-control" name="EffectiveFromDate" ng-model="FXRate.EffectiveFromDate" onkeypress='return tabOrder(event)' placeholder="Please Select Effective From Date" required>
+                                  <span class="input-group-addon" ng-style="viewMe ? { 'pointer-events':'none'} : { 'pointer-events':'auto'}"><span class="glyphicon glyphicon-calendar"></span></span>
+                              </div>
+                          </div>-->
+
+                        <div class="input-group col-md-3 input-append" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.EffectiveFromDate.$invalid]" style="padding-right:15px;padding-left:12px;float:left;" >
+                            <input class="form-control DatePicker" type="text" name="EffectiveFromDate" ng-model="FXRate.EffectiveFromDate" placeholder="Please Select Effective From Date" ng-required="true" onkeypress='return tabOrder(event)' ng-blur="multipleEmptySpace($event)">
+
+                            <span class="input-group-addon cursorPointer"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.EffectiveFromDate.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+
+                    </div>
+                    <div class=" form-group" >
+
+                        <label for="Effective Till Date" class="control-label col-md-2" style='font-weight:bold;'>Effective Till Date
+
+                        </label>
+                        <!--<div class="col-md-3" >
+                            <div class="input-group date date-picker" data-date-format="yyyy-mm-dd" data-date-viewmode="years" data-date-minviewmode="months">
+                                <input type="text" class="form-control" name="EffectiveTillDate" ng-model="FXRate.EffectiveTillDate" onkeypress='return tabOrder(event)' placeholder="Please Select Effective Till Date" >
+                                <span class="input-group-addon" ng-style="viewMe ? { 'pointer-events':'none'} : { 'pointer-events':'auto'}"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+
+                        </div>-->
+
+                        <div class="input-group col-md-3 input-append" style="padding-right:15px;padding-left:12px;float:left;" >
+                            <input class="form-control DatePicker" type="text" name="EffectiveTillDate" ng-model="FXRate.EffectiveTillDate" placeholder="Please Select Effective Till Date" onkeypress='return tabOrder(event)' ng-blur="multipleEmptySpace($event)">
+                            <span class="input-group-addon cursorPointer"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+
+                    </div>
+
+                    <div style="clear:both"></div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="col-xs-12" style="padding:15px;margin-top:15px;border-top:1px solid">
+                <button type="submit" class="btn btnStyle clr" ng-click="updatesubmitted=true" tooltip="Submit"><span class="ng-binding">Save Changes</span></button>
+                <button type="button" class="btn btnStyle clr" ng-click="updatesubmitted=false;gotoParent()" tooltip="Cancel"><span translate="" class="ng-scope">Cancel</span></button>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+<div ng-if="fromAddNew">
+    <div class="pageTitle alertWidthonResize">
+        <div class="row">
+            <div class="col-sm-12 ng-binding" ng-style="{'color':(parentInput.fieldData | chooseColor)}" style="color: rgb(65, 85, 195);">
+                <div class="title__container">
+                <div class="row">
+                <div style="width:6%;float:left;">
+                <h2 translate >BtnGroup.AddNew</h2>                
+                </div>
+                <div style="width:10%;float:left;">
+                        <h2 translate >FXRates.PageTitle</h2>
+                </div>
+                <div class="clearfix"></div>
+                <p translate>Branch.ForMandatory</p>
+                </div>
+            </div>
+
+                </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <form role="form" class="simple-form form-horizontal" name="updateFXRateform" ng-submit="createData(FXRateCreate); updatesubmitted=false;">
+            <div class="ForAddNewScroll" style="margin:0; max-height:600px; min-height:600px;">
+
+                <div class="control-group" style="margin-top: 5px;">
+                    <div class="form-group ">
+                        <label for="OfficeCode" class="control-label col-md-2" style='font-weight:bold;'>Office Code
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.OfficeCode.$invalid]">
+                            <select class="form-control" name="OfficeCode" ng-model="FXRateCreate.OfficeCode" ng-required="true">
+                                    <option value=''>Select</option>
+                                 <option ng-repeat="val in officeCodeVal" value="{{val.actualvalue}}">{{val.displayvalue}}</option> 
+                            </select>
+
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.OfficeCode.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+
+                    </div>
+
+                    <div class=" form-group" >
+
+                        <label for="ApplicableDate" class="col-md-2 control-label" style="font-weight:bold;">Applicable Date
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="input-group col-md-3 input-append" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.ApplicableDate.$invalid]" style="padding-right:15px;padding-left:12px;float:left;" >
+                            <input class="form-control DatePicker" type="text" name="ApplicableDate" ng-model="FXRateCreate.ApplicableDate"  placeholder="Please Select Applicable Date" ng-required="true" onkeypress='return tabOrder(event)'  ng-blur="multipleEmptySpace($event)" ng-focus="activatePicker($event)">
+                            <span class="input-group-addon cursorPointer"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.ApplicableDate.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+                    </div>
+
+                    <div class=" form-group">
+
+                        <label for="Source Currency" class="control-label col-md-2" style='font-weight:bold;'>Source Currency
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.SourceCurrency.$invalid]">
+                            <input class="form-control" type="text" name="SourceCurrency" ng-model="FXRateCreate.SourceCurrency" placeholder="Please Enter Source Currency" ng-required="true" ng-blur="multipleEmptySpace($event)">
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.SourceCurrency.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+
+                    </div>
+
+                    <div class=" form-group" >
+
+                        <label for="Target Currency" class="control-label col-md-2" style='font-weight:bold;'>Target Currency
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.TargetCurrency.$invalid]">
+                            <input class="form-control" type="text" name="TargetCurrency" ng-model="FXRateCreate.TargetCurrency" placeholder="Please Enter Target Currency" ng-required="true" ng-blur="multipleEmptySpace($event)">
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.TargetCurrency.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+
+                    </div>
+
+                    <div class=" form-group" >
+
+                        <label for="Source Currency" class="control-label col-md-2" style='font-weight:bold;'>Rate
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.Rate.$invalid]">
+                            <input class="form-control" type="text" name="Rate" ng-model="FXRateCreate.Rate" placeholder="Please Enter Rate" ng-required="true" ng-blur="multipleEmptySpace($event)">
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.Rate.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+
+                    </div>
+
+                    <div class=" form-group" >
+
+                        <label for="Threshold" class="control-label col-md-2" style='font-weight:bold;'>Threshold
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.Threshold.$invalid]">
+                            <input class="form-control" type="text" name="Threshold" ng-model="FXRateCreate.Threshold" placeholder="Please Enter Threshold" ng-required="true" ng-blur="multipleEmptySpace($event)">
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.Threshold.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+
+                    </div>
+                    <div class="form-group" >
+                        <label for="Status" class="control-label col-md-2" style='font-weight:bold;'>Status
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.Status.$invalid]">
+                            <select class="form-control" type="text" name="Status" value = "{{TaskDetails.Status}}" ng-model="FXRateCreate.Status" ng-required="true">
+                                <option value="">--Select--</option>
+                                <option ng-repeat="val in ['ACTIVE','SUSPENDED','CREATED','WAITINGFORAPPROVAL','APPROVED','FORREVISON','REJECTED','DELETED']" value="{{val}}">{{val}}</option>
+
+                            </select>
+                        </div>
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.Status.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+                    </div>
+                    <div class=" form-group" >
+                        <label for="Effective From Date" class="control-label col-md-2" style='font-weight:bold;'>Effective From Date
+                            <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span>
+                        </label>
+                        <!--<div class="col-md-3" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.EffectiveFromDate.$invalid]">
+                            <div class="input-group date date-picker" data-date-format="yyyy-mm-dd" data-date-viewmode="years" data-date-minviewmode="months">
+                                <input type="text" class="form-control" name="EffectiveFromDate" ng-model="FXRateCreate.EffectiveFromDate" onkeypress='return tabOrder(event)' placeholder="Please Select Effective From Date" required>
+                                <span class="input-group-addon" ng-style="viewMe ? { 'pointer-events':'none'} : { 'pointer-events':'auto'}"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>-->
+
+                        <div class="input-group col-md-3 input-append" ng-class="{true: 'error'}[updatesubmitted && updateFXRateform.EffectiveFromDate.$invalid]" style="padding-right:15px;padding-left:12px;float:left;" >
+                            <input class="form-control DatePicker" type="text" name="EffectiveFromDate" ng-model="FXRateCreate.EffectiveFromDate" placeholder="Please Select Effective From Date" ng-required="true" onkeypress='return tabOrder(event)' ng-blur="multipleEmptySpace($event)" ng-focus="activatePicker($event)">
+                            <span class="input-group-addon cursorPointer"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+
+                        <span class="help-inline" ng-show="updatesubmitted && updateFXRateform.EffectiveFromDate.$error.required" style="display:block;margin:0;color:#EF1C1C !important">Required</span>
+
+                    </div>
+                    <div class=" form-group" >
+
+                        <label for="Effective Till Date" class="control-label col-md-2" style='font-weight:bold;'>Effective Till Date
+
+                        </label>
+                        <!--<div class="col-md-3" >
+                            <div class="input-group date date-picker" data-date-format="yyyy-mm-dd" data-date-viewmode="years" data-date-minviewmode="months">
+                                <input type="text" class="form-control" name="EffectiveTillDate" ng-model="FXRateCreate.EffectiveTillDate" onkeypress='return tabOrder(event)' placeholder="Please Select Effective Till Date" >
+                                <span class="input-group-addon" ng-style="viewMe ? { 'pointer-events':'none'} : { 'pointer-events':'auto'}"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+
+                        </div>-->
+
+                        <div class="input-group col-md-3 input-append" style="padding-right:15px;padding-left:12px;float:left;" >
+                            <input class="form-control DatePicker" type="text" name="EffectiveTillDate" ng-model="FXRateCreate.EffectiveTillDate" placeholder="Please Select Effective Till Date" onkeypress='return tabOrder(event)' ng-blur="multipleEmptySpace($event)" ng-focus="activatePicker($event)">
+                            <span class="input-group-addon cursorPointer"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                    </div>
+
+
+                    <div style="clear:both"></div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="col-xs-12" style="padding:15px;margin-top:15px;border-top:1px solid">
+                <button type="submit" class="btn btnStyle clr" ng-click="updatesubmitted=true" tooltip="Submit"><span class="ng-binding">Add FxRate</span></button>
+                <button type="button" class="btn btnStyle clr" ng-click="updatesubmitted=false;gotoParent()" tooltip="Cancel"><span translate="" class="ng-scope">Cancel</span></button>
+            </div>
+        </form>
+
+    </div>
+</div>
+</div>
+<script>
+$('[data-toggle="tooltip"]').tooltip();
+
+			$(document).ready(function(){
+
+
+			   		$('.DatePicker').datetimepicker({
+			format:"YYYY-MM-DD",
+			useCurrent: true,
+			showClear: true
+		})
+		$('.TimePicker').datetimepicker({
+			format: 'HH:mm:ss',
+			useCurrent: true
+		});
+			    $('.input-group-addon').on('click focus', function(e){
+			        $(this).prev().focus().click()
+                 });
+        })
+
+
+</script>

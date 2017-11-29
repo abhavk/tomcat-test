@@ -1,0 +1,45 @@
+<header>
+	<div class="row">
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="col-xs-9">
+                <div class="appLogo">
+                    <img src="themes/{{configData.ThemeName}}/logo.png" alt="logo" class="logo-default">
+                </div>
+            </div>
+			<div class="col-xs-3">
+                <a class="sidebar-toggle headerSideToggle" data-toggle="offcanvas" role="button" data-ng-click="sideBar(1);">
+                    <i class="fa fa-bars" aria-hidden="true" style="border: 5px solid #5e6b7b;font-size:14px;"></i>
+                </a>
+           </div>
+
+           
+        </div>
+        </div>
+</header>
+
+<script>
+
+	$('.scrollDiv').slimScroll({
+            color: '#ddd',
+            size: '7px',
+            height: '300px',
+            alwaysVisible: true
+        });
+		/*if (document.documentElement.clientWidth < 767 && document.documentElement.clientWidth >= 360) {
+			  $(".dropdownPosition1").css("left","-75px");
+			  $(".dropdownPosition2").css("left","-110px");
+			  $(".dropdownPosition3").css("left","-145px");
+			}
+			else if(document.documentElement.clientWidth < 360){
+	          $(".dropdownPosition1").css("left","-38px");
+			  $(".dropdownPosition2").css("left","-88px");
+			  $(".dropdownPosition3").css("left","-135px");
+			}
+			else if(document.documentElement.clientWidth > 767 && document.documentElement.clientWidth <= 1200){
+			  $(".dropdownPosition1").css("left","-140px");
+			  $(".dropdownPosition2").css("left","-125px");
+			  $(".dropdownPosition3").css("left","-150px");
+			}*/
+
+</script>

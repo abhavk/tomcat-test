@@ -1,0 +1,15 @@
+[
+{
+		"ParentName": "Add on",
+		"Link": "webformPlugin",
+		"IconName": "fa-plug",
+		"subMenu": [
+			{
+				"Id": "100",
+				"Name": "PartyExternalIdentifiers",
+				"Link": "partyextidentifiers",
+				"IconName": "fa-calendar"
+			}
+		]
+	}
+]

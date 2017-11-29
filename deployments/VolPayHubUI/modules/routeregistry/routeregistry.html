@@ -1,0 +1,259 @@
+<style>
+.bootstrap-datetimepicker-widget{
+	display: block;
+	background: #9E9E9E;
+	color:#000
+}
+.bootstrap-datetimepicker-widget:hover{
+	background: #9E9E9E;
+}
+.bootstrap-datetimepicker-widget .datepicker-days{
+	display: block;
+}
+.bootstrap-datetimepicker-widget .datepicker-days,.datepicker-months,.datepicker-years:hover{
+	background: #9E9E9E;
+}
+       
+#keywordSearchbtn:focus,#keywordSearchbtn:active{
+	outline:none;
+}
+#searchBox:focus,#searchBox:active{
+	box-shadow: none;
+}
+.nonbtndisable{
+	cursor: not-allowed !important;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    opacity: .65;
+	pointer-events: none;
+}
+tr td span {
+    word-break: break-all;
+    display: inline-block;
+}
+pre {
+ white-space: pre-wrap;       /* css-3 */
+ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+ white-space: -pre-wrap;      /* Opera 4-6 */
+ white-space: -o-pre-wrap;    /* Opera 7 */
+ word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+</style>
+<!-- BEGIN PAGE HEADER-->
+<!--<div class="breadCrumb" set-class-when-at-top="fix-to-top" ng-controller="activeController">
+	<ul class="page-breadcrumb">
+		<li>
+			<i class="fa {{IconName}}"></i>
+			<a href="javascript:void(0);" translate>{{'Sidebar.'+ulName|nospace}}</a>
+			<i class="fa fa-angle-right"></i>
+		</li>
+		<li>
+			<a href="javascript:void(0);" translate class="bold">{{showPageTitle}}</a>
+		</li>
+	</ul>
+</div>-->
+<div class="page-bar breadCrumb" set-class-when-at-top="fix-to-top" ng-controller="activeController">
+    <div class="row">
+    <div class="col-md-6 ">
+    <ul class="page-breadcrumb">
+        
+        <li>
+           <i class="fa fa-television"></i>
+			<a href="javascript:void(0);" translate>Sidebar.SystemData</a>
+			<i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <span translate>Sidebar.RouteRegistry</span>
+        </li>
+    </ul>
+    </div>
+    <!--<div style="clear:both">    </div>-->
+   <div class="col-md-6 headerVals">
+        <div data-ng-include="'templates/header/VPheader.html'" data-ng-controller="headerCtrl"></div>
+
+    </div>
+    </div>
+   
+</div>
+<div class="contentContainer">
+<div class="pageTitle">
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="title__container">
+			<h2 translate>RouteRegistry.PageTitle</h2> 
+			<p translate>RouteRegistry.SubTitle</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row" style="margin: 0;">
+    <div class="countbar-title">
+		<div class="col-md-3 col-sm-3 col-xs-12  ng-binding" style="padding: 0;">
+			<div class="caption">
+				<span class="highlight">{{readData.length}} out of {{restResponse.totalCount}} </span>records shown
+			</div>
+		</div>
+
+		<div class="col-md-9 col-sm-9 col-xs-12">
+			<div class="btn-group" style="float:right;">
+				<button style="border: 1px solid #fff;box-sizing: border-box;margin-left:5px; float: left" ng-click="loadData()" class="btn-trans" tooltip="{{'Refresh'}}"><i class="fa fa-refresh"></i></button>
+				<div id = "Filter" class="dropdown customDropdown" style="float: left;">
+				<button style="border: 1px solid #fff;box-sizing: border-box;margin-left: 5px;" class="btn-trans dropdown-toggle" type="button" data-toggle="dropdown" tooltip="{{'Filter'}}">
+					<i class="fa fa-filter"></i>
+				</button>
+				
+				<ul class="dropdown-menu dropdown-menu-default pull-right xyz" style="min-width: 300px;padding:10px 0px;">
+					<form ng-submit="searchFilter(filterParams)">
+					<li id="Filter" class="dropdown-header" style="padding: 8px 14px 2px 14px;margin: 0;">APPLY FILTER:</li>
+					<div id="Filter" class="row input-group" style="padding: 8px 14px 2px 14px;margin: 0;display: inline-block;width: 100%;">
+						<span class="cstmDrop" style="display:inline-block;color:#000;cursor: pointer;position: relative;box-sizing: border-box;">
+							<input style="color: #000;" type="text" class="form-control ng-pristine ng-untouched ng-valid" ng-model="filterParams.keywordSearch" placeholder="Keyword Search" ng-required="showCustom || filterParams.keywordSearch || filterParams.Status.length ? false : true">
+						</span>						
+						<span class="input-group-addon" style="cursor:pointer;float: left;width: 15%;height: 100%;padding: 9px;" ng-click="searchFilter(filterParams)" ng-class="filterParams.keywordSearch?'':'nonbtndisable'"><i class="fa fa-search"></i></span>
+					</div>
+					<div ng-if="fields.Status.value.length">
+					<li id="Filter" class="dropdown-header">FILTER BY STATUS</li>
+					<div id="Filter" style="padding: 8px 10px 2px 10px;">
+						<button type="button" class="filterBystatus" ng-repeat="x in fields.Status.value" ng-click="setStatusvalue(x.displayvalue,filterParams)"  id="{{x.displayvalue}}">
+						
+							<div class="clearfix" style="background-color: transparent;" ng-if="$index % 2 == 0"></div>
+							<div style="clear:both;" ng-if="$index % 2 == 0"></div>
+							<div style="padding: 0px 5px;float: left;">
+								<span class="fa-wrapper">
+								<i class="fa fa-circle" ng-style="{'color':(x.displayvalue | chooseStatus)}"></i></span>
+								<span style="display: inline-block;font-size: 10px;width: auto;text-align: left;line-height: 10px;padding: 2px;"> {{x.displayvalue  +' ('+x.TotalCount+') '}}</span>
+							</div>
+							<div style="clear:both;"></div>
+						</button>
+						<div style="clear:both;"></div>
+					</div>
+					</div>
+					<div style="clear:both"></div>
+					<li id="Filter" class="dropdown-header">FILTER BY DATE ADDED</li>
+					<div id="Filter" style="padding: 8px 10px 2px 10px;">
+						<button type="button" class="filterBydate" ng-repeat="x in filterBydate" ng-click="setEffectivedate(x,filterParams)"  id="{{x.displayvalue|removeSpace}}">
+							<div class="clearfix" style="background-color: transparent;" ng-if="$index % 2 == 0"></div>
+							<div style="clear:both;" ng-if="$index % 2 == 0"></div>
+							<div style="padding: 0px 5px;float: left;">
+								<span style="display: inline-block;font-size: 10px;width: auto;text-align: left;line-height: 10px;padding: 2px;"> {{x.displayvalue}}</span>
+								<i class="fa fa-calendar"></i>
+							</div>
+							
+							<!-- <div style="clear:both;"></div> -->
+						</button>
+						<div style="clear:both;"></div>
+						<div id = "customPicker" class="row fade-in-up" ng-show="showCustom" style="padding: 10px 0px 0px 0px;">
+							<div class="input-group date" data-date-format="yyyy-mm-dd" data-date-viewmode="years" data-date-minviewmode="months" style="display:inline">
+								<div class="input-group col-md-12" style="padding: 0px 20px;">
+									<input type="text" class="form-control DatePicker" ng-model="filterParams.startDate" id="startDate" style="width:100%" placeholder="From" ng-blur="removeFn()"  onkeypress="return tabOrder(event)" onpaste="return false">
+									<span class="input-group-addon" ng-click="focusInfn('startDate')"><span class="glyphicon glyphicon-calendar"></span></span>
+								</div>
+								<span class="input-group-addon" style="border:none;background-color:transparent;">To</span>
+								<div class="input-group col-md-12" style="padding: 0px 20px;">
+									<input type="text" class="form-control DatePicker" ng-model="filterParams.endDate" id="endDate" style="width:100%" placeholder="To" ng-blur="removeFn()"  onkeypress="return tabOrder(event)" onpaste="return false">
+									<span class="input-group-addon" ng-click="focusInfn('endDate')"><span class="glyphicon glyphicon-calendar"></span></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="clear:both"></div>
+					<div class="row input-group pull-right" style="padding: 8px 14px 2px 14px;margin: 0;">
+						<button type="Button" class="btn-trans btnStyle" tooltip="Cancel" style="margin-right: 10px;" ng-click="clearFilter()"><i class="fa fa-times"></i></button>
+						<button type="Submit" class="btn-trans btnStyle" tooltip="Search" style="cursor: pointer;" ng-class="showCustom || filterParams.keywordSearch || filterParams.Status.length?'cmmonBtnColors':'disabledBtnColor'">
+							<i class="fa fa-search"></i>
+						</button>
+					</div>
+					</form>
+				</ul>				
+			</div>
+				<div class="dwnBtn" style="float:left;margin-left:5px;">
+					<button style="border: 1px solid #fff;box-sizing: border-box;" class="btn-trans dropdown-toggle" type="button" data-toggle="dropdown" ng-click="setHeight($event)" aria-expanded="true"tooltip="{{'Export'}}"> <i class="fa fa-download" aria-hidden="true"></i></button>				
+					<ul class="download-window dropdown-menu dropdown-menu-excel pull-right" style="z-index: 10000;">
+						<li>							
+							<span class="hovercls"><input type="radio" name="excelVal" value="Current" checked class="radiobtns"> Current Screen </span>
+  							<!--<span  ng-class="(readData.length > 19)?'':'disabledBtnColor'">All<br><input type="radio" name="excelVal" value="All"></span>-->
+  							<span class="hovercls"><input type="radio" name="excelVal" value="All" class="radiobtns"> All Matching Filter</span>
+						</li>
+						<!--<li tooltip="{{'PDF'}}" style="float:left" class="disabledBtnColor"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></li>-->
+						<li tooltip="{{'Excel'}}" class="excelprint" style="margin-left:40px;" ng-click="exportAsExcel($event)"><i class="fa fa-file-excel-o fa-fs14" aria-hidden="true"></i>
+						</li>
+						<li tooltip="{{'Print'}}" class="excelprint" ng-click="printFn()"><i class="fa fa-print fa-fs14" aria-hidden="true"></i>
+						</li>
+						
+						
+					</ul>
+				</div>
+				<!-- <button style="border: 1px solid #fff;box-sizing: border-box;border-right:0px;margin-left:5px" class="btn-trans" id="btn_1" ng-class="changeViewFlag?'disabledBtnColor':'cmmonBtnColors'" ng-click="changeViewFlag = !changeViewFlag" tooltip="List View"><i class="fa fa-list"></i></button> -->
+				<!-- <button style="border: 1px solid #fff;box-sizing: border-box;border-left:0px" class="btn-trans" id="btn_2" ng-class="!changeViewFlag?'disabledBtnColor':'cmmonBtnColors'" ng-click="changeViewFlag = !changeViewFlag" tooltip="Grid View"><i class="fa fa-table"></i></button> -->
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</div>
+
+
+
+<div id="statusBox" ng-style="{'top':alertStyle+'px','width':alertWidth+'px'}" class ="animated bounce autoAdjustAlert bold" ng-repeat="alert in alerts" ng-class="{'alert alert-success': alert.type == 'success','alert alert-danger':alert.type == 'danger','alert alert-info':alert.type == 'info'}">
+	<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	{{alert.msg}}
+</div>
+
+
+
+<div class="alert alert-warning" ng-show="!readData.length">
+	<strong><h4  style="margin:0;text-align:center;">Nothing found to display</h4></strong>
+</div>
+
+<div style="position:relative;padding: 0px 15px; border-top: none;" class="row">
+	<div ng-show="readData.length" class="listView dataGroupsScroll FixHead col-md-12" style="overflow-x: auto !important;">
+	<table class="table table-bordered" >
+		<thead>		
+			<tr style="border:none">
+				<th ng-repeat="(key,value) in fields" ng-style="(key != 'RouteInfo' && key != 'Reloadable') ? {'text-align':'center','cursor': 'pointer'}:{'text-align':'center','cursor': 'default'}" ng-click="(key != 'RouteInfo' && key != 'Reloadable') ? gotoSorting(key) : ''">{{value.label}}<span id="{{key}}_Icon" class=""></span></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in readData" ng-class="{oddClas:($index%2)== 1}" style="cursor:pointer" >
+				<td>
+					{{data.Processor}}
+				</td>
+				<td>
+					{{data.InstanceID}}
+				</td>
+				<td>
+					{{data.RouteID}}
+				</td>
+				<td>
+					<pre>{{(data.RouteInfo|hex2a)}}</pre>
+				</td>
+				<td>
+					{{data.DateAdded | datetime}}
+				</td>
+				<td style="text-align:center" style="height:38px" ng-style="{'color':(data.Status | chooseStatus)}">
+				<i style="font-size: 20px;line-height:20px" class="fa fa-circle" tooltip="{{data['Status']}}" tooltip-placement="bottom"></i>
+				</td>
+				<td>
+					<button ng-click="gotoReload(data)" ng-if="data.Reloadable" class="btn btnStyle">Reload</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+ </div>
+</div>
+</div>
+<script>
+$(document).ready(function() {
+    $('body').tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+    });
+	window.setTimeout(function(){
+	$('[data-toggle="tooltip"]').click(function(){
+            $(this).trigger('mouseleave');
+        })   
+	},100)
+
+});
+</script>

@@ -1,0 +1,633 @@
+<!--style>
+option:not(:checked) { 
+        background-color: #FFF; 
+    }
+</style-->
+<style> 
+
+    .group{
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    border: solid 1px #666;
+    }
+
+    .group-conditions{
+    margin-left: 20px;
+    }
+
+ 
+ .checkboxes label {
+  display: block;
+  float: left;
+  padding-right: 10px !important;
+  padding-left: 22px !important;
+  text-indent: -22px !important;
+}
+.checkboxes input {
+  vertical-align: middle !important;
+}
+.checkboxes label span {
+  vertical-align: middle !important;
+  padding-top:5px !important;
+}
+	
+	
+	
+  #attributeTable
+  {
+  padding: 5px 5px !important;
+  }
+ #attributeTable td{
+ border:1px solid #ddd !important;
+ padding: 5px 5px !important;
+ }
+ #attributeTable th{
+ border:1px solid #ddd !important;
+ padding: 5px 5px !important;
+ background-color: #eee !important;
+ }	
+ 
+ 
+  #attributeTable1
+  {
+  padding: 5px 5px !important;
+  }
+ #attributeTable1 td{
+ border:1px solid #ddd !important;
+ padding: 3px 3px !important;
+ }
+ #attributeTable1 th{
+ border:0px solid #ddd !important;
+ padding: 5px 5px !important;
+ }
+
+ #attributeTable1 .btn{
+ }
+	
+</style>
+
+
+<!-- BEGIN PAGE HEADER-->
+<!--<div class="breadCrumb" ng-controller="activeController">
+   <ul class="page-breadcrumb">
+      <li>
+         <i class="fa fa-home"></i>
+         <a href="javascript:void(0)" translate ng-click="goToHome()">Sidebar.Home</a>
+         <i class="fa fa-angle-right"></i>
+      </li>
+      <li>
+          <i class="fa fa-user"></i>
+         <a href="javascript:void(0)" translate>Sidebar.AdminPanel</a>
+         <i class="fa fa-angle-right"></i>
+      </li>
+      <li translate>
+         Sidebar.RolesPermissions
+      </li>
+   </ul>
+</div>-->
+<div class="page-bar breadCrumb" ng-controller="activeController">
+    <div class="row">
+    <div class="col-md-6 ">
+    <ul class="page-breadcrumb">
+        
+        <li>
+             <i class="fa fa-user"></i>
+            <a href="javascript:void(0);" translate>Sidebar.AdminPanel</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <span translate>Sidebar.RolesPermissions</span>
+        </li>
+    </ul>
+    </div>
+    <!--<div style="clear:both">    </div>-->
+   <div class="col-md-6 headerVals">
+        <div data-ng-include="'templates/header/VPheader.html'" data-ng-controller="headerCtrl"></div>
+
+    </div>
+    </div>
+   
+</div>
+
+
+<div class="contentContainer">
+<div class="pageTitle alertWidthonResize">
+   <div class="row">
+      <div class="col-sm-8">
+          <div class="title__container">
+         <h2 translate>RolesPermissions.PageTitle</h2> 
+           <p translate>  RolesPermissions.SubTitle</p>
+           </div>
+      </div>
+      <div class="col-sm-4">
+         <div class="text-right">
+            <a class="btn btn-md btnStyle clr pull-right" style="margin-left: 5px" tooltip="{{(permission.C)?'':'You don&lsquo;t have permission'}}" ng-click="(permission.C)?AddNewRole():''" ng-style="(permission.C)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}" ><i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp; <span>Add Role</span></a>
+         </div>
+      </div>
+   </div>
+
+</div>
+
+
+
+<div class ="animated bounce autoAdjustAlert bold" ng- style="{'top':alertStyle+'px','width':alertWidth+'px'}" ng-repeat="alert in alerts" ng-class="{'alert alert-success': alert.type == 'success','alert alert-danger':alert.type == 'danger'}" >
+   <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+   {{alert.msg}}
+</div>
+
+<div class="panel-group" id="accordion">
+
+   <div class="modal fade" id="roleEdit" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+
+
+           <div class="modal-content" style="border:2px solid #44b6ae">
+              <div class="modal-body">
+                 <h4>Current changes will be lost. Do you wish to continue?</h4>
+              </div>
+              <div class="modal-footer">
+                 <button type="button" class="btn btnStyle" ng-click="looseChanges()">Yes</button>
+                 <button type="button" class="btn btnStyle" data-dismiss="modal">No</button>
+              </div>
+           </div>
+
+        </div>
+     </div>
+
+   <div class="modal fade" id="roleEdit1" role="dialog" tabindex="-1">
+      <div class="modal-dialog">
+
+
+         <div class="modal-content" style="border:2px solid #44b6ae">
+            <div class="modal-body">
+               <h4>Current changes will be lost. Do you wish to continue?</h4>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btnStyle" ng-click="looseChanges1()">Yes</button>
+               <button type="button" class="btn btnStyle" data-dismiss="modal">No</button>
+            </div>
+         </div>
+
+      </div>
+   </div>
+
+   <div class="modal fade" id="resetRoleBox" role="dialog" tabindex="-1">
+      <div class="modal-dialog">
+
+
+         <div class="modal-content" style="border:2px solid #44b6ae">
+            <div class="modal-body">
+               <h4>Are you sure you want to reset?</h4>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btnStyle" ng-click="setDefault()">Yes</button>
+               <button type="button" class="btn btnStyle" data-dismiss="modal">No</button>
+            </div>
+         </div>
+
+      </div>
+   </div>
+
+
+   <div class="alert alert-warning" ng-if="showAlert">
+      <strong><h4  style="margin:0;text-align:center;"> <i class="fa fa-warning"></i> No Records Found</h4></strong>
+   </div>
+   
+   <div class="panel rolesPanel" ng-if="!showAlert" ng-repeat="uRoles in userRoles">
+      <div class="panel-heading">
+         <div class="panel-title">
+
+            <a style="display:inline-block;margin-top:7px;" class="accordion-toggle" data-parent="#accordion"  ng-click="getAccordion(resourceGroup[0].ResourceGroupName,uRoles.RoleID,$index)" data-target="#collapse{{$index}}">
+            {{uRoles.RoleName}} <small ng-if="uRoles.RoleName=='Operator'">| Has access to view, add, edit almost everything except approve...</small>
+            <i class="indicator glyphicon  glyphicon-triangle-right pull-left" style="color:#1D69BB;padding-top:3px;"></i> </a>
+
+            <a style="float:right" ng-init="showRoles=false" ng-style="(permission.U)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}"  ng-click="(permission.U)?getAccordion1(resourceGroup[0].ResourceGroupName,uRoles.RoleID,$index):''"  class="accordion-toggle actionIcons" tooltip="{{(permission.U)?'Edit':'You don&lsquo;t have permission'}}" data-parent="#accordion"><i class="fa fa-pencil-square-o Iclr1" data-target="#+{{(permission.U)?collapse($index):''}}"></i></a>
+            <div style="clear:both"></div>
+
+         </div>
+      </div>
+
+
+
+
+
+      <div id="collapse{{$index}}" class="panel-collapse collapse">
+         <div class="panel-body">
+            <div class="portlet-body">
+               <div ng-if="showRoles1">
+
+                  <form class="form-horizontal" role="form" ng-submit="updateExistingRoles(role)">
+                     <div class="form-group col-md-6" style="margin-top:10px;margin-bottom:34px;">
+                        <label class="control-label bold col-md-3">Role ID <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+                        <div class="col-md-9">
+                           <input type="text" class="form-control" name="RoleID" ng-model="role.RoleID" ng-blur="multipleEmptySpace($event)" required ng-disabled="true">
+                        </div>
+                     </div>
+                     <div class="form-group col-md-6" style="margin-top:10px;margin-bottom:34px;">
+                        <label class="control-label bold col-md-3">Role Name <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+                        <div class="col-md-9">
+                           <input type="text" class="form-control"  placeholder="Enter Role Name" name="RoleName" ng-model="role.RoleName" ng-blur="multipleEmptySpace($event)" required>
+                        </div>
+                     </div>
+
+                     <!--<div class="form-group col-md-6" style="margin-top:10px;margin-bottom:34px;">
+                        <label class="control-label bold col-md-3">Super Admin Flag <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+                        <div class="col-md-9">
+                           <select class="form-control" name="SUPER_ADMIN_FL" ng-model="role.SUPER_ADMIN_FL" required>
+                              <option value="">&#45;&#45;Select&#45;&#45;</option>
+                              <option value="true" ng-selected="(role.SUPER_ADMIN_FL == true)">True</option>
+                              <option value="false" ng-selected="(role.SUPER_ADMIN_FL == false)">False</option>
+
+                           </select>
+                        </div>
+                     </div>-->
+                      <div class="form-group col-md-6" style="margin-top:10px;margin-bottom:34px;">
+                        <label class="control-label bold col-md-3">Role Type <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+                        <div class="col-md-9">
+                           <select class="form-control" name="Status" ng-model="role.RoleType" required ng-disabled="true">
+                              <option value="">--Select--</option>
+                              <option value="Approver">Approver</option>
+                              <option value="Operator">Operator</option>
+                           </select>
+                        </div>
+                     </div>
+
+                     <div class="form-group col-md-6" style="margin-top:10px;margin-bottom:34px;">
+                        <label class="control-label bold col-md-3">Status <span style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+                        <div class="col-md-9">
+                           <select class="form-control" name="Status" ng-model="role.Status" required>
+                              <option value="">--Select--</option>
+                              <option value="ACTIVE">ACTIVE</option>
+                              <option value="INACTIVE">INACTIVE</option>
+                           </select>
+                        </div>
+                     </div>
+
+                     
+
+                     <div style="clear:both"></div>
+
+
+                     <div class="form-group" style="margin-top:25px;margin-right:12px;">
+                        <div class="row">
+                           <div class="col-md-6"></div>
+
+                           <div class="col-md-6" style="width:46%;float:right;">
+                              <div class="col-md-offset-8">
+                                 <button type="submit" class="btn btnStyle">Update Role</button>
+                                 <button type="button" class="btn btnStyle" ng-click="GoBackFromRole($index)" style="margin-left:10px;">Cancel</button></div>
+                           </div>
+                        </div>
+                     </div>
+                  </form>
+
+               </div>
+
+               <div ng-if="showRoles2" class="tabbable-custom">
+
+
+                  <ul class="nav nav-tabs listGroup" style="border-bottom:3px solid black;">
+                     <li class="listGroupList" id="listGroupListID_{{uRoles.RoleID | nospace }}_{{$parent.$index}}" ng-repeat="rGroup in resourceGroup" ng-click="getGroupPermission(rGroup.ResourceGroupName,uRoles.RoleID,$parent.$index,$index)" ng-if="rGroup.ResourceGroupName != 'Reference Data' && rGroup.ResourceGroupName!='Security' && rGroup.ResourceGroupName != 'Utility' && rGroup.ResourceGroupName != 'Home'" ng-class="{'active': ($index == 1)}"> <!--  && rGroup.ResourceGroupName != 'Payment Module' -->
+                        <!--<input type="checkbox" class="check" id="check_{{$parent.$index}}_{{$index}}" ng-click="checkBox($event,$parent.$index);" style="padding-left: 10px;" ng-disabled=""/>-->
+                        <a data-target="#tab_{{uRoles.RoleID | nospace }}_{{$parent.$index}}" data-toggle="tab" aria-expanded="false" class="liAnchor" ng-click="enableStatus(rGroup.ResourceGroupName)">
+                        {{rGroup.ResourceGroupName}}</a>
+                     </li>
+                  </ul>
+                  <div class="tab-content" style="padding-bottom:58px;">
+
+                  <div class="tab-pane" id="tab_{{$index}}">
+<form>
+				  <div class="row" style="margin: 3px 0px 12px;">
+                           <div class="col-md-5" style="padding:0">Set permission for all bank related settings based on the assigned role.</div>
+                           <div class="col-md-7 pull-right" style="display:inline-block;">
+
+
+
+
+                              <div style="display:inline-block;margin-left:15px;float: right;"><span class="ashClass legend" style="width:13px;height:13px;display:inline-block;margin-top:3px;"></span> <span class="bold" style="margin-left:3px;">- Not Set</span></div>
+                              <div style="display:inline-block;margin-left:15px;float: right;"><span class="redClass legend" style="width:13px;height:13px;display:inline-block;margin-top:3px;"></span> <span class="bold" style="margin-left:3px;">- No</span></div>
+                              <div style="display:inline-block;margin-left:15px;float: right;"><span class="greenClass legend" style="width:13px;height:13px;display:inline-block;margin-top:3px;"></span> <span class="bold" style="margin-left:3px;">- Yes</span></div>
+                              <div class="rstRoleBtn cursorPointer" data-toggle="modal" data-target="#resetRoleBox" ng-click="getGroupName($event)" style="float:right;margin-top:-4px;" tooltip="Reset All">
+                                 <span style="float:left;margin-top:2px;">Reset All</span>
+                              </div>
+                              <div style="display:inline-block;margin-left:3px;float:right;" class="roundedbox">
+                                 <span style="float:left;margin-top:2px;" class="bold">Edit All</span>
+                                 <div class="checkbox" style="margin:0;display:inline-block;margin-left:14px;" tooltip="{{(permission.U)?'Edit All':'You don&lsquo;t have permission'}}">
+                                    <span class="checkedcolor green switch green ng-valid ng-pristine ng-untouched checkClass"  ng-style="(permission.U)? {'opacity':'','cursor': 'pointer'}:{'opacity':'0.2','cursor': 'not-allowed'}"  style="width:40px !important; height:20px !important; border-radius:20px !important;margin-top:2px;" ng-click="(permission.U)?checkBox($event,active):''" ng-class="{checked:active,'':!active}">
+                                    <small style="width:18px !important;height:19px !important;"></small>
+                                    <input type="checkbox" style="opacity:0;display:none;" class="check ng-pristine ng-untouched ng-valid"/>
+                                    <span class="switch-text"> </span>
+                                    </span>
+                                 </div>
+                                 <div style="clear:both"></div>
+
+                              </div>
+
+
+                           </div>
+                        </div>
+                        <div class="table-responsive">
+
+                           <table class="table table-bordered" id="rolesTable" ng-if="CurrentTab!='Payment Module'">
+                              <thead>
+                                 <tr>
+                                    <th>
+                                    </th>
+                                    <th class="text-center fixedWidth" ng-repeat="actionheader in resourcePermission[0].PermissionList">
+                                       {{actionheader.Operation|ucwords}}
+                                    </th>
+                                    <!-- <th class="text-center fixedWidth">
+                                       Scope
+                                    </th> -->
+                                    <th class="text-center fixedWidth" ng-show="uRoles.RoleType!='Approver'">
+                                      Attributes
+                                    </th>
+                                 </tr>
+                              </thead> 
+                              <tbody>	
+					  
+                                 <tr ng-repeat-start="resource in resourcePermission">
+
+                                    <td style="text-align:left" nowrap> {{resource.ResourceName}}
+									
+									</td>
+                                    <td ng-repeat="resourceDetail in resource.PermissionList">
+
+                                      <span ng-if="(resourceDetail.Permission == '#ccc')||(!checkBoxChecked)" style="display:inline-block;">
+                                         <i class="fa fa-circle" aria-hidden="true" ng-style="((resourceDetail.Permission == 'yes') && {'color':'green'}) || ((resourceDetail.Permission == 'no') && {'color':'red'}) || ((resourceDetail.Permission == 'not set') && {'color':'rgb(119, 116, 116)'})"></i>
+									  </span>
+									   
+									 <select id="" style="font-family: 'FontAwesome', Helvetica;" class="btn-group form-control" ng-model="resourceDetail.Permission" ng-if="!(resourceDetail.Permission == '#ccc')&& checkBoxChecked" ng-style="((resourceDetail.Permission == 'yes') && {'color':'green'}) || ((resourceDetail.Permission == 'no') && {'color':'red'}) || ((resourceDetail.Permission == 'not set') && {'color':'rgb(119, 116, 116)'})">
+											<option value="yes" style="color:green">&#xf111; Yes</option>
+											<option value="no" style="color:red">&#xf111; No</option>
+											<option value="not set" style="color:rgb(119, 116, 116)">&#xf111; Not Set</option>
+									 </select>
+
+                                    </td>									
+									<!-- <td>
+									<i class="fa fa-circle" aria-hidden="true" style="color:#ccc"></i>
+									</td>	 -->								
+									<td nowrap ng-show="uRoles.RoleType!='Approver'">
+									<i style="font-weight:700" class="fa fa-plus-circle cursorPointer" ng-class="{'fa fa-compress': detailExpanded, 'fa fa-expand': !detailExpanded}" ng-click="getResourceAttributes(resource.ResourceName,uRoles.RoleID);detailExpanded = !detailExpanded"><span style="font-family:'Open Sans',sans-serif;font-weight:200"> Attribute</span></i> 
+									</td>
+                                 </tr>
+								 <tr ng-show="detailExpanded" ng-repeat-end="">
+								<td colspan="{{resourcePermission[0].PermissionList.length+2}}" style="border:1px solid #ddd !important; text-align:left;padding:15px 5px !important;">
+
+    <span style="padding:5px;font-weight:700">{{resource.ResourceName}} Attribute</span>
+	<button class="pull-right" style="margin-bottom:5px;" name="attributeEdit" ng-click="editAllAttribute(action123,buttonStatus)">Edit All Attributes</button>
+    <div class="row">        
+        <div class="col-md-12">	
+		
+			<div class="alert1 alert-info1" style="padding-top:0px !important">
+                <table width="100%" id="attributeTable" cellpadding="5" cellspacing="5">
+					<tr>
+						<th align="center" bgcolor="#eee" width="100px;">Actions</th>
+						<th align="center" bgcolor="#eee">Attribute</th>
+						<th align="center" bgcolor="#eee">Operator</th>
+						<th align="center" bgcolor="#eee">Value</th>
+						<th align="center" bgcolor="#eee">Permissions</th>
+					</tr>
+					
+					
+					<!--  <ul ng-repeat="(key, prop) in trial">
+            <li>{{key}}</li>
+            <ul ng-repeat="val in prop">
+                <ul ng-repeat="(o, values) in val">
+                <li>{{o}}</li>
+                     <ul ng-repeat="i in values">
+                          <li>{{i}}</li>
+                      </ul
+                 </ul>
+            </ul>
+        </ul> -->				
+					
+					<!-- {{trial}} -->
+					<tr ng-repeat="(key, prop) in trial.Attributes" id="aa_{{$index}}">
+					
+						<td style="border-right:0px !important">												
+						<i class="fa fa-pencil" style="cursor:pointer;" ng-click="editRow(key)" aria-hidden="true"></i> | <i class="fa fa-times-circle" style="cursor:pointer;" aria-hidden="true" ng-click="deleteRow(key)"></i>
+						</td>
+						<td style="border-right:0px !important">						
+						<span ng-if="!(action123||Obj[key])">{{trial.Attributes[key].AttributeName}}</span>
+						<!-- <input ng-if="action123" class="form-control" type="text" name="asdsad" value="Branch Code"> -->
+						<select ng-if="(action123||Obj[key])" ng-model="trial.Attributes[key].AttributeName" class="form-control" ng-options="p.AttributeName as p.AttributeName for p in attributes">
+                            <option value="" selected>Select Attribute Name</option>
+                        </select>	
+						
+						</td>
+						<td>
+						<span ng-if="!(action123||Obj[key])">{{trial.Attributes[key].Operator}}</span>
+						<!-- <input ng-if="action123" class="form-control" type="text" name="asdsad" value="="> -->
+						<select  ng-if="(action123||Obj[key])" ng-model="trial.Attributes[key].Operator" class="form-control">
+							<option ng-repeat="operator in operators" value="{{operator}}">{{operator}}</option>
+						</select>
+						
+						</td>
+						<td>
+						<span ng-if="!(action123||Obj[key])">{{trial.Attributes[key].AttributeValue}}</span>
+						<input ng-if="(action123||Obj[key])" class="form-control" ng-model="trial.Attributes[key].AttributeValue" type="text" value="">
+						
+						</td>
+						<td>
+						
+							<select class="form-control js-select2-multiple" data-placeholder="Select an option" ng-init="trial.Attributes[key].Permissions123=trial.Attributes[key].Permissions" name="select_{{resource.ResourceName|removeSpace}}_{{$index}}" ng-model="trial.Attributes[key].Permissions123"  multiple="multiple"  style="width: 100%">
+							<!--<option value="">&#45;&#45;Select&#45;&#45;</option>-->
+							<option ng-repeat="option in operationlist.Operations" value="{{option.Operation}}">{{option.Operation}}</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+					<td colspan="5">
+					
+					<button class="pull-right" style="margin-top:5px;" name="attributeEdit" value="Edit Attributes" ng-click="addAttribute(action123,buttonStatus,resource.ResourceName,uRoles.RoleID,trial.Attributes.length)"> Add New</button>
+					</td>
+					</tr>					
+				</table>
+            </div>
+        </div>
+    </div>
+						<div style="padding-top:10px;">
+								<button type="button" ng-click="submitAllAttribute(trial, resource.ResourceName,uRoles.RoleID)">Submit </button>
+						        <button type="button" ng-click="detailExpanded = false;" style="margin-left:7px;">Cancel</button> 
+						 </div>
+								</td>
+								</tr>	
+                              </tbody>
+                           </table>
+						   
+						   <table class="table table-bordered" id="rolesTable" ng-if="CurrentTab=='Payment Module'">
+							<tr>
+								<th></th>
+								<th ng-repeat="ss in actionHeader123">{{ss|camelCaseFormatter |ucwords}}</th>
+								
+                                    <!-- <th class="text-center fixedWidth">
+                                       Scope
+                                    </th> -->
+                                    <th class="text-center fixedWidth" ng-show="uRoles.RoleType!='Approver'">
+                                       Attributes
+                                    </th>
+							</tr>
+							<tr ng-repeat-start="resource in resourcePermission">
+                                <td style="text-align:left" nowrap> {{resource.ResourceName}}</td>
+                                <td style="text-align:left" nowrap ng-repeat="ss in actionHeader123">
+								
+								<!-- <span ng-if="getActionValue123(ss,resource.PermissionList)?'true':''">{{ss|ucwords}}</span> -->
+								
+								
+								 <!-- ng-repeat="dd in resource.PermissionList">{{actionHeader123[$index]}} {{dd}}
+									<span ng-if="actionHeader123[$index]==dd.Operation">jj</span> -->
+								
+								<span ng-if="((resourceDetail.Permission == '#ccc')||(!checkBoxChecked))&& getActionValue123(ss,resource.PermissionList).check" style="display:inline-block;">
+                                         <i class="fa fa-circle" aria-hidden="true" ng-style="((getActionValue123(ss,resource.PermissionList).Permission == 'yes') && {'color':'green'}) || ((getActionValue123(ss,resource.PermissionList).Permission == 'no') && {'color':'red'}) || ((getActionValue123(ss,resource.PermissionList).Permission == 'not set') && {'color':'rgb(119, 116, 116)'})"></i>
+										</span>
+									<select id="" style="font-family: 'FontAwesome', Helvetica; width:90px;" class="btn-group form-control" ng-model="getActionValue123(ss,resource.PermissionList).Permission" ng-if="!(getActionValue123(ss,resource.PermissionList).Permission == '#ccc')&& checkBoxChecked && getActionValue123(ss,resource.PermissionList)" ng-style="((getActionValue123(ss,resource.PermissionList).Permission == 'yes') && {'color':'green'}) || ((getActionValue123(ss,resource.PermissionList).Permission == 'no') && {'color':'red'}) || ((getActionValue123(ss,resource.PermissionList).Permission == 'not set') && {'color':'rgb(119, 116, 116)'});">
+											<option value="yes" style="color:green">&#xf111; Yes</option>
+											<option value="no" style="color:red">&#xf111; No</option>
+											<option value="not set" style="color:rgb(119, 116, 116)">&#xf111; Not Set</option>
+										</select>
+								
+								
+								</td>
+								<!-- <td>
+									<i class="fa fa-circle" aria-hidden="true" style="color:#ccc"></i>
+									</td> -->									
+									<td nowrap ng-show="uRoles.RoleType!='Approver'">
+									<i style="font-weight:700" class="fa fa-plus-circle cursorPointer" ng-class="{'fa fa-compress': detailExpanded, 'fa fa-expand': !detailExpanded}" ng-click="getResourceAttributes(resource.ResourceName,uRoles.RoleID);detailExpanded = !detailExpanded"><span style="font-family:'Open Sans',sans-serif;font-weight:200"> Attribute</span></i> 
+									</td>
+							</tr>
+							<tr ng-show="detailExpanded" ng-repeat-end="">
+								<td colspan="{{actionHeader123.length+2}}" style="border:1px solid #ddd !important; text-align:left;padding:15px 5px !important;">
+
+    <span style="padding:5px;font-weight:700">{{resource.ResourceName}} Attribute</span>
+	<button class="pull-right" style="margin-bottom:5px;" name="attributeEdit" ng-click="editAllAttribute(action123,buttonStatus)">Edit All Attributes</button>
+    <div class="row">        
+        <div class="col-md-12">	
+		
+			<div class="alert1 alert-info1" style="padding-top:0px !important">
+                <table width="100%" id="attributeTable" cellpadding="5" cellspacing="5">
+					<tr>
+						<th align="center" bgcolor="#eee" width="100px;">Actions</th>
+						<th align="center" bgcolor="#eee">Attribute</th>
+						<th align="center" bgcolor="#eee">Operator</th>
+						<th align="center" bgcolor="#eee">Value</th>
+						<th align="center" bgcolor="#eee">Permissions</th>
+					</tr>
+					
+					<tr ng-repeat="(key, prop) in trial.Attributes" id="aa_{{$index}}">
+					
+				
+					
+						<td style="border-right:0px !important">												
+						<i class="fa fa-pencil" ng-click="editRow(key)" aria-hidden="true"></i> | <i class="fa fa-times-circle" aria-hidden="true" ng-click="deleteRow(key)"></i>
+						</td>
+						<td style="border-right:0px !important">						
+						<span ng-if="!(action123||Obj[key])">{{trial.Attributes[key].AttributeName}}</span>
+						<!-- <input ng-if="action123" class="form-control" type="text" name="asdsad" value="Branch Code"> -->
+						<select ng-if="(action123||Obj[key])" ng-model="trial.Attributes[key].AttributeName" class="form-control" ng-require="true" ng-options="p.AttributeName as p.AttributeName for p in attributes">
+                            <option value="" selected>Select Attribute Name</option>
+                        </select>	
+						
+						</td>
+						<td>
+						<span ng-if="!(action123||Obj[key])">{{trial.Attributes[key].Operator}}</span>
+						<!-- <input ng-if="action123" class="form-control" type="text" name="asdsad" value="="> -->
+						<select  ng-if="(action123||Obj[key])" ng-model="trial.Attributes[key].Operator" class="form-control">
+							<option ng-repeat="operator in operators" value="{{operator}}">{{operator}}</option>
+						</select>
+						
+						</td>
+						<td>
+						<span ng-if="!(action123||Obj[key])">{{trial.Attributes[key].AttributeValue}}</span>
+						<input ng-if="(action123||Obj[key])" class="form-control" ng-model="trial.Attributes[key].AttributeValue" type="text" value="">
+						
+						</td>
+						<td>
+						<!-- <select class="form-control" data-placeholder="Select an option" ng-init="trial.Attributes[key].Permissions123=trial.Attributes[key].Permissions" name="trial.Attributes[key].Permissions123" ng-model="trial.Attributes[key].Permissions123"  multiple="multiple"  style="width: 100%">                        
+                        <option ng-repeat="option in operationlist.Operations" value="{{option.Operation}}">{{option.Operation}}</option>
+						</select> -->						
+						<select class="form-control js-select2-multiple" data-placeholder="Select an option" ng-init="trial.Attributes[key].Permissions123=trial.Attributes[key].Permissions" name="select_{{resource.ResourceName|removeSpace}}_{{$index}}" ng-model="trial.Attributes[key].Permissions123"  multiple="multiple"  style="width: 100%">							
+							<option ng-repeat="option in operationlist.Operations" value="{{option.Operation}}">{{option.Operation}}</option>
+						</select>
+						
+						</td>
+					</tr>
+					<tr>
+					<td colspan="5">
+					
+					<button class="pull-right" style="margin-top:5px;" name="attributeEdit" value="Edit Attributes" ng-click="addAttribute(action123,buttonStatus,resource.ResourceName,uRoles.RoleID,trial.Attributes.length)"> Add New</button>
+					</td>
+					</tr>
+					
+				</table>
+            </div>
+        </div>
+    </div>
+						<div style="padding-top:10px;">
+								<button type="button" ng-click="submitAllAttribute(trial, resource.ResourceName,uRoles.RoleID)">Submit </button>
+						        <button type="button" ng-click="detailExpanded = false;" style="margin-left:7px;">Cancel</button> 
+						 </div>
+								</td>
+								</tr>
+							
+						   </table>
+						   
+						   
+                        </div>
+						 <button type="button" class="btn btnStyle" ng-click="saveAll(resourcePermission,RoleID,$index)" ng-if="checkBoxChecked">Update </button>
+						 <button type="button" class="btn btnStyle" ng-click="keepOriginal()" ng-if="checkBoxChecked" style="margin-left:7px;">Cancel</button>
+
+                     </div>
+                     
+</form>      
+	  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   
+</div>
+
+</div>
+
+<script>
+   function toggleChevron(e) {
+
+    $(e.target)
+           .prev('.panel-heading')
+           .find("i.indicator")
+           .toggleClass('glyphicon-triangle-bottom glyphicon-triangle-right');
+   }
+   $('#accordion').on('hidden.bs.collapse', toggleChevron);
+   $('#accordion').on('shown.bs.collapse', toggleChevron);
+   
+   $('.btn-toggle').click(function() {
+    $(this).find('.btn').toggleClass('active');  
+    
+    if ($(this).find('.btn-primary').size()>0) {
+    	$(this).find('.btn').toggleClass('btn-primary');
+    }
+    if ($(this).find('.btn-danger').size()>0) {
+    	$(this).find('.btn').toggleClass('btn-danger');
+    }
+    if ($(this).find('.btn-success').size()>0) {
+    	$(this).find('.btn').toggleClass('btn-success');
+    }
+    if ($(this).find('.btn-info').size()>0) {
+    	$(this).find('.btn').toggleClass('btn-info');
+    }
+    
+    $(this).find('.btn').toggleClass('btn-default');
+       
+});
+
+$('form').submit(function(){
+	alert($(this["options"]).val());
+    return false;
+});
+   $(document).ready(function(){
+   
+   });
+</script>

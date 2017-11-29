@@ -1,0 +1,360 @@
+[
+	{
+		"ParentName": "Home",
+		"Link": "app",
+		"IconName": "fa fa-home",
+		"subMenu":[
+			{
+				"Id": "043",
+				"Name": "My Profile",
+				"Link": "myprofile",
+				"IconName": "fa-user-circle"
+			},
+			{
+				"Id": "005",
+				"Name": "Alerts & Notifications",
+				"Link": "notifications",
+				"IconName": "fa-bell"
+			}
+
+		]
+	},
+	{
+		"ParentName": "Payment Module",
+		"Link": "app",
+		"IconName": "fa fa-cog",
+		"subMenu": [
+			{
+				"Id": "004",
+				"Name": "Payments Dashboard",
+				"Link": "paymentsummary",
+				"IconName": "fa-tachometer"
+			},
+			{
+				"Id": "003",
+				"Name": "All Payments",
+				"Link": "payments",
+				"IconName": "fa-check-circle-o"
+			},
+			{
+				"Id": "051",
+				"Name": "Instructions Dashboard",
+				"Link": "filesummary",
+				"IconName": "fa-pie-chart"
+			},
+			{
+				"Id": "002",
+				"Name": "Received Instructions",
+				"Link": "instructions",
+				"IconName": "fa-file-text-o"
+			},
+			{
+				"Id": "002",
+				"Name": "Distributed Instructions",
+				"Link": "distributedinstructions",
+				"IconName": "fa-file-text-o"
+			},
+			{
+				"Id":"052",
+				"Name": "Initiate Transaction",
+				"Link": "initiatetransaction",
+				"IconName": "fa-archive"
+			},
+			{
+				"Id": "044",
+				"Name": "File Upload",
+				"Link": "fileupload",
+				"IconName": "fa-upload"
+			}
+		]
+	},
+	{
+		"ParentName": "Admin Panel",
+		"Link": "app",
+		"IconName": "fa-user",
+		"subMenu": [
+			{
+				"Id": "001",
+				"Name": "User Management",
+				"Link": "users",
+				"IconName": "fa-tachometer"
+			},
+			{
+				"Id": "011",
+				"Name": "Roles & Permissions",
+				"Link": "roles",
+				"IconName": "fa-superpowers"
+			}
+		]
+	},
+	{
+		"ParentName": "Bank Data",
+		"Link": "bankData",
+		"IconName": "fa-building-o",
+		"subMenu": [
+			{
+				"Id": "031",
+				"Name": "Calendar",
+				"Link": "calendars",
+				"IconName": "fa-calendar"
+			},
+			{
+				"Id": "032",
+				"Name": "Country",
+				"Link": "countries",
+				"IconName": "fa-globe"
+			},
+			{
+				"Id": "038",
+				"Name": "Region",
+				"Link": "regions",
+				"IconName": "fa-object-group"
+			},
+			{
+				"Id": "033",
+				"Name": "Currency",
+				"Link": "currencies",
+				"IconName": "fa-database"
+			},
+			{
+				"Id": "019",
+				"Name": "Office",
+				"Link": "offices",
+				"IconName": "fa-building"
+			},
+			{
+				"Id": "013",
+				"Name": "Branch",
+				"Link": "branches",
+				"IconName": "fa-university"
+			},
+			{
+				"Id": "037",
+				"Name": "Department",
+				"Link": "departments",
+				"IconName": "fa-building-o"
+			},
+			{
+				"Id": "036",
+				"Name": "Membership",
+				"Link": "memberships",
+				"IconName": "fa-object-group"
+			},
+			{
+				"Id": "017",
+				"Name": "Business Rules",
+				"Link": "businessrules",
+				"IconName": "fa-tasks"
+			},
+			{
+				"Id": "018",
+				"Name": "FX Rates",
+				"Link": "fxratecharts", 
+				"IconName": "fa-random"
+			},
+			{
+				"Id": "073",
+				"Name": "MPI Template",
+				"Link": "mpitemplate",
+				"IconName": "fa-copy"
+			}
+		]
+	},
+	{
+		"ParentName": "Onboarding Data",
+		"Link": "bankData",
+		"IconName": "fa-crosshairs",
+		"subMenu": [
+			{
+				"Id": "027",
+				"Name": "Service Group",
+				"Link": "servicegroups",
+				"IconName": "fa-cogs"
+			},
+			{
+				"Id": "026",
+				"Name": "Service",
+				"Link": "services",
+				"IconName": "fa-cog"
+			},
+			{
+				"Id": "029",
+				"Name": "Product",
+				"Link": "products",
+				"IconName": "fa-cogs"
+			},
+			{
+				"Id": "022",
+				"Name": "Party",
+				"Link": "parties",
+				"IconName": "fa-cubes"
+			},
+			{
+				"Id": "028",
+				"Name": "Account",
+				"Link": "accounts",
+				"IconName": "fa-users"
+			},
+			{
+				"Id": "024",
+				"Name": "Transport",
+				"Link": "transports",
+				"IconName": "fa-credit-card"
+			},
+			{
+				"Id": "023",
+				"Name": "Party Service Association",
+				"Link": "partyserviceassociations",
+				"IconName": "fa-sitemap"
+			}
+		]
+	},
+	{
+		"ParentName": "Distribution Data",
+		"Link": "bankData",
+		"IconName": "fa-modx",
+		"subMenu": [
+			{
+				"Id": "034",
+				"Name": "Country Correspondent",
+				"Link": "countrycorrespondents",
+				"IconName": "fa-futbol-o"
+			},
+			{
+				"Id": "016",
+				"Name": "Currency Correspondent",
+				"Link": "currencycorrespondents",
+				"IconName": "fa-usd"
+			},
+			{
+				"Id": "014",
+				"Name": "Method Of Payment",
+				"Link": "methodofpayments",
+				"IconName": "fa-credit-card"
+			},
+			{
+				"Id": "039",
+				"Name": "MOP Priority",
+				"Link": "methodofpaymentpriorities",
+				"IconName": "fa-object-group"
+			},
+			{
+				"Id": "035",
+				"Name": "CutOff",
+				"Link": "cutoffs",
+				"IconName": "fa-asterisk"
+			},
+			{
+				"Id": "071",
+				"Name": "Bulk Profile",
+				"Link": "bulkprofiles",
+				"IconName": "fa-asterisk"
+			},
+			{
+				"Id": "072",
+				"Name": "Bulk Profile Override",
+				"Link": "bulkprofileoverrides",
+				"IconName": "fa-asterisk"
+			}
+		]
+	},
+	{
+		"ParentName": "System Data",
+		"Link": "bankData",
+		"IconName": "fa-television",
+		"subMenu": [
+			{
+				"Id": "010",
+				"Name": "Application Config",
+				"Link": "configurations",
+				"IconName": "fa-cogs"
+			},
+			{
+				"Id": "053",
+				"Name": "Business Function",
+				"Link": "businessfunctions",
+				"IconName": "fa-tasks"
+			},
+			{
+				"Id": "054",
+				"Name": "Business Process",
+				"Link": "businessprocesses",
+				"IconName": "fa-spinner"
+			},
+			{
+				"Id": "055",
+				"Name": "VolPay ID Configuration",
+				"Link": "idconfigurations",
+				"IconName": "fa-th-large"
+			},
+			{
+				"Id": "060",
+				"Name": "Action Definition",
+				"Link": "actiondefinitions",
+				"IconName": "fa-inbox"
+			},
+			{
+				"Id": "064",
+				"Name": "Status Definition",
+				"Link": "statusdefinitions",
+				"IconName": "fa-envelope"
+			},
+			{
+				"Id": "062",
+				"Name": "Incidence Definition",
+				"Link": "incidencedefinitions",
+				"IconName": "fa-filter"
+			},
+			{
+				"Id": "063",
+				"Name": "Status Action",
+				"Link": "statusactions",
+				"IconName": "fa-external-link"
+			},
+			{
+				"Id": "070",
+				"Name": "Log Configuration",
+				"Link": "logconfig",
+				"IconName": "fa-circle-o-notch"
+			},
+			{
+				"Id": "074",
+				"Name": "Approval Condition",
+				"Link": "approvalcondition",
+				"IconName": "fa-circle-o-notch"
+			},
+			{
+				"Id": "075",
+				"Name": "Route Registry",
+				"Link": "routeregistry",
+				"IconName": "fa-circle-o-notch"
+			}
+		]
+	},
+	{
+		"ParentName": "Security",
+		"Link": "app",
+		"IconName": "fa-user-secret",
+		"subMenu": [
+			{
+				"Id": "041",
+				"Name": "Approvals",
+				"Link": "approvals",
+				"IconName": "fa-thumbs-o-up"
+			}
+		]
+	},
+	{
+		"ParentName":"Reports",
+		"IconName":"fa-file",
+		"Link":"app",
+		"subMenu":[
+						{
+							"Id": "046",
+							"Name" : "Report",
+							"Link" : "reportgenerate",
+							"IconName": "fa-book"
+						}
+				  ]
+	}
+]

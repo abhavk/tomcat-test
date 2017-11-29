@@ -1,0 +1,16 @@
+[ 
+ {
+    "ParentName": "Home",
+    "Link": "newmodules",
+    "IconName": "fa-building-o",
+	"ExternalMenu":false,
+	"subMenu": [
+		{
+        "Name": "My Dashboard",
+		"controller":"mydashboardCtrl",
+		"PlugPlay":true,
+		"IconName": "fa-area-chart"
+       }
+		] 
+	}
+]

@@ -1,0 +1,1065 @@
+<style>
+    .badge {
+        white-space: normal;
+        border-radius: 12px !important;
+    }
+
+    .batchHeight {
+        /*padding-bottom: 20px;*/
+        text-align: center;
+        padding: 5px 10px;
+        width: 120px;
+        /*height: 24px;*/
+    }
+
+    .open>a {
+        box-shadow: none;
+    }
+.all-payment-repair-label{
+    color: #8a6d3b;
+}
+    .all-payment-primary {
+
+        /*border: 2px solid #347ab8;*/
+        border-left: 5px solid #347ab8 !important;
+        box-shadow: 3px 3px 2px rgba(168, 203, 234, 0.67)
+    }
+    .all-payment-repair {
+
+        /*border: 2px solid #347ab8;*/
+        border-left: 5px solid #8a6d3b !important;
+        box-shadow: 3px 3px 2px rgba(233, 204, 154, 0.6)
+    }
+
+    .all-payment-success {
+        border-left: 5px solid #05862a !important;
+        box-shadow: 3px 3px 2px rgba(177, 212, 187, 0.65)
+        /*border: 2px solid #05862a;*/
+    }
+
+    .all-payment-danger {
+        border-left: 5px solid #c2272d !important;
+        box-shadow: 3px 3px 2px rgba(255, 158, 162, 0.61)
+        /*border: 2px solid #c2272d;*/
+    }
+
+    .all-payment-warning {
+        border-left: 5px solid #ff6f00 !important;
+        box-shadow: 3px 3px 2px rgba(241, 213, 192, 0.78)
+        /*border: 2px solid #ff6f00;*/
+    }
+
+    .all-payments-widget {
+        background: #fff;
+        margin-bottom: 10px;
+        /*border-radius:4px !important;*/
+        //box-shadow: 3px 3px 2px #ccc;
+    }
+.all-payments-widget:hover{
+    opacity: .8;
+}
+    .all-payment-success-label {
+        color: #05862a;
+    }
+
+    .all-payment-primary-label {
+        color: #347ab8;
+    }
+
+    .all-payment-danger-label {
+        color: #c2272d;
+    }
+
+    .all-payment-warning-label {
+        color: #ff6f00;
+    }
+    /*.all-payment-success-bottom{
+    border-bottom: 1px solid #05862a;
+}
+.all-payment-primary-bottom{
+     border-bottom: 1px solid #347ab8;
+}
+.all-payment-danger-bottom{
+     border-bottom: 1px solid #c2272d;
+}
+.all-payment-warning-bottom{
+     border-bottom: 1px solid #ff6f00;
+}*/
+
+    .header-row {
+        padding: 5px 0;
+    }
+
+    .header-row .list-inline li {
+        padding-left: 0;
+    }
+
+    .header-row .list-inline li span {
+        font-weight: 600;
+        font-size: 15px;
+        border-right: 2px solid;
+        padding-right: 10px;
+    }
+/*.header-row .list-inline li:hover span{
+    border: none !important;
+}*/
+    .header-row .list-inline li:last-child span {
+        padding: 0;
+    }
+
+    .header-row,
+    .flex-row {
+        background: #e8e9eb;
+    }
+
+    .flex-row {
+        padding: 3px 0;
+    }
+
+    .info-row {
+        padding: 5px 0;
+        background: #e8e9eb;
+    }
+
+    .header-row .list-inline li:last-child span {
+        border: none;
+    }
+
+    .pull-right1 {
+        float: right !important;
+    }
+
+    \
+</style>
+<!-- BEGIN PAGE HEADER-->
+<!--<div class="breadCrumb" ng-controller="activeController">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="javascript:void(0);" translate ng-click="goToHome()">Sidebar.Home</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+             <i class="fa fa fa-cog"></i>
+            <a href="javascript:void(0);" translate>Sidebar.PaymentModule</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li translate>
+            AllPayments.PageTitle
+        </li>
+    </ul>
+</div>-->
+<div class="page-bar breadCrumb" ng-controller="activeController">
+    <div class="row">
+        <div class="col-md-6 ">
+            <ul class="page-breadcrumb">
+
+                <li>
+                    <i class="fa fa-cog"></i>
+                    <a href="javascript:void(0);" translate>Sidebar.PaymentModule</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li class="cursorPointer">
+                    <span onclick="sidebarMenuControl('PaymentModule', 'AllPayments')" translate>  AllPayments.PageTitle</span>
+                </li>
+            </ul>
+        </div>
+        <!--<div style="clear:both">    </div>-->
+        <div class="col-md-6 headerVals">
+            <div data-ng-include="'templates/header/VPheader.html'" data-ng-controller="headerCtrl"></div>
+
+        </div>
+    </div>
+
+</div>
+<div class="contentContainer">
+    <div class="pageTitle alertWidthonResize">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="title__container">
+                    <h2 translate>AllPayments.PageTitle</h2>
+                    <p translate>AllPayments.SubTitle</p>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div>
+                    <div>
+                        <div class="modal fade" id="myModal" role="dialog" tabindex="-1" data-backdrop="static" ng-keydown="dummy($event)">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header modalHeaderColor">
+                                        <button type="button" class="close" data-dismiss="modal" ng-click="filterCancel()">&times;</button>
+                                        <h4 class="modal-title">Select the Dates</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form ng-submit="FilterByDate1('custom')">
+                                            <div class="col-md-12" style="padding:15px;">
+                                                <div class="input-group date" data-date-format="yyyy-mm-dd" data-date-viewmode="years" data-date-minviewmode="months">
+                                                    <input type="text" class="form-control" ng-model="startDate" id="startDate" style="width:100%" placeholder="From" ng-blur="removeFn()"
+                                                        onkeypress="return tabOrder(event)" onpaste="return false" required>
+                                                    <span class="input-group-addon" ng-click="focusInfn('startDate')"><span class="glyphicon glyphicon-calendar"></span></span>
+
+                                                    <span class="input-group-addon" style="border:none;background-color:transparent;">To</span>
+                                                    <input type="text" class="form-control" ng-model="endDate" id="endDate" style="width:100%" placeholder="To" ng-blur="removeFn()"
+                                                        onkeypress="return tabOrder(event)" onpaste="return false" required>
+                                                    <span class="input-group-addon" ng-click="focusInfn('endDate')"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 txtCenter" style="padding:15px;">
+                                                <button type="submit" id="okBtn" class="btn btnStyle">OK</button>
+                                                <button type="button" class="btn btnStyle" data-dismiss="modal">Cancel</button>
+                                                <button type="reset" class="btn btnStyle" ng-click="CustomDatesReset()">Reset</button>
+                                            </div>
+                                            <div style="clear:both"></div>
+                                        </form>
+
+
+
+                                    </div>
+                                    <!--<div class="modal-footer" style="text-align:center;">
+                                    <button type="button" id="okBtn" class="btn btnStyle" data-dismiss="modal" ng-click="FilterByDate1('custom')">OK</button>
+                                    <button type="button" class="btn btnStyle" data-dismiss="modal" ng-click="filterCancel()">Cancel</button>
+                                    <button type="button" class="btn btnStyle" ng-click="CustomDatesReset()">Reset</button>
+
+                                </div>-->
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--alert ng-repeat="alert in ErrorAlerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert-->
+
+
+
+    <div ng-style="{'top':alertStyle+'px','width':alertWidth+'px'}" class="autoAdjustAlert bold" ng-class="{'alert alert-success': alert.type == 'success','alert alert-danger':alert.type == 'danger'}"
+        ng-repeat="alert in alerts">
+        <a class="close" data-dismiss="alert" aria-label="close">&times;</a> {{alert.msg}}
+    </div>
+    <div class="searchholder">
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-12">
+                <div class="form-group ">
+                    <div class="input-group">
+
+
+                        <input type="text" ng-model="paylistsearch" placeholder="Instruction ID" class="searchBox" onkeydown='return allowOnlyNumbersAlone(event)'
+                            onkeyup="keyupfn(event)" ng-keyup="checkinfo($event)" ng-mouseup="checkinfo($event)" id="searchBox"
+                        />
+
+                        <span class="input-group-addon search-addon" ng-click="PaymentListSearch()" tooltip="Search" style="cursor:pointer;background-color:#fff;border:none;">
+                                <i class="fa fa-search"></i>
+                            </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-6">
+                <div class="dropdown" style="width: 100%;">
+                    <button class="btn btn-block btnStyle dropdown-toggle mega-dropdown1" type="button" id="DropId" data-toggle="dropdown" translate>BtnGroup.SavedSearch
+    </button>
+
+                    <ul class="dropdown-menu mega-dropdown-menu1 customDropDown1" role="menu" aria-labelledby="menu1">
+                        <li ng-repeat="data in lskey">
+                            <div class="row" style="margin:0;margin-top:5px;margin-bottom:5px;">
+                                <div class="col-md-10" ng-click="selectSearch($event,$index)">
+                                    <span style="margin-left:10px;display:inline-block;margin-top:3px;">{{data}}</span>
+                                </div>
+                                <div class="col-md-2" ng-if="data != 'New Search'">
+                                    <div class="cancel"><i style="border:1px solid #DE2F2B;background-color:#D05450;border-radius:10px;color:#F5E6E6;font-size:13px;"
+                                            class="fa fa-times" ng-click="confirmationAlert($index)" data-toggle="modal" data-target="#alertBox"></i></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-sm-6">
+                <button type="button" class="btn btnStyle" ng-init="PaymentAdvancedSearch=true;" ng-click="PaymentAdvancedSearch=!PaymentAdvancedSearch;showSearchWarning = false;"
+                    style="width:100%;">
+                            <span ng-if="PaymentAdvancedSearch" style="color:#fff !important;"><span translate>BtnGroup.ShowAdvancedSearch</span> &nbsp;<i style="padding-top:2px;" class="bold fa fa-angle-right circle-o"></i>{{aaa()}}</span>
+                            <span ng-if="!PaymentAdvancedSearch" style="color:#fff !important;"><span translate>BtnGroup.HideAdvancedSearch</span> &nbsp;<i style="padding-top:2px;" class="bold fa fa-angle-down circle-o"></i></span>
+                        </button>
+            </div>
+
+
+
+
+        </div>
+    </div>
+    <!--<div class=" searchholder">
+    <div class="row">
+       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+           <div class="ccol-lg-12 col-md-12 col-sm-12">
+            <div class="form-group ">
+                <div class="input-group">
+
+                    <input type="text" ng-model="paylistsearch" placeholder="Instruction ID" class="searchBox" onkeydown='return allowOnlyNumbersAlone(event)' onkeyup="keyupfn(event)"  ng-keyup="checkinfo($event)" ng-mouseup="checkinfo($event)" id="searchBox"/>
+
+                            <span class="input-group-addon"  ng-click="PaymentListSearch()" tooltip="Search" style="cursor:pointer;background-color:#fff;border:none;"    >
+                                <i class="fa fa-search"></i>
+                            </span>
+                </div>
+            </div>
+            </div>
+        </div>
+
+     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+         <div class="row">
+            <div class="col-lg-6 col-md-5 col-sm-6 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="dropdown" style="width:100%;">
+
+                    <ul class="btn btn-default" style="width:100%;">
+                        <li class="dropdown mega-dropdown1" style="width:100%;"> 
+                            <a class="dropdown-toggle btn" style="text-decoration:none;padding:0 115px;width:100%;" id="DropId" translate>
+                            BtnGroup.SavedSearch
+                        </a>
+
+                            <ul class="dropdown-menu mega-dropdown-menu1 customDropDown1">
+                                <li ng-repeat="data in lskey">
+
+                                    <div class="row" style="margin:0;margin-top:5px;margin-bottom:5px;">
+                                        <div class="col-md-10" ng-click="selectSearch($event,$index)">
+                                            <span style="margin-left:10px;display:inline-block;margin-top:3px;">{{data}}</span>
+                                        </div>
+
+                                        <div class="col-md-2" ng-if="data != 'New Search'">
+
+                                            <div class="cancel"><i style="border:1px solid #DE2F2B;background-color:#D05450;border-radius:10px;color:#F5E6E6;font-size:13px;" class="fa fa-times" ng-click="confirmationAlert($index)" data-toggle="modal" data-target="#alertBox"></i></div>
+
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12" style="margin-top:1px">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    
+                        <button type="button" class="btn" ng-init="PaymentAdvancedSearch=true;" ng-click="PaymentAdvancedSearch=!PaymentAdvancedSearch;showSearchWarning = false;" style="width:100%;">
+                            <span ng-if="PaymentAdvancedSearch" style="color:#fff !important;"><span translate>BtnGroup.ShowAdvancedSearch</span> &nbsp;<i style="padding-top:2px;" class="bold fa fa-angle-right circle-o"></i></span>
+                            <span ng-if="!PaymentAdvancedSearch" style="color:#fff !important;"><span translate>BtnGroup.HideAdvancedSearch</span> &nbsp;<i style="padding-top:2px;" class="bold fa fa-angle-down circle-o"></i></span>
+                        </button>
+                        </div>
+                        
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    </div>
+</div>-->
+
+
+
+    <div class="modal fade" tabindex="-1" id="alertBox" role="dialog">
+        <div class="modal-dialog modal-md" style="top: 200px;">
+            <div class="modal-content modalbdy animated tada">
+                <div class="modal-header" style="padding: 0px !important; border: 0px !important">
+                    <div class="iconBox"><i class="exclaLine"></i><i class="exclaDot"></i></div>
+                </div>
+                <div class="modal-body" style="padding: 0px !important; border: 0px !important">
+                    <h1>Are you sure?</h1>
+                    <h4>You will not be able to recover this Data!</h4>
+                </div>
+                <div class="modal-footer modalftr">
+                    <button tabindex="0" type="button" class="buton cancl" data-dismiss="modal">Cancel</button>
+                    <button tabindex="0" type="button" class="buton yess" ng-click="deleteSelectedSearch($event)">Yes, delete it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="myModal1" class="modal fade" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+
+
+            <div class="modal-content">
+                <div class="modal-header modalHeaderColor">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" style="line-height:0.5 !important;">Save Search </h4>
+                </div>
+                <div class="modal-body">
+                    <form ng-submit="saveSearch()">
+                        <div class="form-group" style="padding:10px;margin:0">
+                            <label>Search Name <span ng-hide="false" style="color:#e02222;font-size:12px;padding-left:2px" aria-required="true">*</span></label>
+                            <input class="form-control" type="text" name="searchname" required ng-model="searchname" placeholder="Enter the search name"
+                            />
+                        </div>
+                        <p ng-show="isSearchNameFilled" style="color:red;margin-left:10px;">*Please enter the search name...</p>
+
+                        <div ng-show="searchNameDuplicated" class="alert alert-warning form-group fade-in-up" style="text-align:center;">
+                            <b>Search name already exists. Do you want to overwrite?</b><br/><br/>
+
+                            <button type="submit" class="btn btn-warning btn-sm" ng-click="saveSearch1()">Yes</button>
+                            <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">No</button>
+                        </div>
+
+                        <div ng-show="isAnyFieldFilled" class="alert alert-warning form-group fade-in-up" style="text-align:center;">
+
+                            <b>Please select any of the fields to save the search...</b><br/><br/>
+                            <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">OK</button>
+                        </div>
+
+                        <div class="form-group" style="float:right;padding:10px;margin:0">
+
+                            <button type="submit" class="btn btnStyle btn-sm">Save</button>
+                            <button type="button" class="btn btnStyle btn-sm" data-dismiss="modal">Cancel</button>
+                        </div>
+
+
+
+                        <div style="clear:both"></div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div collapse="PaymentAdvancedSearch" class="row searchContainer" style="margin:0;margin-bottom:8px;padding:20px;">
+
+        <div class="row" style="padding: 10px 4px 10px 4px;margin-bottom:20px;">
+            <div class="col-md-5" style="font-size:22px;">Search Filters</div>
+
+
+            <div class="col-md-7 col-sm-6 col-xs-12" style="float:right">
+                <!--<div class="dropdown mega-dropdown filter-drop pull-right">
+    <button class="btn btnStyle dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-filter"></i> <span translate>BtnGroup.AddRemoveFilters</span></button>
+    <ul class="dropdown-menu mega-dropdown-menu customDropDown" role="menu" aria-labelledby="menu1" style="min-width:267px !important;">
+     <li ng-repeat="data in FieldsValues">
+
+                            <div class="row" style="margin:0;margin-top:5px;" >
+                                <div class="col-md-9">
+                                    <span style="margin-left:10px;display:inline-block;margin-top:3px;">{{data.label}}</span>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="checkbox" style="margin:0;">
+                                    <span class="green switch green ng-valid ng-pristine ng-untouched" style="width:34px !important; height:14px !important; border-radius:20px !important;margin-top:5px;" ng-init="active = data.visible" ng-click="active=!active;SelectValue($index)" ng-class="{checked:active}" ng-model="active" ng-keydown="toggleFocus($event, $index, true)">
+                                    <small style="width:12px !important;height:12px !important;" tabindex="0" ></small>
+                                    <input type="checkbox" style="opacity:0;display:none;" ng-model="UIRSelect" class="ng-pristine ng-untouched ng-valid"/>
+                                    <span class="switch-text"> </span>
+                                    </span>
+                                    </div>
+
+                                    <div style="clear:both"></div>
+                                </div>
+                            </div>
+                        </li>
+    </ul>
+  </div>-->
+
+                <ul class="pull-right">
+                    <li class="dropdown mega-dropdown"><a href="javascript:;" class="dropdown-toggle">
+       <button class="btn btnStyle dropdown-toggle" type="button" id="menu1" data-toggle="dropdown"><i class="fa fa-filter"></i> <span translate>BtnGroup.AddRemoveFilters</span></button>
+    </a>
+
+                        <ul class="dropdown-menu mega-dropdown-menu" style="min-width:217px !important;">
+                            <li ng-repeat="data in FieldsValues">
+
+                                <div class="row" style="margin:0;margin-top:5px;margin-right: 5px;">
+                                    <div class="col-md-9">
+                                        <span style="display:inline-block;margin-top:3px;">{{data.label}}</span>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="checkbox" style="margin:0;">
+                                            <span class="green switch green ng-valid ng-pristine ng-untouched" style="width:34px !important; height:14px !important; border-radius:20px !important;margin-top:5px;"
+                                                ng-init="active = data.visible" ng-click="active=!active;SelectValue($index);"
+                                                ng-class="{checked:active}" ng-model="active" ng-keydown="toggleFocus($event, $index, true)">
+                                    <small style="width:12px !important;height:12px !important;" tabindex="0" ></small>
+                                    <input type="checkbox" style="opacity:0;display:none;" ng-model="UIRSelect" class="ng-pristine ng-untouched ng-valid"/>
+                                    <span class="switch-text"> </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+                <!--clearSpc(active,$index)]]]]]<ul class="btn btn-default pull-right" style="list-style:none;padding:0;margin-right:5px;" >
+                <li class="dropdown mega-dropdown"> <a class="dropdown-toggle btn btnStyle" style="text-decoration:none;" tabindex="0">
+                    <i class="fa fa-filter"></i> <span translate>BtnGroup.AddRemoveFilters</span>
+
+                </a>
+
+                    <ul class="dropdown-menu mega-dropdown-menu customDropDown" style="margin-left:-80px;min-width:267px !important;">
+                        <li ng-repeat="data in FieldsValues">
+
+                            <div class="row" style="margin:0;margin-top:5px;" >
+                                <div class="col-md-9">
+                                    <span style="margin-left:10px;display:inline-block;margin-top:3px;">{{data.label}}</span>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="checkbox" style="margin:0;">
+                                    <span class="green switch green ng-valid ng-pristine ng-untouched" style="width:34px !important; height:14px !important; border-radius:20px !important;margin-top:5px;" ng-init="active = data.visible" ng-click="active=!active;SelectValue($index)" ng-class="{checked:active}" ng-model="active" ng-keydown="toggleFocus($event, $index, true)">
+                                    <small style="width:12px !important;height:12px !important;" tabindex="0" ></small>
+                                    <input type="checkbox" style="opacity:0;display:none;" ng-model="UIRSelect" class="ng-pristine ng-untouched ng-valid"/>
+                                    <span class="switch-text"> </span>
+                                    </span>
+                                    </div>
+
+                                    <div style="clear:both"></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>-->
+
+                <button class="btn pull-right btnStyle" value="Reset Filter" ng-click="resetFilter()" style="margin-right:5px;" ng-focus="focusOutfn()"><i class="fa fa-refresh"></i> <span translate>BtnGroup.ResetFilter</span>  </button>
+
+                <button value="SaveSearch" class="btn pull-right btnStyle" style="margin-right:5px;" id="saveSearchBtn" data-keyboard="true"
+                    data-toggle="modal" data-target="#myModal1" ng-click="ClearAlert()" style="margin-top:5px;"><i class="fa fa-floppy-o"></i> <span translate>BtnGroup.SaveSearch</span>  </button>
+
+
+            </div>
+        </div>
+
+        <div class="row" style="margin:0;" ng-show="showSearchWarning">
+
+
+            <div class="col-md-2"></div>
+
+            <div class="col-md-8">
+                <div id="showWarning" class="alert alert-danger alert-block fade bold" style="text-align:center;">
+                    <a class="close" aria-label="close" ng-click="retainAlert($event)">&times;</a> Please select any of the
+                    fields to perform search...
+                </div>
+            </div>
+
+            <div class="col-md-2"></div>
+
+        </div>
+
+
+
+
+        <form class="form-horiaontal">
+            <div class="row">
+                <div ng-repeat="fields in FieldsValues track by $index" ng-if="fields.visible">
+                    <div class="col-md-6 clearSpace">
+                    <div class="form-group fade-in-up">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="control-label" style="text-align:left;">{{fields.label}}</label>
+                            </div>
+                            <div class="col-md-6" ng-if="fields.type == 'text'">
+                                <input type="text" class="form-control" ng-model="search[fields.value]" placeholder="{{fields.label}}" ng-keypress="(fields.allow == 'number') ? allowOnlyNumbersAlone($event,fields.label) : ''"
+                                />
+                            </div>
+
+                            <div class="col-md-6" ng-if="fields.type == 'dropdown'">
+                        <select class="form-control js-select2-multiple" data-placeholder="Select an option" name="{{fields.value}}" ng-model="search[fields.value]"
+                            multiple="multiple" style="width: 100%">
+                        
+                        <option ng-if="fields.value=='PartyServiceAssociationCode'" ng-repeat="option in psaCodeDrop" value="{{option.actualvalue}}">{{option.displayvalue}}</option>
+                        
+                        <option ng-if="fields.value=='Currency'" ng-repeat="option in uniqueCurrency" value="{{option}}">{{option}}</option>
+                        <option ng-if="fields.value=='MethodOfPayment'" ng-repeat="option in uniqueMOP" value="{{option}}">{{option}}</option>
+                        <option ng-if="fields.value=='Status'" ng-repeat="option in uniquePaymentStatusArr" value="{{option}}">{{option}}</option>
+                      </select>
+                      </div>
+
+                            <div class="col-md-8" ng-if="fields.type=='dateRange'">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-9">
+                                        <div class="input-group date" data-date-format="yyyy-mm-dd" data-date-viewmode="years" data-date-minviewmode="months">
+                                            <input type="text" class="form-control" placeholder="From" id="{{fields.value+'Start'}}" ng-model="search.InstructionData[fields.value].Start"
+                                                ng-keypress="(fields.allow == 'date') ? notAllowAnything($event) : ''" onpaste="return false">
+                                            <span class="input-group-addon" ng-click="focusInfn(fields.value+'Start')"><span class="glyphicon glyphicon-calendar"></span></span>
+
+                                            <span class="input-group-addon" style="border:none;background-color:transparent;">To</span>
+                                            <input type="text" class="form-control" placeholder="To" id="{{fields.value+'End'}}" ng-model="search.InstructionData[fields.value].End"
+                                                ng-keypress="(fields.allow == 'date') ? notAllowAnything($event) : ''" style="text-align:start;" onpaste="return false">
+                                            <span class="input-group-addon" ng-click="focusInfn(fields.value+'End')"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-sm-12 col-xs-12" ng-if="fields.type=='amountRange'">
+                                <div class="row">
+                                    <div class="col-md-5 col-sm-4 col-xs-4">
+                                        <input type="text" class="form-control" placeholder="From" ng-model="search.InstructionData[fields.value].Start" ng-keypress="(fields.allow == 'number') ? allowNumberWithDecimal($event) : ''">
+                                    </div>
+                                    <div class="col-md-2 col-sm-1 col-xs-1">
+                                        <span class="input-group-addon" style="border:none;background-color:transparent;">To</span>
+                                    </div>
+                                    <div class="col-md-5 col-sm-4 col-xs-4">
+                                        <input type="text" class="form-control" placeholder="To" ng-model="search.InstructionData[fields.value].End" ng-keypress="(fields.allow == 'number') ? allowNumberWithDecimal($event) : ''">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div style="clear:both;visibility:hidden;">{{$index % 2}}</div>-->
+                        </div>
+                        <!--<div style="clear:both"></div>-->
+
+                    </div>
+                </div>
+                <div class="clearfix" id="{{$index}}" ng-if="$index%2 == 1"></div>
+                </div>
+                    <!--<div class="clearfix"></div>-->
+            </div>
+
+            <hr style="border-color:#ccc;" />
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="pull-right" style="margin-right:15px;">
+
+                        <!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">-->
+                        <button value="Search" id="AdSearchBtn" class="btn btnStyle" ng-click="buildSearch()"> <i class="fa fa-search"></i> <span translate>BtnGroup.Search</span> </button>
+                        <!--</div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">-->
+                        <button value="Cancel" class="btn btnStyle" ng-click="rstAdvancedSearchFlag();showSearchWarning =false;"><i class="fa fa-times"></i> <span translate>BtnGroup.Cancel</span> </button>
+                        <!--</div>-->
+
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+
+
+    </div>
+
+    <div style="padding: 5px;background:#fff">
+        <div class="row" style="margin: 0;">
+            <div class="countbar-title">
+                <div class="col-md-3 col-sm-3 col-xs-4  ng-binding" style="padding: 0;">
+                    <div class="caption">
+                        <span class="highlight">{{items.length}}</span> records shown
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-9 col-sm-9 col-xs-8" style="padding:0;">
+                    <div class="btn-group" style="float:right;box-sizing: border-box;margin-left:5px;">
+                        <!-- <button class="btn btn-md viewbtn" id="btn_1" ng-click="hello('list',$event)" data-toggle="tooltip" title="{{listTooltip}}"><i class="fa fa-list"></i></button>
+            <button class="btn btn-md viewbtn" id="btn_2" ng-click="hello('grid',$event)" data-toggle="tooltip" title="{{gridTooltip}}"><i class="fa fa-table"></i></button>-->
+
+
+                        <button style="border: 1px solid #fff;box-sizing: border-box;border-right:0px;" class="btn-trans" id="btn_1" ng-class="changeViewFlag?'disabledBtnColor':'cmmonBtnColors'"
+                            ng-click="changeViewFlag = !changeViewFlag" tooltip="List View"><i class="fa fa-list fa-fs14"></i></button>
+                        <button style="border: 1px solid #fff;box-sizing: border-box;border-left:0px" class="btn-trans" id="btn_2" ng-class="!changeViewFlag?'disabledBtnColor':'cmmonBtnColors'"
+                            ng-click="changeViewFlag = !changeViewFlag" tooltip="Grid View"><i class="fa fa-table fa-fs14"></i></button>
+
+                    </div>
+
+
+                    <div class="btn-group" style="float:right;border: 1px solid #fff;box-sizing: border-box;margin-left:5px;" tooltip="Print">
+                        <button class="btn-trans" ng-click="printFn()"><i class="fa fa-print fa-fs14"></i></button>
+                    </div>
+
+                    <div class="btn-group" style="float:right;border: 1px solid #fff;box-sizing: border-box;margin-left:5px;" tooltip="Export to Excel">
+                        <button class="btn-trans" ng-click="exportToExcel($event)"><i class="fa fa-file-excel-o fa-fs14"></i></button>
+                    </div>
+
+                    <div class="btn-group" style="float:right;border: 1px solid #fff;box-sizing: border-box;margin-left:5px;" tooltip="Refresh">
+                        <button class="btn-trans" ng-click="loadData1()"><i class="fa fa-refresh fa-fs14"></i></button>
+                    </div>
+
+                    <div class="btn-group" style="float:right;box-sizing: border-box;margin-left:10px;">
+                        <div class="dropdown customDropdown" style="float:right;border: 1px solid #fff;box-sizing: border-box;margin-left:10px;">
+                            <button class="btn-trans dropdown-toggle" type="button" data-toggle="dropdown" tooltip="Select Dates"><span id="dropdownBtnTxt" translate style="font-size:15px;">All</span>
+                    <span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-default pull-right" style="font-size:13px !important">
+                                <li class="menuClass" id="menulist_1" dateSelect="false" ng-click="FilterByDate('all',$event)"><a translate>SelectDates.All</a></li>
+                                <li class="menuClass" id="menulist_2" dateSelect="false" ng-click="FilterByDate('today',$event)"><a translate>SelectDates.Today</a></li>
+                                <li class="menuClass" id="menulist_3" dateSelect="false" ng-click="FilterByDate('week',$event)"><a translate>SelectDates.Week</a></li>
+                                <li class="menuClass" id="menulist_4" dateSelect="false" ng-click="FilterByDate('month',$event)"><a translate>SelectDates.Month</a></li>
+                                <li class="menuClass" id="menulist_5" dateSelect="false" ng-click="FilterByDate('custom',$event)" data-toggle="modal" data-target="#myModal"
+                                    data-keyboard="true"><a translate>SelectDates.Custom</a>
+                                </li>
+                                <li style="pointer-events:none" ng-if="startDate&&endDate!=''">
+                                    <P style="text-align:center;color:#000;">From - <b>{{ShowStartDate}}</b> <br/>to - <b>{{ShowEndDate}}</b></P>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="btn-group" style="float:right;border: 1px solid #fff;box-sizing: border-box;" ng-if="((BRActions.length>0)&&(changeViewFlag==false))">
+            <select style="padding: 5px; float: left;color:#000;" ng-model="actions">
+                <option value="" selected>ACTION</option>
+                <option value="{{actions}}" ng-repeat="actions in BRActions">{{actions.DropDownList}}</option>
+            </select>
+            <button class="btn btn-md viewbtn" id="btn_2" data-toggle="tooltip" ng-click="forceAction(items,actions)" title="{{gridTooltip}}"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
+        </div> -->
+
+                    <div class="btn-group" style="float:right;box-sizing: border-box;" ng-if="((enableActionbuttons>0)&&(changeViewFlag==false))">
+                        <select style="padding: 5px; float: left;color:#000;" ng-model="actions" placeholder="select actions">
+                <option value="" selected>ACTION</option>
+                <option value="{{actions}}" ng-repeat="actions in BRActions">{{actions}}</option>
+            </select>
+                        <button class="btn btn-md viewbtn" id="btn_2" data-toggle="tooltip" ng-click="forceAction(items,actions)" title="{{gridTooltip}}"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="alert alert-info infoContainer" style="width:100%;overflow:auto;" ng-show="!nothingSelected || advancedSearchEnable">
+
+
+            <div style="float:left;width:100%;height:100%;padding: 4px 10px 5px 10px;">
+                <p ng-show="UIR" style="margin:0;font-size:13px;word-wrap:break-word;"><b>Search By Instruction ID</b>&nbsp;&nbsp; - &nbsp;&nbsp;{{paylistsearchValue}}</p>
+                <p ng-show="today" style="margin:0;word-wrap:break-word;"><b>Select Criteria</b><span class="leftAlign">-</span><span class="leftAlign">Today</span><span class="leftAlign">({{todayDate}})</b></span></p>
+                <p ng-show="week" style="margin:0;word-wrap:break-word;"><b>Select Criteria</b><span class="leftAlign">-</span><span class="leftAlign">Week</span><span class="leftAlign">({{weekStart}})</span>
+                    <span class="leftAlign">To</span><span class="leftAlign">({{weekEnd}})</span> </p>
+                <p ng-show="month" style="margin:0;word-wrap:break-word;"><b>Select Criteria</b><span class="leftAlign">-</span><span class="leftAlign">Month</span><span class="leftAlign">({{monthStart}})</span>
+                    <span class="leftAlign">To</span><span class="leftAlign">({{monthEnd}})</span> </p>
+                <p ng-show="custom" style="margin:0;word-wrap:break-word;"><b>Select Criteria</b><span class="leftAlign">-</span><span class="leftAlign">Custom</span><span class="leftAlign">({{ShowStartDate}})</span>
+                    <span class="leftAlign">To</span><span class="leftAlign">({{ShowEndDate}})</span> </p>
+            </div>
+
+
+            <div ng-show="advancedSearchEnable" style="float:left;width:100%;height:100%;padding: 4px 10px 5px 10px;">
+
+                <p class="bold" ng-hide="fromDashboard" style="margin:0;font-size:13px;word-wrap:break-word;">Advanced Search Parameters</p>
+                <p ng-if="searchName" style="word-wrap:break-word;"><b>Search Name</b> - {{searchName}}</p>
+
+                <span class="" style="font-size:13px;word-wrap:break-word;" ng-repeat="(key, value) in AdsearchParams">
+           
+                <span ng-if="((key=='InstructionData') && ((value.ReceivedDate.Start != '') || (value.ValueDate.Start != '') || (value.Amount.Start != '') ))">
+                     <span class="searchValContainer"  ng-repeat="(k,v) in value" ng-if="(v.Start!='')&&(v.End!='')">
+                        <span ng-if="k=='ReceivedDate'"><b>{{k}}</b> &nbsp;&nbsp; -  &nbsp;&nbsp; {{v.Start}} &nbsp;&nbsp; to &nbsp;&nbsp; {{v.End}}</span>
+                <span ng-if="k=='ValueDate'"><b>{{k}}</b> &nbsp;&nbsp; -  &nbsp;&nbsp; {{v.Start}} &nbsp;&nbsp; to &nbsp;&nbsp; {{v.End}}</span>
+                <span ng-if="k=='Amount'"><b>{{k}}</b> &nbsp;&nbsp; -  &nbsp;&nbsp; {{v.Start}} &nbsp;&nbsp; to &nbsp;&nbsp; {{v.End}}</span>
+                <span ng-if="(k !='ReceivedDate')&&(k!='ValueDate')&&(k!='Amount')"><b>{{k}}</b> &nbsp;&nbsp; -  &nbsp;&nbsp; {{v}}</span>
+
+                <span class="bold closeIcon cursorPointer" ng-click="spliceSearchArr(key)">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                        </span>
+                </span>
+                </span>
+                <span class="searchValContainer" ng-if="(key !='InstructionData')">
+                    <b>{{(key == 'D_Name')?'Debtor Name':(key == 'D_Account')?'Debtor Account':(key == 'C_Name')?'Creditor Name':(key == 'C_Account')?'Creditor Account':key | camelCaseFormatter}}</b> &nbsp;&nbsp; -  &nbsp;&nbsp; 
+                    {{value | cleanItem}}
+
+                    <span class="bold closeIcon cursorPointer" ng-click="spliceSearchArr(key)">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                 </span>
+
+                </span>
+                </span>
+            </div>
+
+            <div class='button-wrapper' style="vertical-align:middle;">
+                <input type="button" id="searchBtn" class="btn btn-sm btnStyle" value="Clear" ng-click="clearSearch()" style="display:block;float:right;"
+                />
+            </div>
+        </div>
+
+        <div class="alert alert-warning" ng-show="alertMsg">
+            <strong><h4  style="margin:0;text-align:center;"><i class="fa fa-warning"></i> No Records Found</h4></strong>
+        </div>
+
+        <div id="dummyExportContent" ng-show="false">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th ng-repeat="val in sortMenu">{{val.label}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="allpayments in items" style="cursor:pointer">
+
+
+
+                        <td ng-repeat="val in sortMenu" data-ng-click="clickReferenceID({'data':allpayments,'fromPage':'allpayments'})">
+
+                            <span ng-if="(val.FieldName != 'PartyServiceAssociationCode')&&(val.FieldName != 'ReceivedDate')&& (val.FieldName != 'Status')&&(val.FieldName != 'Amount')">{{allpayments[val.FieldName]}}</span>
+                            <span ng-if="(val.FieldName == 'PartyServiceAssociationCode')">{{allpayments.InstructionData[val.FieldName]}}</span>
+
+                            <span ng-if="(val.FieldName == 'ReceivedDate')">{{allpayments.InstructionData[val.FieldName] | dateFormat}}</span>
+
+                            <span ng-if="(val.FieldName == 'Amount')">{{allpayments[val.FieldName]|isoCurrency:allpayments['Currency']:'Symbolfalse'}}</span>
+
+
+                            <span ng-if="(val.FieldName == 'Status')" class="cursorPointer batchHeight colorWhite" ng-class="{'badge badge-success': allpayments.Status == 'COMPLETED','badge badge-hold': allpayments.Status == 'HOLD','badge badge-danger':allpayments.Status == 'REJECTED','badge badge-warning':allpayments.Status != 'COMPLETED' && allpayments.Status != 'REJECTED' && allpayments.Status != 'DUPLICATE','badge badge-primary': allpayments.Status == 'DUPLICATE'}">
+
+                    <i class="fa fa-check-circle-o" ng-show='allpayments.Status=="COMPLETED"'></i>
+                    <i class="fa fa-times-circle" ng-show='allpayments.Status=="NOT PROCESSED"'></i>
+                    <i class="fa fa-exclamation-circle" ng-show='allpayments.Status=="NEEDS APPROVAL"'></i>
+                    <i class="fa fa-question-circle" ng-show='allpayments.Status=="WAREHOUSED"'></i>
+                    <i class="fa fa-wrench" ng-show='allpayments.Status=="REPAIR"'></i>
+                    <i class="fa fa-copy" ng-show='allpayments.Status=="DUPLICATE"'></i>
+                    <i class="fa fa-question-circle" ng-show='allpayments.Status=="FOR_BULKING"'></i>
+                    <i class="fa fa-exclamation-circle" ng-show='allpayments.Status=="HOLD"'></i>
+                    <i class="fa fa-times-circle" ng-show='allpayments.Status=="REJECTED"'></i>
+                    <i class="fa fa-hourglass-half" ng-show='allpayments.Status=="WAITING"'></i>
+                    {{allpayments.Status}}</span>
+                        </td>
+
+                        <!--<td class="txtCenter">
+                <input type="checkbox" name="action"  ng-model="allpayments.Selected"  class="checkBoxClass cursorPointer" ng-click="checkStatusForBulk($event,allpayments.Status,$index)" id="check_{{$index}}">
+            </td>-->
+                        <td ng-if="enableBulkActions[0].GroupActionAllowed">
+                            <input type="checkbox" name="action" ng-model="allpayments.Selected" class="checkBoxClass" ng-click="checkStatus($event,allpayments.Status)"
+                                id="check_{{$index}}">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div ng-show="!alertMsg" class="row" style="margin: 0;">
+
+            <div class="listView FixHead dataGroupsScroll" style="margin:0;" ng-show="!changeViewFlag">
+                <table class="table table-striped table-bordered smallTable floatThead stickyheader">
+
+                    <thead>
+                        <tr>
+                            <th class="cursorPointer" ng-repeat="val in sortMenu" ng-click="Sorting(val.FieldName);">
+                                {{val.label}}
+                                <span ng-show="orderByField == val.FieldName && sortReverse" class="fa fa-caret-up"></span>
+                                <span ng-show="orderByField == val.FieldName && !sortReverse" class="fa fa-caret-down"></span>
+                            </th>
+
+                            <th ng-if="enableBulkActions[0].GroupActionAllowed">
+                                <input type="checkbox" ng-model="selectedAll" ng-click="checkAll($event)" /> &nbsp;
+                            </th>
+
+                            <!--<th>Select
+                </th>-->
+                        </tr>
+                    </thead>
+
+                    <tbody> 
+                        <tr ng-repeat="allpayments in items" style="cursor:pointer">
+
+
+                            <td ng-repeat="val in sortMenu" data-ng-click="clickReferenceID({'data':allpayments,'fromPage':'allpayments'})">
+
+                                <span ng-if="(val.FieldName != 'PartyServiceAssociationCode')&&(val.FieldName != 'ReceivedDate')&& (val.FieldName != 'Status')&&(val.FieldName != 'Amount')">{{allpayments[val.FieldName]}}</span>
+                                <span ng-if="(val.FieldName == 'PartyServiceAssociationCode')">{{allpayments.InstructionData[val.FieldName]}}</span>
+
+                                <span ng-if="(val.FieldName == 'ReceivedDate')">{{allpayments.InstructionData[val.FieldName] | dateFormat}}</span>
+
+                                <span ng-if="(val.FieldName == 'Amount')">{{allpayments[val.FieldName]|isoCurrency:allpayments['Currency']:'Symbolfalse'}}</span>
+
+
+                                <span ng-if="(val.FieldName == 'Status')" class="cursorPointer batchHeight colorWhite" ng-class="{'badge badge-success': allpayments.Status == 'COMPLETED','badge badge-hold': allpayments.Status == 'HOLD','badge badge-warning':allpayments.Status != 'COMPLETED' && allpayments.Status != 'REJECTED' && allpayments.Status != 'DUPLICATE','badge badge-primary': allpayments.Status == 'DUPLICATE','badge badge-danger':allpayments.Status == 'REJECTED'}">
+
+                    <i class="fa fa-check-circle-o" ng-show='allpayments.Status=="COMPLETED"'></i>
+                    <i class="fa fa-times-circle" ng-show='allpayments.Status=="NOT PROCESSED"'></i>
+                    <i class="fa fa-exclamation-circle" ng-show='allpayments.Status=="NEEDS APPROVAL"'></i>
+                    <i class="fa fa-question-circle" ng-show='allpayments.Status=="WAREHOUSED"'></i>
+                    <i class="fa fa-wrench" ng-show='allpayments.Status=="REPAIR"'></i>
+                    <i class="fa fa-copy" ng-show='allpayments.Status=="DUPLICATE"'></i>
+                    <i class="fa fa-question-circle" ng-show='allpayments.Status=="FOR_BULKING"'></i>
+                    <i class="fa fa-exclamation-circle" ng-show='allpayments.Status=="HOLD"'></i>
+                    <i class="fa fa-times-circle" ng-show='allpayments.Status=="REJECTED"'></i>
+                    <i class="fa fa-hourglass-half" ng-show='allpayments.Status=="WAITING"'></i>
+                    {{allpayments.Status | underscoreRemove}}</span>
+                            </td>
+
+                            <!--<td class="txtCenter">
+                <input type="checkbox" name="action"  ng-model="allpayments.Selected"  class="checkBoxClass cursorPointer" ng-click="checkStatusForBulk($event,allpayments.Status,$index)" id="check_{{$index}}">
+            </td>-->
+                            <td ng-if="enableBulkActions[0].GroupActionAllowed">
+                                <input type="checkbox" name="action" ng-model="allpayments.Selected" class="checkBoxClass" ng-click="checkStatus($event,allpayments.Status)"
+                                    id="check_{{$index}}">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+<div class="listView" style="margin:0;" ng-show="changeViewFlag">
+    <!--<div ng-repeat="allpayments in items" ng-class="{'panel panel-primary': allpayments['Status'] == 'DUPLICATE','panel panel-success': allpayments['Status'] == 'COMPLETED','panel panel-danger':allpayments['Status'] == 'REJECTED','panel panel-warning':allpayments['Status'] != 'COMPLETED' && allpayments['Status'] != 'REJECT' && allpayments['Status'] != 'DUPLICATE'}">
+
+        <div class="panel-heading cursorPointer" data-ng-click="clickReferenceID({'data':allpayments,'fromPage':'allpayments'})" style="padding-top:0px;">
+
+            <div class="row">
+                <div class="row" style="margin:0;padding-bottom:10px;font-size:15px;">
+                    <div  tooltip="Payment Status" class="col-lg-2 col-md-2 col-sm-4 col-xs-6" style="color:#fff;" ng-class="{'panelLabel_Primary': allpayments['Status'] == 'DUPLICATE','panelLabel_Success': allpayments['Status'] == 'COMPLETED','panelLabel_Danger':allpayments['Status'] == 'REJECTED','panelLabel_Warning':allpayments['Status'] != 'COMPLETED' && allpayments['Status'] != 'REJECT' && allpayments['Status'] != 'DUPLICATE'}">
+                        {{allpayments['Status'] | underscoreRemove}}
+                    </div>
+
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                    <div class="col-lg-3 col-md-4 allPaymentsListSpacing" ng-repeat="val in sortMenu" ng-if="val.visible">
+                        <span ng-if="(val.FieldName != 'PartyServiceAssociationCode')&&(val.FieldName != 'ReceivedDate')" tooltip="{{val.label}}" style="margin-right:20px;"><i class="{{val.Icon}}"></i> <span style="font-weight:700">{{val.label}}</span> : <span ng-if="val.FieldName!='Amount'">{{allpayments[val.FieldName]}}</span><span ng-if="val.FieldName=='Amount'">{{allpayments[val.FieldName]|isoCurrency:allpayments['Currency']}}</span> </span>
+
+                        <span ng-if="(val.FieldName == 'PartyServiceAssociationCode')||(val.FieldName == 'ReceivedDate')" tooltip="{{val.label}}" style="margin-right:20px;"><i class="{{val.Icon}}"></i>
+                            <span style="font-weight:700">{{val.label}}</span> : <span ng-if="(val.FieldName == 'PartyServiceAssociationCode')">{{allpayments.InstructionData[val.FieldName]}}</span>
+                            <span ng-if="(val.FieldName == 'ReceivedDate')">{{allpayments.InstructionData[val.FieldName] | dateFormat}}</span>
+                        </span>
+                    </div>
+                     <div style="clear:both"></div>
+                </div>
+            </div>
+
+        </div>-->
+        <div ng-repeat="allpayments in items" ng-class="{'all-payment-primary': allpayments['Status'] == 'DUPLICATE','all-payment-warning': allpayments['Status'] == 'HOLD','all-payment-success': allpayments['Status'] == 'COMPLETED','all-payment-danger':allpayments['Status'] == 'REJECTED','all-payment-repair':allpayments['Status'] != 'COMPLETED' && allpayments['Status'] != 'REJECTED' && allpayments['Status'] != 'DUPLICATE' && allpayments['Status'] != 'HOLD'}" class="all-payments-widget">
+
+        <div class="cursorPointer" data-ng-click="clickReferenceID({'data':allpayments,'fromPage':'allpayments'})">
+<div class="row header-row" style="margin:0;">  
+    <div class="col-md-6">
+            <div ng-class="{'all-payment-primary-label': allpayments['Status'] == 'DUPLICATE','all-payment-warning-label': allpayments['Status'] == 'HOLD','all-payment-success-label': allpayments['Status'] == 'COMPLETED','all-payment-danger-label':allpayments['Status'] == 'REJECTED','all-payment-repair-label':allpayments['Status'] != 'COMPLETED' && allpayments['Status'] != 'REJECT' && allpayments['Status'] != 'DUPLICATE' && allpayments['Status'] != 'HOLD'}">
+        <ul class="list-inline">
+            <li ><span tooltip="Instruction ID" data-container="body" data-toggle="tooltip">{{allpayments.InstructionID}}</span></li>
+            <li><span  tooltip="Payment ID" data-container="body" data-toggle="tooltip">{{allpayments.PaymentID}}</span></li>
+            
+        </ul>
+            </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="pull-right pull-left-xs"  ng-class="{'all-payment-primary-label': allpayments['Status'] == 'DUPLICATE','all-payment-warning-label': allpayments['Status'] == 'HOLD','all-payment-success-label': allpayments['Status'] == 'COMPLETED','all-payment-danger-label':allpayments['Status'] == 'REJECTED','all-payment-repair-label':allpayments['Status'] != 'COMPLETED' && allpayments['Status'] != 'REJECT' && allpayments['Status'] != 'DUPLICATE' && allpayments['Status'] != 'HOLD'}">
+            <ul class="list-inline">
+                <li><span tooltip="Amount" data-container="body" data-toggle="tooltip">{{allpayments.Amount|isoCurrency:allpayments['Currency']:'Symbolfalse'}}</span></li>
+                <!--<li><span data-original-title="Currency" data-container="body" data-toggle="tooltip">{{allpayments.Amount|isoCurrency:allpayments['Currency']}}</span></li>-->
+            <li><span tooltip="Payment Status" data-container="body" data-toggle="tooltip">{{allpayments['Status'] | underscoreRemove}}</span></li>
+        </ul>        
+        </div>
+    </div>
+</div>
+<!--<div class="row flex-row" style="margin:0;">
+    <div class="col-md-12">
+       
+        <div class="date-info pull-right" ng-repeat="val in sortMenu">
+           
+             <ul class="list-inline">
+                <li  style="padding-left:0;"><span ng-if="(val.FieldName == 'ValueDate')||(val.FieldName == 'ReceivedDate')" tooltip="{{val.label}}">
+                            <span style="font-weight:700;padding-left: 5px;">{{val.label}}</span> : <span ng-if="(val.FieldName == 'ValueDate')" style="border-right:2px solid;padding-right:5px;">{{allpayments[val.FieldName]}}</span>
+                            <span ng-if="(val.FieldName == 'ReceivedDate')">{{allpayments.InstructionData[val.FieldName] | dateFormat}}</span>
+                        </span></li>
+            
+        </ul>        
+        
+            
+        </div>
+    </div>
+</div>-->
+<div class="row info-row" style="margin:0;">
+    <div class="col-md-4">
+        <div class="field-info" ng-repeat="val in sortMenu">
+            <span ng-if="(val.FieldName == 'MethodOfPayment')"><span style="font-weight:700">{{val.label}}</span> : <span ng-if="val.FieldName=='MethodOfPayment'" style="font-size:13px;">{{allpayments[val.FieldName]|underscoreRemove}}</span></span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="field-info" ng-repeat="val in sortMenu">
+            <span ng-if="(val.FieldName == 'PartyServiceAssociationCode')"><span style="font-weight:700">{{val.label}}</span> : <span ng-if="val.FieldName=='PartyServiceAssociationCode'" style="font-size:13px;">{{allpayments.InstructionData[val.FieldName]|underscoreRemove}}</span></span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="field-info pull-right pull-left-xs" ng-repeat="val in sortMenu">
+            <span ng-if="(val.FieldName == 'OriginalPaymentReference')"><span style="font-weight:700">{{val.label}}</span> : <span ng-if="val.FieldName=='OriginalPaymentReference'" style="font-size:13px;">{{allpayments[val.FieldName]|underscoreRemove}}</span></span>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="field-info" ng-repeat="val in sortMenu">
+            <span ng-if="(val.FieldName == 'Currency')" ><span style="font-weight:700">{{val.label}}</span> : <span ng-if="val.FieldName=='Currency'" style="font-size:13px;">{{allpayments[val.FieldName]|underscoreRemove}}</span></span>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="date-info">
+           
+             <ul class="list-inline">
+                <li  style="padding-left:0;" ng-repeat="val in sortMenu" ng-if="(val.FieldName == 'ReceivedDate')"><span >
+                            <span style="font-weight:700;padding-left: 5px;">{{val.label}}</span> : 
+                            <span ng-if="(val.FieldName == 'ReceivedDate')">{{allpayments.InstructionData[val.FieldName] | dateFormat}}</span>
+                        </span></li>
+            
+        </ul>        
+        
+            
+        </div>  
+    </div>
+    <div class="col-md-4">
+        <div class="date-info pull-right pull-left-xs">
+           
+             <ul class="list-inline">
+                <li  style="padding-left:0;" ng-repeat="val in sortMenu" ng-if="(val.FieldName == 'ValueDate')"><span>
+                            <span style="font-weight:700;padding-left: 5px;">{{val.label}}</span> : <span ng-if="(val.FieldName == 'ValueDate')">{{allpayments[val.FieldName]}}</span>
+                            
+                        </span></li>
+            
+        </ul>        
+        
+            
+        </div>  
+    </div>
+</div>
+
+        </div>
+        </div>
+    </div>
+
+
+
+
+            <!--<div class="row">
+    <div class="col-md-12 txtCenter">
+        <img src="themes/images/loader.gif" width="85px"/>
+    </div>
+</div>-->
+
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.input-group-addon').on('click focus', function (e) {
+
+            $(this).prev().focus().click()
+        });
+
+
+        $('[data-toggle="tooltip"]').tooltip();
+        setTimeout(function()
+        { $('[data-toggle="tooltip"]').tooltip();
+
+        $('[data-toggle="tooltip"]').click(function(){
+            $(this).trigger('mouseleave');
+        })           
+    },200)
+    
+    })
+
+
+
+        $('[data-toggle="tooltip"]').tooltip();
+        setTimeout(function()
+        { $('[data-toggle="tooltip"]').tooltip();
+
+        $('[data-toggle="tooltip"]').click(function(){
+            $(this).trigger('mouseleave');
+        })           
+        },200)
+
+
+ 
+
+</script>
+
